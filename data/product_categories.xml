@@ -5,98 +5,95 @@
         <!-- Product Categories -->
         <record id="category_smartphones" model="product.public.category">
             <field name="name">Smartphones</field>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">1</field>
         </record>
 
         <record id="category_iphone" model="product.public.category">
             <field name="name">iPhone</field>
             <field name="parent_id" ref="category_smartphones"/>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">1</field>
         </record>
 
         <record id="category_samsung" model="product.public.category">
             <field name="name">Samsung</field>
             <field name="parent_id" ref="category_smartphones"/>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">2</field>
         </record>
 
         <record id="category_google" model="product.public.category">
             <field name="name">Google Pixel</field>
             <field name="parent_id" ref="category_smartphones"/>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">3</field>
         </record>
 
         <record id="category_accessories" model="product.public.category">
             <field name="name">Accessories</field>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">2</field>
         </record>
 
         <record id="category_cases" model="product.public.category">
             <field name="name">Cases &amp; Covers</field>
             <field name="parent_id" ref="category_accessories"/>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">1</field>
         </record>
 
         <record id="category_chargers" model="product.public.category">
             <field name="name">Chargers</field>
             <field name="parent_id" ref="category_accessories"/>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">2</field>
         </record>
 
         <record id="category_cables" model="product.public.category">
             <field name="name">Cables</field>
             <field name="parent_id" ref="category_accessories"/>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">3</field>
         </record>
 
         <record id="category_audio" model="product.public.category">
             <field name="name">Audio</field>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">3</field>
         </record>
 
         <record id="category_airpods" model="product.public.category">
             <field name="name">AirPods</field>
             <field name="parent_id" ref="category_audio"/>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">1</field>
         </record>
 
         <record id="category_headphones" model="product.public.category">
             <field name="name">Headphones</field>
             <field name="parent_id" ref="category_audio"/>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">2</field>
         </record>
 
         <record id="category_smartwatches" model="product.public.category">
             <field name="name">Smartwatches</field>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="sequence">4</field>
         </record>
 
-        <!-- Product Brands (if brand module is available) -->
-        <record id="brand_apple" model="product.brand">
+        <!-- Product Brands (only if product_brand module is installed) -->
+        <record id="brand_apple" model="product.brand" forcecreate="False">
             <field name="name">Apple</field>
-            <field name="logo" type="base64" file="techdream_theme/static/src/img/brand-apple.png"/>
         </record>
 
-        <record id="brand_samsung" model="product.brand">
+        <record id="brand_samsung" model="product.brand" forcecreate="False">
             <field name="name">Samsung</field>
-            <field name="logo" type="base64" file="techdream_theme/static/src/img/brand-samsung.png"/>
         </record>
 
-        <record id="brand_google" model="product.brand">
+        <record id="brand_google" model="product.brand" forcecreate="False">
             <field name="name">Google</field>
-            <field name="logo" type="base64" file="techdream_theme/static/src/img/brand-google.png"/>
         </record>
 
     </data>

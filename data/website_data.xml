@@ -7,19 +7,18 @@
             <field name="name">TechDream Mobile</field>
             <field name="domain">techdream.ae</field>
             <field name="company_id" ref="base.main_company"/>
-            <field name="language_ids" eval="[(6, 0, [ref('base.lang_en'), ref('base.lang_ar')])]"/>
+            <field name="language_ids" eval="[(6, 0, [ref('base.lang_en')])]"/>
             <field name="default_lang_id" ref="base.lang_en"/>
             <field name="auto_redirect_lang" eval="True"/>
             <field name="cookies_bar" eval="True"/>
-            <field name="configurator_done" eval="True"/>
         </record>
 
         <!-- Website Pages -->
         <record id="website_page_contact" model="website.page">
             <field name="name">Contact Us</field>
-            <field name="website_published" eval="True"/>
+            <field name="is_published" eval="True"/>
             <field name="url">/contact</field>
-            <field name="view_id" ref="techdream_theme.contact_page_template"/>
+            <field name="view_id" ref="contact_page_template"/>
             <field name="website_id" ref="website_techdream_config"/>
         </record>
 
@@ -70,6 +69,13 @@
             <field name="parent_id" ref="website.main_menu"/>
             <field name="website_id" ref="website_techdream_config"/>
             <field name="sequence">90</field>
+        </record>
+
+        <!-- Website Snippets and Theme Data -->
+        <record id="website_snippet_hero" model="website.snippet">
+            <field name="name">TechDream Hero Section</field>
+            <field name="template_id" ref="techdream_homepage_enhanced"/>
+            <field name="website_id" ref="website_techdream_config"/>
         </record>
 
     </data>
