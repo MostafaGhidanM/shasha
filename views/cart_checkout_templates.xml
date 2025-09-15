@@ -59,8 +59,8 @@
                                                         </div>
                                                     </td>
                                                     <td class="fw-bold">
-                                                        <span t-field="line.currency_id.symbol"/>
-                                                        <span t-field="line.price_unit" t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"/>
+                                                        <span t-esc="line.currency_id.symbol"/>
+                                                        <span t-esc="line.price_unit"/>
                                                     </td>
                                                     <td>
                                                         <div class="quantity-controls">

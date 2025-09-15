@@ -25,11 +25,11 @@
                             <div class="category-sidebar">
                                 <h3 class="category-title">Categories</h3>
                                 <ul class="category-list">
-                                    <t t-foreach="categories" t-as="category">
+                                    <t t-if="categories" t-foreach="categories" t-as="category">
                                         <li class="category-item">
                                             <a t-attf-href="/shop?category=#{category.id}" class="category-link">
                                                 <span t-field="category.name"/>
-                                                <span class="category-count" t-esc="category.product_count"/>
+                                                <span class="category-count" t-esc="category.product_count or 0"/>
                                             </a>
                                         </li>
                                     </t>
@@ -42,11 +42,11 @@
                                 <div class="price-range">
                                     <form method="get" action="/shop">
                                         <div class="price-inputs">
-                                            <input type="number" name="min_price" class="price-input" placeholder="Min" t-att-value="min_price"/>
-                                            <input type="number" name="max_price" class="price-input" placeholder="Max" t-att-value="max_price"/>
+                                            <input type="number" name="min_price" class="price-input" placeholder="Min" t-att-value="min_price or ''"/>
+                                            <input type="number" name="max_price" class="price-input" placeholder="Max" t-att-value="max_price or ''"/>
                                         </div>
-                                        <input type="hidden" name="search" t-att-value="search"/>
-                                        <input type="hidden" name="category" t-att-value="category"/>
+                                        <input type="hidden" name="search" t-att-value="search or ''"/>
+                                        <input type="hidden" name="category" t-att-value="category or ''"/>
                                         <button type="submit" class="btn btn-primary btn-sm w-100">Apply Filter</button>
                                     </form>
                                 </div>
@@ -61,7 +61,7 @@
                                             <input type="checkbox" class="brand-checkbox" t-attf-id="brand_#{brand.id}" name="brand" t-att-value="brand.id"/>
                                             <label t-attf-for="brand_#{brand.id}" class="brand-label">
                                                 <span t-field="brand.name"/>
- (                                                <span t-esc="brand.product_count"/>
+ (                                                <span t-esc="brand.product_count or 0"/>
 )
                                             </label>
                                         </div>
@@ -76,18 +76,18 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
                                     <h1 style="font-weight: 700; color: #2c3e50;">All Products</h1>
-                                    <p class="text-muted">
-                                        Showing <span t-esc="(pager['page']['current'] - 1) * pager['page']['step'] + 1"/>
--                                    <span t-esc="min(pager['page']['current'] * pager['page']['step'], pager['page']['total'])"/>
+                                    <p class="text-muted" t-if="pager">
+                                        Showing <span t-esc="(pager.get('page', {}).get('current', 1) - 1) * pager.get('page', {}).get('step', 20) + 1"/>
+-                                    <span t-esc="min(pager.get('page', {}).get('current', 1) * pager.get('page', {}).get('step', 20), pager.get('page', {}).get('total', 0))"/>
  
-                                        of <span t-esc="pager['page']['total']"/>
+                                        of <span t-esc="pager.get('page', {}).get('total', 0)"/>
  results
                                 </p>
                             </div>
                             <div class="d-flex align-items-center gap-3">
                                 <form method="get" action="/shop" class="d-flex align-items-center gap-2">
-                                    <input type="hidden" name="search" t-att-value="search"/>
-                                    <input type="hidden" name="category" t-att-value="category"/>
+                                    <input type="hidden" name="search" t-att-value="search or ''"/>
+                                    <input type="hidden" name="category" t-att-value="category or ''"/>
                                     <select name="order" class="form-select" style="width: auto;" onchange="this.form.submit()">
                                         <option value="website_sequence desc" t-att-selected="'selected' if order == 'website_sequence desc' else None">Sort by Latest</option>
                                         <option value="list_price asc" t-att-selected="'selected' if order == 'list_price asc' else None">Price: Low to High</option>
@@ -108,11 +108,11 @@
 
                         <!-- Products Grid -->
                         <div class="products-grid">
-                            <t t-foreach="products" t-as="product">
+                            <t t-if="products" t-foreach="products" t-as="product">
                                 <div class="product-card" t-att-data-product-id="product.id">
                                     <div class="product-image">
                                         <t t-if="product.ribbon_id">
-                                            <span class="product-badge" t-field="product.ribbon_id.html_class" t-field="product.ribbon_id.name"/>
+                                            <span t-att-class="'product-badge ' + (product.ribbon_id.html_class or '')" t-field="product.ribbon_id.name"/>
                                         </t>
                                         <a t-attf-href="/shop/product/#{slug(product)}">
                                             <img t-attf-src="/web/image/product.template/#{product.id}/image_1024" t-att-alt="product.name" loading="lazy"/>
@@ -154,6 +154,15 @@
                                             <i class="fas fa-shopping-cart"></i> Add to Cart
                                         </button>
                                     </div>
+                                </div>
+                            </t>
+
+                            <!-- No Products Found -->
+                            <t t-if="not products">
+                                <div class="col-12 text-center py-5">
+                                    <h3>No products found</h3>
+                                    <p>Try adjusting your search terms or browse our categories.</p>
+                                    <a href="/shop" class="btn btn-primary">Browse All Products</a>
                                 </div>
                             </t>
                         </div>
@@ -205,9 +214,9 @@
             </div>
 
             <div class="container py-4">
-                <h1>Search Results for "<span t-esc="search"/>
+                <h1>Search Results for "<span t-esc="search or ''"/>
 "</h1>
-                <p class="text-muted mb-4">Found <span t-esc="len(products)"/>
+                <p class="text-muted mb-4">Found <span t-esc="len(products) if products else 0"/>
  products</p>
 
                 <div class="products-grid" t-if="products">
