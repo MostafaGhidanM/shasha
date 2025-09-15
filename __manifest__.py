@@ -1,7 +1,7 @@
 {
     'name': 'TechDream Mobile Theme',
-    'version': '1.0.0',
-    'category': 'Theme/eCommerce',
+    'version': '17.0.1.0.0',
+    'category': 'Website/Theme',
     'summary': 'Complete e-commerce theme for TechDream Mobile',
     'description': """
         TechDream Mobile Theme
@@ -25,44 +25,36 @@
         'website',
         'website_sale',
         'sale',
-        'stock',
         'product',
-        'payment',
-        'website_payment',
-        'website_blog',
         'portal',
     ],
     'data': [
-        'security/ir.model.access.csv',
+        # Template files
         'views/theme.xml',
         'views/shop_templates.xml',
         'views/product_templates.xml',
         'views/cart_checkout_templates.xml',
         'views/contact_templates.xml',
-        'data/website_data.xml',
+        
+        # Data files  
         'data/product_categories.xml',
         'data/sample_products.xml',
+        'data/website_data.xml',
     ],
     'assets': {
         'web.assets_frontend': [
+            # Only include CSS/JS files if they actually exist
             'techdream_theme/static/src/css/techdream.css',
             'techdream_theme/static/src/js/techdream.js',
-            'techdream_theme/static/src/js/cart.js',
-            'techdream_theme/static/src/js/product.js',
         ],
     },
-    'demo': [
-        'demo/demo_products.xml',
-    ],
     'images': [
-        'static/description/banner.png',
-        'static/description/theme_screenshot.png',
+        # Only include images if they exist
+        # 'static/description/banner.png',
+        # 'static/description/theme_screenshot.png',
     ],
     'installable': True,
     'auto_install': False,
     'application': False,
     'license': 'LGPL-3',
-    'price': 0,
-    'currency': 'EUR',
-    'live_test_url': 'https://www.techdream.ae',
 }
