@@ -25,14 +25,10 @@
         'website',
         'website_sale',
         'sale',
-        'sale_management',
         'product',
         'stock',
-        'delivery',
-        'payment',
         'portal',
         'mail',
-        'rating',
     ],
     'data': [
         # Security
@@ -57,8 +53,8 @@
     'assets': {
         'web.assets_frontend': [
             # Only include CSS/JS files if they actually exist
-            'techdream_theme/static/src/css/techdream.css',
-            'techdream_theme/static/src/js/techdream.js',
+            'shasha/static/src/css/techdream.css',
+            'shasha/static/src/js/techdream.js',
         ],
     },
     'images': [

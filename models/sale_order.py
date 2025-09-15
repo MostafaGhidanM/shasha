@@ -91,13 +91,13 @@ class SaleOrder(models.Model):
 
     def send_order_confirmation_email(self):
         """Send order confirmation email"""
-        template = self.env.ref('techdream_theme.email_template_order_confirmation', raise_if_not_found=False)
+        template = self.env.ref('shasha.email_template_order_confirmation', raise_if_not_found=False)
         if template:
             template.send_mail(self.id, force_send=True)
 
     def send_shipping_notification_email(self):
         """Send shipping notification email"""
-        template = self.env.ref('techdream_theme.email_template_shipping_notification', raise_if_not_found=False)
+        template = self.env.ref('shasha.email_template_shipping_notification', raise_if_not_found=False)
         if template:
             template.send_mail(self.id, force_send=True)
 
@@ -155,7 +155,7 @@ class SaleOrderLine(models.Model):
         if self.gift_wrap:
             # Get gift wrap fee from configuration
             gift_wrap_fee = self.env['ir.config_parameter'].sudo().get_param(
-                'techdream_theme.gift_wrap_fee', 0.0)
+                'shasha.gift_wrap_fee', 0.0)
             self.gift_wrap_fee = float(gift_wrap_fee)
         else:
             self.gift_wrap_fee = 0.0

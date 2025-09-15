@@ -50,7 +50,7 @@ class TechDreamWebsite(Website):
             'special_offers': special_offers,
         }
         
-        return request.render('techdream_theme.techdream_homepage_enhanced', values)
+        return request.render('shasha.techdream_homepage_enhanced', values)
 
 
 class TechDreamShop(WebsiteSale):
@@ -119,12 +119,8 @@ class TechDreamShop(WebsiteSale):
             ('parent_id', '=', False),
         ])
         
-        # Get brands for filter - check if brand model exists
-        brands = []
-        try:
-            brands = request.env['product.brand'].sudo().search([]) if 'product.brand' in request.env else []
-        except:
-            brands = []
+        # Get brands for filter
+        brands = request.env['product.brand'].sudo().search([])
         
         values = {
             'products': products,
@@ -140,7 +136,7 @@ class TechDreamShop(WebsiteSale):
             'bins': lambda *args: [products[i:i+4] for i in range(0, len(products), 4)],
         }
         
-        return request.render('techdream_theme.shop_page_template', values)
+        return request.render('shasha.shop_page_template', values)
 
     @http.route(['/shop/category/<model("product.public.category"):category>'], type='http', auth="public", website=True)
     def category(self, category, **post):
@@ -207,7 +203,7 @@ class TechDreamShop(WebsiteSale):
             'inventory_status': inventory_status,
         }
 
-        return request.render('techdream_theme.product_detail_template', values)
+        return request.render('shasha.product_detail_template', values)
 
     @http.route(['/shop/cart'], type='http', auth="public", website=True)
     def cart(self, access_token=None, revive='', **post):
@@ -234,7 +230,7 @@ class TechDreamShop(WebsiteSale):
             ], limit=4)
             values['suggested_products'] = suggested_products
         
-        return request.render('techdream_theme.cart_page_template', values)
+        return request.render('shasha.cart_page_template', values)
 
     @http.route(['/shop/checkout'], type='http', auth="public", website=True)
     def checkout(self, **post):
@@ -244,25 +240,16 @@ class TechDreamShop(WebsiteSale):
         if not order or not order.order_line:
             return request.redirect('/shop')
         
-        # Get shipping methods - check if delivery.carrier has website_published
-        try:
-            shipping_methods = request.env['delivery.carrier'].sudo().search([
-                ('website_published', '=', True)
-            ])
-        except:
-            # Fallback if website_published doesn't exist
+        # Get shipping methods
+        shipping_methods = []
+        if 'delivery.carrier' in request.env:
             shipping_methods = request.env['delivery.carrier'].sudo().search([
                 ('active', '=', True)
             ])
         
-        # Get payment methods - check if payment.provider has website_published
-        try:
-            payment_methods = request.env['payment.provider'].sudo().search([
-                ('state', 'in', ['enabled', 'test']),
-                ('website_published', '=', True)
-            ])
-        except:
-            # Fallback if website_published doesn't exist
+        # Get payment methods
+        payment_methods = []
+        if 'payment.provider' in request.env:
             payment_methods = request.env['payment.provider'].sudo().search([
                 ('state', 'in', ['enabled', 'test'])
             ])
@@ -275,7 +262,7 @@ class TechDreamShop(WebsiteSale):
             'states': request.env['res.country.state'].sudo().search([]),
         }
         
-        return request.render('techdream_theme.checkout_page_template', values)
+        return request.render('shasha.checkout_page_template', values)
 
 
 class TechDreamContact(http.Controller):
@@ -288,7 +275,7 @@ class TechDreamContact(http.Controller):
             'success': kwargs.get('success', False),
             'error': kwargs.get('error', False),
         }
-        return request.render('techdream_theme.contact_page_template', values)
+        return request.render('shasha.contact_page_template', values)
 
     @http.route(['/contact/submit'], type='http', auth="public", website=True, csrf=False)
     def contact_submit(self, **post):
@@ -300,33 +287,21 @@ class TechDreamContact(http.Controller):
                 if not post.get(field):
                     return request.redirect('/contact?error=missing_fields')
             
-            # Create lead or send email
-            if 'crm.lead' in request.env:
-                # Create CRM lead if CRM is installed
-                request.env['crm.lead'].sudo().create({
-                    'name': f"Contact Form: {post.get('subject')}",
-                    'contact_name': f"{post.get('first_name')} {post.get('last_name')}",
-                    'email_from': post.get('email'),
-                    'phone': post.get('phone', ''),
-                    'description': post.get('message'),
-                    'source_id': request.env.ref('utm.utm_source_website').id,
-                })
-            else:
-                # Send email if CRM is not available
-                mail_values = {
-                    'subject': f"Contact Form: {post.get('subject')}",
-                    'body_html': f"""
-                        <p><strong>Name:</strong> {post.get('first_name')} {post.get('last_name')}</p>
-                        <p><strong>Email:</strong> {post.get('email')}</p>
-                        <p><strong>Phone:</strong> {post.get('phone', 'Not provided')}</p>
-                        <p><strong>Subject:</strong> {post.get('subject')}</p>
-                        <p><strong>Message:</strong></p>
-                        <p>{post.get('message')}</p>
-                    """,
-                    'email_to': 'info@techdream.ae',
-                    'email_from': post.get('email'),
-                }
-                request.env['mail.mail'].sudo().create(mail_values).send()
+            # Send email
+            mail_values = {
+                'subject': f"Contact Form: {post.get('subject')}",
+                'body_html': f"""
+                    <p><strong>Name:</strong> {post.get('first_name')} {post.get('last_name')}</p>
+                    <p><strong>Email:</strong> {post.get('email')}</p>
+                    <p><strong>Phone:</strong> {post.get('phone', 'Not provided')}</p>
+                    <p><strong>Subject:</strong> {post.get('subject')}</p>
+                    <p><strong>Message:</strong></p>
+                    <p>{post.get('message')}</p>
+                """,
+                'email_to': 'info@techdream.ae',
+                'email_from': post.get('email'),
+            }
+            request.env['mail.mail'].sudo().create(mail_values).send()
             
             return request.redirect('/contact?success=1')
             
@@ -547,7 +522,10 @@ class TechDreamBlog(http.Controller):
     @http.route(['/blog', '/blog/page/<int:page>'], type='http', auth="public", website=True)
     def blog(self, page=0, **kwargs):
         """Blog listing page"""
-        if 'blog.blog' in request.env:
+        # Redirect to shop if blog module is not available
+        return request.redirect('/shop')
+
+        if False and 'blog.blog' in request.env:
             try:
                 blogs = request.env['blog.blog'].sudo().search([
                     ('website_published', '=', True)
@@ -604,7 +582,7 @@ class TechDreamComparison(http.Controller):
         comparison = request.env['product.comparison'].sudo().get_comparison_for_user()
 
         if not comparison or not comparison.product_ids:
-            return request.render('techdream_theme.compare_empty_template')
+            return request.render('shasha.compare_empty_template')
 
         # Get comparison attributes
         attributes = comparison.get_comparison_attributes()
@@ -615,7 +593,7 @@ class TechDreamComparison(http.Controller):
             'attributes': attributes,
         }
 
-        return request.render('techdream_theme.compare_products_template', values)
+        return request.render('shasha.compare_products_template', values)
 
     @http.route(['/api/compare/add'], type='json', auth="public", website=True)
     def add_to_comparison(self, product_id):
@@ -686,7 +664,7 @@ class TechDreamWishlist(http.Controller):
             'partner': partner,
         }
 
-        return request.render('techdream_theme.wishlist_template', values)
+        return request.render('shasha.wishlist_template', values)
 
     @http.route(['/api/wishlist/move_to_cart'], type='json', auth="user", website=True)
     def move_to_cart(self, product_id, quantity=1):
@@ -813,12 +791,12 @@ Sitemap: {base_url}/sitemap.xml
             "theme_color": "#3498db",
             "icons": [
                 {
-                    "src": "/techdream_theme/static/src/img/icon-192.png",
+                    "src": "/shasha/static/src/img/icon-192.png",
                     "sizes": "192x192",
                     "type": "image/png"
                 },
                 {
-                    "src": "/techdream_theme/static/src/img/icon-512.png",
+                    "src": "/shasha/static/src/img/icon-512.png",
                     "sizes": "512x512",
                     "type": "image/png"
                 }
