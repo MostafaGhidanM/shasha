@@ -21,13 +21,12 @@ class TechDreamWebsite(Website):
         # Get featured products
         featured_products = request.env['product.template'].sudo().search([
             ('website_published', '=', True),
-            ('is_featured', '=', True),
+            ('is_published', '=', True),
         ], limit=8, order='create_date desc')
         
-        # Get product categories
+        # Get product categories - use parent_id filter instead of website_published
         categories = request.env['product.public.category'].sudo().search([
             ('parent_id', '=', False),
-            ('website_published', '=', True),
         ], limit=4)
         
         # Get latest products
@@ -115,14 +114,17 @@ class TechDreamShop(WebsiteSale):
             order=order
         )
         
-        # Get categories for sidebar
+        # Get categories for sidebar - removed website_published filter
         categories = request.env['product.public.category'].sudo().search([
             ('parent_id', '=', False),
-            ('website_published', '=', True)
         ])
         
-        # Get brands for filter
-        brands = request.env['product.brand'].sudo().search([]) if hasattr(request.env['product.template'], 'brand_id') else []
+        # Get brands for filter - check if brand model exists
+        brands = []
+        try:
+            brands = request.env['product.brand'].sudo().search([]) if 'product.brand' in request.env else []
+        except:
+            brands = []
         
         values = {
             'products': products,
@@ -218,16 +220,28 @@ class TechDreamShop(WebsiteSale):
         if not order or not order.order_line:
             return request.redirect('/shop')
         
-        # Get shipping methods
-        shipping_methods = request.env['delivery.carrier'].sudo().search([
-            ('website_published', '=', True)
-        ])
+        # Get shipping methods - check if delivery.carrier has website_published
+        try:
+            shipping_methods = request.env['delivery.carrier'].sudo().search([
+                ('website_published', '=', True)
+            ])
+        except:
+            # Fallback if website_published doesn't exist
+            shipping_methods = request.env['delivery.carrier'].sudo().search([
+                ('active', '=', True)
+            ])
         
-        # Get payment methods
-        payment_methods = request.env['payment.provider'].sudo().search([
-            ('state', 'in', ['enabled', 'test']),
-            ('website_published', '=', True)
-        ])
+        # Get payment methods - check if payment.provider has website_published
+        try:
+            payment_methods = request.env['payment.provider'].sudo().search([
+                ('state', 'in', ['enabled', 'test']),
+                ('website_published', '=', True)
+            ])
+        except:
+            # Fallback if website_published doesn't exist
+            payment_methods = request.env['payment.provider'].sudo().search([
+                ('state', 'in', ['enabled', 'test'])
+            ])
         
         values = {
             'website_sale_order': order,
@@ -263,7 +277,7 @@ class TechDreamContact(http.Controller):
                     return request.redirect('/contact?error=missing_fields')
             
             # Create lead or send email
-            if hasattr(request.env, 'crm.lead'):
+            if 'crm.lead' in request.env:
                 # Create CRM lead if CRM is installed
                 request.env['crm.lead'].sudo().create({
                     'name': f"Contact Form: {post.get('subject')}",
@@ -459,7 +473,7 @@ class TechDreamAccount(CustomerPortal):
         
         # Get wishlist items
         wishlist_items = []
-        if hasattr(request.env, 'product.wishlist'):
+        if 'product.wishlist' in request.env:
             wishlist_items = request.env['product.wishlist'].sudo().search([
                 ('partner_id', '=', partner.id)
             ])
@@ -482,15 +496,24 @@ class TechDreamBlog(http.Controller):
     @http.route(['/blog', '/blog/page/<int:page>'], type='http', auth="public", website=True)
     def blog(self, page=0, **kwargs):
         """Blog listing page"""
-        if hasattr(request.env, 'blog.blog'):
-            blogs = request.env['blog.blog'].sudo().search([
-                ('website_published', '=', True)
-            ])
+        if 'blog.blog' in request.env:
+            try:
+                blogs = request.env['blog.blog'].sudo().search([
+                    ('website_published', '=', True)
+                ])
+            except:
+                # Fallback if website_published doesn't exist
+                blogs = request.env['blog.blog'].sudo().search([])
             
             if blogs:
                 blog = blogs[0]  # Get first blog
                 
-                domain = [('blog_id', '=', blog.id), ('website_published', '=', True)]
+                domain = [('blog_id', '=', blog.id)]
+                try:
+                    domain.append(('website_published', '=', True))
+                except:
+                    # website_published might not exist for blog.post
+                    domain.append(('active', '=', True))
                 
                 total = request.env['blog.post'].sudo().search_count(domain)
                 page_detail = request.website.pager(
@@ -563,10 +586,8 @@ class TechDreamUtility(http.Controller):
             for product in products:
                 pages.append(f'/shop/product/{product.id}')
             
-            # Add category pages
-            categories = request.env['product.public.category'].sudo().search([
-                ('website_published', '=', True)
-            ])
+            # Add category pages - removed website_published filter
+            categories = request.env['product.public.category'].sudo().search([])
             for category in categories:
                 pages.append(f'/shop/category/{category.id}')
             
