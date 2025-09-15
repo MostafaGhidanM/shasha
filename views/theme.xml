@@ -1644,7 +1644,7 @@
                                         <div class="d-flex justify-content-between">
                                             <div>
                                                 <strong>Express Delivery</strong>
-                                                <p class="mb-0 text-muted">Next day delivery in Dubai & Abu Dhabi</p>
+                                                <p class="mb-0 text-muted">Next day delivery in Dubai &amp; Abu Dhabi</p>
                                             </div>
                                             <span class="font-weight-bold">AED 25</span>
                                         </div>
@@ -1921,220 +1921,220 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">First Name *</label>
                                             <input type="text" class="form-control" required/>
-</div>
-<div class="col-md-6 mb-3">
-                                                <label class="form-label">Last Name *</label>
-                                                <input type="text" class="form-control" required/>
-</div>
-</div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Last Name *</label>
+                                            <input type="text" class="form-control" required/>
+                                        </div>
+                                    </div>
 
-<div class="mb-3">
-                                                    <label class="form-label">Email Address *</label>
-                                                    <input type="email" class="form-control" required/>
-</div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Address *</label>
+                                        <input type="email" class="form-control" required/>
+                                    </div>
 
-<div class="mb-3">
-                                                        <label class="form-label">Phone Number *</label>
-                                                        <input type="tel" class="form-control" required/>
-</div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Phone Number *</label>
+                                        <input type="tel" class="form-control" required/>
+                                    </div>
 
-<div class="mb-3">
-                                                            <label class="form-label">Address *</label>
-                                                            <input type="text" class="form-control" placeholder="Street address" required/>
-</div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Address *</label>
+                                        <input type="text" class="form-control" placeholder="Street address" required/>
+                                    </div>
 
-<div class="row">
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label class="form-label">City *</label>
-                                                                    <select class="form-select" required>
-<option value="">Select City</option>
-                                                                    <option value="dubai">Dubai</option>
-                                                                    <option value="abu-dhabi">Abu Dhabi</option>
-                                                                    <option value="sharjah">Sharjah</option>
-                                                                    <option value="ajman">Ajman</option>
-                                                                    <option value="ras-al-khaimah">Ras Al Khaimah</option>
-                                                                    <option value="fujairah">Fujairah</option>
-                                                                    <option value="umm-al-qaiwain">Umm Al Qaiwain</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label">Postal Code</label>
-                                                                <input type="text" class="form-control"/>
-                                                            </div>
-                                                        </div>
-                                                    </form>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">City *</label>
+                                            <select class="form-select" required>
+                                                <option value="">Select City</option>
+                                                <option value="dubai">Dubai</option>
+                                                <option value="abu-dhabi">Abu Dhabi</option>
+                                                <option value="sharjah">Sharjah</option>
+                                                <option value="ajman">Ajman</option>
+                                                <option value="ras-al-khaimah">Ras Al Khaimah</option>
+                                                <option value="fujairah">Fujairah</option>
+                                                <option value="umm-al-qaiwain">Umm Al Qaiwain</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Postal Code</label>
+                                            <input type="text" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Delivery Options -->
+                            <div class="checkout-section" style="background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                                <h4 class="mb-4" style="color: #2c3e50;">Delivery Options</h4>
+
+                                <div class="delivery-options">
+                                    <div class="delivery-option mb-3">
+                                        <input type="radio" name="delivery" id="standard" value="standard" checked/>
+                                        <label for="standard" class="delivery-label">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <strong>Standard Delivery</strong>
+                                                    <p class="mb-0 text-muted">3-5 business days</p>
                                                 </div>
-
-                                                <!-- Delivery Options -->
-                                                <div class="checkout-section" style="background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 30px;">
-                                                    <h4 class="mb-4" style="color: #2c3e50;">Delivery Options</h4>
-
-                                                    <div class="delivery-options">
-                                                        <div class="delivery-option mb-3">
-                                                            <input type="radio" name="delivery" id="standard" value="standard" checked/>
-<label for="standard" class="delivery-label">
-                                                                <div class="d-flex justify-content-between">
-                                                                    <div>
-                                                                        <strong>Standard Delivery</strong>
-                                                                        <p class="mb-0 text-muted">3-5 business days</p>
-                                                                    </div>
-                                                                    <span class="text-success font-weight-bold">FREE</span>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-
-                                                        <div class="delivery-option mb-3">
-                                                            <input type="radio" name="delivery" id="express" value="express"/>
-                                                            <label for="express" class="delivery-label">
-                                                                <div class="d-flex justify-content-between">
-                                                                    <div>
-                                                                        <strong>Express Delivery</strong>
-                                                                        <p class="mb-0 text-muted">Next day delivery</p>
-                                                                    </div>
-                                                                    <span class="font-weight-bold">AED 25</span>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-
-                                                        <div class="delivery-option">
-                                                            <input type="radio" name="delivery" id="same-day" value="same-day"/>
-                                                            <label for="same-day" class="delivery-label">
-                                                                <div class="d-flex justify-content-between">
-                                                                    <div>
-                                                                        <strong>Same Day Delivery</strong>
-                                                                        <p class="mb-0 text-muted">Order before 2 PM</p>
-                                                                    </div>
-                                                                    <span class="font-weight-bold">AED 50</span>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Payment Method -->
-                                                <div class="checkout-section" style="background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                                                    <h4 class="mb-4" style="color: #2c3e50;">Payment Method</h4>
-
-                                                    <div class="payment-methods">
-                                                        <div class="payment-option mb-3">
-                                                            <input type="radio" name="payment" id="card" value="card" checked/>
-<label for="card" class="payment-label">
-                                                                <i class="fas fa-credit-card me-2"></i>
-                                            Credit/Debit Card
-                                                            </label>
-                                                        </div>
-
-                                                        <div class="payment-option mb-3">
-                                                            <input type="radio" name="payment" id="paypal" value="paypal"/>
-                                                            <label for="paypal" class="payment-label">
-                                                                <i class="fab fa-paypal me-2"></i>
-                                            PayPal
-                                                            </label>
-                                                        </div>
-
-                                                        <div class="payment-option">
-                                                            <input type="radio" name="payment" id="cod" value="cod"/>
-                                                            <label for="cod" class="payment-label">
-                                                                <i class="fas fa-money-bill-wave me-2"></i>
-                                            Cash on Delivery
-                                                            </label>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Card Details Form -->
-                                                    <div id="card-details" class="mt-4">
-                                                        <div class="row">
-                                                            <div class="col-12 mb-3">
-                                                                <label class="form-label">Card Number</label>
-                                                                <input type="text" class="form-control" placeholder="1234 5678 9012 3456"/>
-                                                            </div>
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label">Expiry Date</label>
-                                                                <input type="text" class="form-control" placeholder="MM/YY"/>
-                                                            </div>
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label">CVV</label>
-                                                                <input type="text" class="form-control" placeholder="123"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <span class="text-success font-weight-bold">FREE</span>
                                             </div>
+                                        </label>
+                                    </div>
 
-                                            <div class="col-lg-4">
-                                                <!-- Order Summary -->
-                                                <div class="order-summary" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: sticky; top: 20px;">
-                                                    <h4 class="mb-4" style="color: #2c3e50;">Order Summary</h4>
-
-                                                    <!-- Order Items -->
-                                                    <div class="order-items mb-4">
-                                                        <div class="order-item d-flex align-items-center mb-3">
-                                                            <img src="/techdream_theme/static/src/img/iphone-15.jpg" alt="iPhone 15" style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px; margin-right: 15px;"/>
-                                                            <div class="flex-grow-1">
-                                                                <h6 class="mb-1">iPhone 15 Pro Max</h6>
-                                                                <small class="text-muted">256GB, Natural Titanium</small>
-                                                                <div class="d-flex justify-content-between">
-                                                                    <span>Qty: 1</span>
-                                                                    <span class="font-weight-bold">AED 4,999</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="order-item d-flex align-items-center mb-3">
-                                                            <img src="/techdream_theme/static/src/img/airpods-pro.jpg" alt="AirPods Pro" style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px; margin-right: 15px;"/>
-                                                            <div class="flex-grow-1">
-                                                                <h6 class="mb-1">AirPods Pro (2nd Gen)</h6>
-                                                                <small class="text-muted">with MagSafe Case</small>
-                                                                <div class="d-flex justify-content-between">
-                                                                    <span>Qty: 1</span>
-                                                                    <span class="font-weight-bold">AED 899</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Order Totals -->
-                                                    <div class="order-totals">
-                                                        <div class="d-flex justify-content-between mb-2">
-                                                            <span>Subtotal</span>
-                                                            <span>AED 5,898</span>
-                                                        </div>
-
-                                                        <div class="d-flex justify-content-between mb-2">
-                                                            <span>Shipping</span>
-                                                            <span class="text-success">FREE</span>
-                                                        </div>
-
-                                                        <div class="d-flex justify-content-between mb-3">
-                                                            <span>Tax (5%)</span>
-                                                            <span>AED 294.90</span>
-                                                        </div>
-
-                                                        <hr/>
-
-                                                        <div class="d-flex justify-content-between mb-4">
-                                                            <span class="h5 font-weight-bold">Total</span>
-                                                            <span class="h5 font-weight-bold text-primary">AED 6,192.90</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <button class="btn btn-primary w-100 py-3 font-weight-bold">
-                                    Place Order
-                                                    </button>
-
-                                                    <div class="mt-3 text-center">
-                                                        <small class="text-muted">
-                                                            <i class="fas fa-lock me-1"></i>
-                                        Your order is secured with SSL encryption
-                                                        </small>
-                                                    </div>
+                                    <div class="delivery-option mb-3">
+                                        <input type="radio" name="delivery" id="express" value="express"/>
+                                        <label for="express" class="delivery-label">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <strong>Express Delivery</strong>
+                                                    <p class="mb-0 text-muted">Next day delivery</p>
                                                 </div>
+                                                <span class="font-weight-bold">AED 25</span>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <div class="delivery-option">
+                                        <input type="radio" name="delivery" id="same-day" value="same-day"/>
+                                        <label for="same-day" class="delivery-label">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <strong>Same Day Delivery</strong>
+                                                    <p class="mb-0 text-muted">Order before 2 PM</p>
+                                                </div>
+                                                <span class="font-weight-bold">AED 50</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment Method -->
+                            <div class="checkout-section" style="background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                                <h4 class="mb-4" style="color: #2c3e50;">Payment Method</h4>
+
+                                <div class="payment-methods">
+                                    <div class="payment-option mb-3">
+                                        <input type="radio" name="payment" id="card" value="card" checked/>
+                                        <label for="card" class="payment-label">
+                                            <i class="fas fa-credit-card me-2"></i>
+                                            Credit/Debit Card
+                                        </label>
+                                    </div>
+
+                                    <div class="payment-option mb-3">
+                                        <input type="radio" name="payment" id="paypal" value="paypal"/>
+                                        <label for="paypal" class="payment-label">
+                                            <i class="fab fa-paypal me-2"></i>
+                                            PayPal
+                                        </label>
+                                    </div>
+
+                                    <div class="payment-option">
+                                        <input type="radio" name="payment" id="cod" value="cod"/>
+                                        <label for="cod" class="payment-label">
+                                            <i class="fas fa-money-bill-wave me-2"></i>
+                                            Cash on Delivery
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Card Details Form -->
+                                <div id="card-details" class="mt-4">
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Card Number</label>
+                                            <input type="text" class="form-control" placeholder="1234 5678 9012 3456"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Expiry Date</label>
+                                            <input type="text" class="form-control" placeholder="MM/YY"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">CVV</label>
+                                            <input type="text" class="form-control" placeholder="123"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <!-- Order Summary -->
+                            <div class="order-summary" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: sticky; top: 20px;">
+                                <h4 class="mb-4" style="color: #2c3e50;">Order Summary</h4>
+
+                                <!-- Order Items -->
+                                <div class="order-items mb-4">
+                                    <div class="order-item d-flex align-items-center mb-3">
+                                        <img src="/techdream_theme/static/src/img/iphone-15.jpg" alt="iPhone 15" style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px; margin-right: 15px;"/>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">iPhone 15 Pro Max</h6>
+                                            <small class="text-muted">256GB, Natural Titanium</small>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Qty: 1</span>
+                                                <span class="font-weight-bold">AED 4,999</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="order-item d-flex align-items-center mb-3">
+                                        <img src="/techdream_theme/static/src/img/airpods-pro.jpg" alt="AirPods Pro" style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px; margin-right: 15px;"/>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">AirPods Pro (2nd Gen)</h6>
+                                            <small class="text-muted">with MagSafe Case</small>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Qty: 1</span>
+                                                <span class="font-weight-bold">AED 899</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <style>
+                                <!-- Order Totals -->
+                                <div class="order-totals">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Subtotal</span>
+                                        <span>AED 5,898</span>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Shipping</span>
+                                        <span class="text-success">FREE</span>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span>Tax (5%)</span>
+                                        <span>AED 294.90</span>
+                                    </div>
+
+                                    <hr/>
+
+                                    <div class="d-flex justify-content-between mb-4">
+                                        <span class="h5 font-weight-bold">Total</span>
+                                        <span class="h5 font-weight-bold text-primary">AED 6,192.90</span>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary w-100 py-3 font-weight-bold">
+                                    Place Order
+                                </button>
+
+                                <div class="mt-3 text-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-lock me-1"></i>
+                                        Your order is secured with SSL encryption
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
                 .checkout-steps .step {
                     display: flex;
                     flex-direction: column;
@@ -2193,295 +2193,295 @@
                     position: absolute;
                     opacity: 0;
                 }
-                                </style>
-                            </t>
-                        </template>
+            </style>
+        </t>
+    </template>
 
-                        <!-- Contact Page Template -->
-                        <template id="contact_page_template" name="Contact Us">
-                            <t t-call="website.layout">
-                                <div id="wrap">
-                                    <!-- Breadcrumb -->
-                                    <div class="breadcrumb-section">
-                                        <div class="container">
-                                            <div class="breadcrumb-nav">
-                                                <span class="breadcrumb-item">
-                                                    <a href="/">Home</a>
-                                                </span>
-                                                <span class="breadcrumb-separator">/</span>
-                                                <span class="breadcrumb-item">Contact Us</span>
-                                            </div>
+    <!-- Contact Page Template -->
+    <template id="contact_page_template" name="Contact Us">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb-section">
+                    <div class="container">
+                        <div class="breadcrumb-nav">
+                            <span class="breadcrumb-item">
+                                <a href="/">Home</a>
+                            </span>
+                            <span class="breadcrumb-separator">/</span>
+                            <span class="breadcrumb-item">Contact Us</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container py-5">
+                    <div class="row">
+                        <div class="col-12 text-center mb-5">
+                            <h1 style="font-weight: 700; color: #2c3e50;">Get in Touch</h1>
+                            <p class="lead text-muted">We're here to help with any questions about our products</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-8 mb-5">
+                            <div style="background: white; border-radius: 15px; padding: 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
+                                <h3 class="mb-4" style="color: #2c3e50;">Send us a Message</h3>
+
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">First Name *</label>
+                                            <input type="text" class="form-control" required/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Last Name *</label>
+                                            <input type="text" class="form-control" required/>
                                         </div>
                                     </div>
 
-                                    <div class="container py-5">
-                                        <div class="row">
-                                            <div class="col-12 text-center mb-5">
-                                                <h1 style="font-weight: 700; color: #2c3e50;">Get in Touch</h1>
-                                                <p class="lead text-muted">We're here to help with any questions about our products</p>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Email Address *</label>
+                                            <input type="email" class="form-control" required/>
                                         </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Phone Number</label>
+                                            <input type="tel" class="form-control"/>
+                                        </div>
+                                    </div>
 
-                                        <div class="row">
-                                            <div class="col-lg-8 mb-5">
-                                                <div style="background: white; border-radius: 15px; padding: 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
-                                                    <h3 class="mb-4" style="color: #2c3e50;">Send us a Message</h3>
+                                    <div class="mb-3">
+                                        <label class="form-label">Subject *</label>
+                                        <select class="form-select" required>
+                                            <option value="">Select Subject</option>
+                                            <option value="general">General Inquiry</option>
+                                            <option value="product">Product Question</option>
+                                            <option value="order">Order Support</option>
+                                            <option value="technical">Technical Support</option>
+                                            <option value="return">Return/Exchange</option>
+                                        </select>
+                                    </div>
 
-                                                    <form>
-                                                        <div class="row">
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label">First Name *</label>
-                                                                <input type="text" class="form-control" required/>
-</div>
-<div class="col-md-6 mb-3">
-                                                                    <label class="form-label">Last Name *</label>
-                                                                    <input type="text" class="form-control" required/>
-</div>
-</div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Message *</label>
+                                        <textarea class="form-control" rows="6" placeholder="Tell us how we can help you..." required></textarea>
+                                    </div>
 
-<div class="row">
-                                                                        <div class="col-md-6 mb-3">
-                                                                            <label class="form-label">Email Address *</label>
-                                                                            <input type="email" class="form-control" required/>
-</div>
-<div class="col-md-6 mb-3">
-                                                                                <label class="form-label">Phone Number</label>
-                                                                                <input type="tel" class="form-control"/>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Subject *</label>
-                                                                            <select class="form-select" required>
-<option value="">Select Subject</option>
-                                                                            <option value="general">General Inquiry</option>
-                                                                            <option value="product">Product Question</option>
-                                                                            <option value="order">Order Support</option>
-                                                                            <option value="technical">Technical Support</option>
-                                                                            <option value="return">Return/Exchange</option>
-                                                                        </select>
-                                                                    </div>
-
-                                                                    <div class="mb-4">
-                                                                        <label class="form-label">Message *</label>
-                                                                        <textarea class="form-control" rows="6" placeholder="Tell us how we can help you..." required></textarea>
-</div>
-
-<button type="submit" class="btn btn-primary btn-lg px-5">
-                                                                            <i class="fas fa-paper-plane me-2"></i>
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                                        <i class="fas fa-paper-plane me-2"></i>
                                         Send Message
-                                                                        </button>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
 
-                                                            <div class="col-lg-4">
-                                                                <!-- Contact Information -->
-                                                                <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); margin-bottom: 30px;">
-                                                                    <h4 class="mb-4" style="color: #2c3e50;">Contact Information</h4>
+                        <div class="col-lg-4">
+                            <!-- Contact Information -->
+                            <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                                <h4 class="mb-4" style="color: #2c3e50;">Contact Information</h4>
 
-                                                                    <div class="contact-item mb-4">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <div style="width: 50px; height: 50px; background: #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                                                                                <i class="fas fa-map-marker-alt" style="color: white;"></i>
-                                                                            </div>
-                                                                            <div>
-                                                                                <h6 class="mb-1" style="color: #2c3e50;">Address</h6>
-                                                                                <p class="mb-0 text-muted">Sheikh Zayed Road, Dubai, UAE</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                <div class="contact-item mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <div style="width: 50px; height: 50px; background: #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                            <i class="fas fa-map-marker-alt" style="color: white;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1" style="color: #2c3e50;">Address</h6>
+                                            <p class="mb-0 text-muted">Sheikh Zayed Road, Dubai, UAE</p>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                                    <div class="contact-item mb-4">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <div style="width: 50px; height: 50px; background: #27ae60; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                                                                                <i class="fas fa-phone" style="color: white;"></i>
-                                                                            </div>
-                                                                            <div>
-                                                                                <h6 class="mb-1" style="color: #2c3e50;">Phone</h6>
-                                                                                <p class="mb-0 text-muted">+971 4 123 4567</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                <div class="contact-item mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <div style="width: 50px; height: 50px; background: #27ae60; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                            <i class="fas fa-phone" style="color: white;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1" style="color: #2c3e50;">Phone</h6>
+                                            <p class="mb-0 text-muted">+971 4 123 4567</p>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                                    <div class="contact-item mb-4">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <div style="width: 50px; height: 50px; background: #e74c3c; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                                                                                <i class="fas fa-envelope" style="color: white;"></i>
-                                                                            </div>
-                                                                            <div>
-                                                                                <h6 class="mb-1" style="color: #2c3e50;">Email</h6>
-                                                                                <p class="mb-0 text-muted">info@techdream.ae</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                <div class="contact-item mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <div style="width: 50px; height: 50px; background: #e74c3c; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                            <i class="fas fa-envelope" style="color: white;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1" style="color: #2c3e50;">Email</h6>
+                                            <p class="mb-0 text-muted">info@techdream.ae</p>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                                    <div class="contact-item">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <div style="width: 50px; height: 50px; background: #f39c12; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                                                                                <i class="fas fa-clock" style="color: white;"></i>
-                                                                            </div>
-                                                                            <div>
-                                                                                <h6 class="mb-1" style="color: #2c3e50;">Business Hours</h6>
-                                                                                <p class="mb-0 text-muted">9 AM - 9 PM (Daily)</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                <div class="contact-item">
+                                    <div class="d-flex align-items-center">
+                                        <div style="width: 50px; height: 50px; background: #f39c12; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                            <i class="fas fa-clock" style="color: white;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1" style="color: #2c3e50;">Business Hours</h6>
+                                            <p class="mb-0 text-muted">9 AM - 9 PM (Daily)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                                                <!-- Social Media -->
-                                                                <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
-                                                                    <h4 class="mb-4" style="color: #2c3e50;">Follow Us</h4>
-                                                                    <div class="social-media d-flex gap-3">
-                                                                        <a href="#" style="width: 50px; height: 50px; background: #3b5998; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
-                                                                            <i class="fab fa-facebook-f"></i>
-                                                                        </a>
-                                                                        <a href="#" style="width: 50px; height: 50px; background: #E4405F; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
-                                                                            <i class="fab fa-instagram"></i>
-                                                                        </a>
-                                                                        <a href="#" style="width: 50px; height: 50px; background: #1DA1F2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
-                                                                            <i class="fab fa-twitter"></i>
-                                                                        </a>
-                                                                        <a href="#" style="width: 50px; height: 50px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
-                                                                            <i class="fab fa-whatsapp"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </t>
-                                        </template>
+                            <!-- Social Media -->
+                            <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
+                                <h4 class="mb-4" style="color: #2c3e50;">Follow Us</h4>
+                                <div class="social-media d-flex gap-3">
+                                    <a href="#" style="width: 50px; height: 50px; background: #3b5998; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" style="width: 50px; height: 50px; background: #E4405F; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                    <a href="#" style="width: 50px; height: 50px; background: #1DA1F2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    <a href="#" style="width: 50px; height: 50px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
 
-                                        <!-- Enhanced Footer -->
-                                        <template id="techdream_footer" inherit_id="website.layout">
-                                            <xpath expr="//footer" position="replace">
-                                                <footer class="footer">
-                                                    <div class="container">
-                                                        <div class="footer-content">
-                                                            <div class="footer-section">
-                                                                <h4>TechDream Mobile</h4>
-                                                                <p style="color: #bdc3c7; line-height: 1.6;">Your trusted partner for premium smartphones and accessories in the UAE. We bring you the latest technology at competitive prices.</p>
-                                                                <div class="social-links mt-3">
-                                                                    <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
-                                                                        <i class="fab fa-facebook"></i>
-                                                                    </a>
-                                                                    <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
-                                                                        <i class="fab fa-instagram"></i>
-                                                                    </a>
-                                                                    <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
-                                                                        <i class="fab fa-twitter"></i>
-                                                                    </a>
-                                                                    <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
-                                                                        <i class="fab fa-whatsapp"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
+    <!-- Enhanced Footer -->
+    <template id="techdream_footer" inherit_id="website.layout">
+        <xpath expr="//footer" position="replace">
+            <footer class="footer">
+                <div class="container">
+                    <div class="footer-content">
+                        <div class="footer-section">
+                            <h4>TechDream Mobile</h4>
+                            <p style="color: #bdc3c7; line-height: 1.6;">Your trusted partner for premium smartphones and accessories in the UAE. We bring you the latest technology at competitive prices.</p>
+                            <div class="social-links mt-3">
+                                <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+                                <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
 
-                                                            <div class="footer-section">
-                                                                <h4>Quick Links</h4>
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="/">Home</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/shop">Shop</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/shop/smartphones">Smartphones</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/shop/accessories">Accessories</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/shop/offers">Special Offers</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/contact">Contact Us</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+                        <div class="footer-section">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li>
+                                    <a href="/">Home</a>
+                                </li>
+                                <li>
+                                    <a href="/shop">Shop</a>
+                                </li>
+                                <li>
+                                    <a href="/shop/smartphones">Smartphones</a>
+                                </li>
+                                <li>
+                                    <a href="/shop/accessories">Accessories</a>
+                                </li>
+                                <li>
+                                    <a href="/shop/offers">Special Offers</a>
+                                </li>
+                                <li>
+                                    <a href="/contact">Contact Us</a>
+                                </li>
+                            </ul>
+                        </div>
 
-                                                            <div class="footer-section">
-                                                                <h4>Categories</h4>
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="/shop/category/iphone">iPhone</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/shop/category/samsung">Samsung</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/shop/category/google">Google Pixel</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/shop/category/airpods">AirPods</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/shop/category/smartwatches">Smartwatches</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/shop/category/cases">Cases &amp; Covers</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+                        <div class="footer-section">
+                            <h4>Categories</h4>
+                            <ul>
+                                <li>
+                                    <a href="/shop/category/iphone">iPhone</a>
+                                </li>
+                                <li>
+                                    <a href="/shop/category/samsung">Samsung</a>
+                                </li>
+                                <li>
+                                    <a href="/shop/category/google">Google Pixel</a>
+                                </li>
+                                <li>
+                                    <a href="/shop/category/airpods">AirPods</a>
+                                </li>
+                                <li>
+                                    <a href="/shop/category/smartwatches">Smartwatches</a>
+                                </li>
+                                <li>
+                                    <a href="/shop/category/cases">Cases &amp; Covers</a>
+                                </li>
+                            </ul>
+                        </div>
 
-                                                            <div class="footer-section">
-                                                                <h4>Customer Service</h4>
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="/my/account">My Account</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/my/orders">Order Tracking</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/shop/cart">Shopping Cart</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/support">Support Center</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/return-policy">Return Policy</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="/shipping">Shipping Info</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+                        <div class="footer-section">
+                            <h4>Customer Service</h4>
+                            <ul>
+                                <li>
+                                    <a href="/my/account">My Account</a>
+                                </li>
+                                <li>
+                                    <a href="/my/orders">Order Tracking</a>
+                                </li>
+                                <li>
+                                    <a href="/shop/cart">Shopping Cart</a>
+                                </li>
+                                <li>
+                                    <a href="/support">Support Center</a>
+                                </li>
+                                <li>
+                                    <a href="/return-policy">Return Policy</a>
+                                </li>
+                                <li>
+                                    <a href="/shipping">Shipping Info</a>
+                                </li>
+                            </ul>
+                        </div>
 
-                                                            <div class="footer-section">
-                                                                <h4>Contact Info</h4>
-                                                                <div style="color: #bdc3c7;">
-                                                                    <p>
-                                                                        <i class="fas fa-map-marker-alt" style="margin-right: 8px; color: #3498db;"></i> Sheikh Zayed Road, Dubai, UAE</p>
-                                                                    <p>
-                                                                        <i class="fas fa-phone" style="margin-right: 8px; color: #3498db;"></i> +971 4 123 4567</p>
-                                                                    <p>
-                                                                        <i class="fas fa-envelope" style="margin-right: 8px; color: #3498db;"></i> info@techdream.ae</p>
-                                                                    <p>
-                                                                        <i class="fas fa-clock" style="margin-right: 8px; color: #3498db;"></i> 9 AM - 9 PM (Daily)</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                        <div class="footer-section">
+                            <h4>Contact Info</h4>
+                            <div style="color: #bdc3c7;">
+                                <p>
+                                    <i class="fas fa-map-marker-alt" style="margin-right: 8px; color: #3498db;"></i> Sheikh Zayed Road, Dubai, UAE</p>
+                                <p>
+                                    <i class="fas fa-phone" style="margin-right: 8px; color: #3498db;"></i> +971 4 123 4567</p>
+                                <p>
+                                    <i class="fas fa-envelope" style="margin-right: 8px; color: #3498db;"></i> info@techdream.ae</p>
+                                <p>
+                                    <i class="fas fa-clock" style="margin-right: 8px; color: #3498db;"></i> 9 AM - 9 PM (Daily)</p>
+                            </div>
+                        </div>
+                    </div>
 
-                                                        <div class="footer-bottom">
-                                                            <div class="row align-items-center">
-                                                                <div class="col-md-6">
-                                                                    <p>&copy; 2024 TechDream Mobile. All rights reserved.</p>
-                                                                </div>
-                                                                <div class="col-md-6 text-md-end">
-                                                                    <div class="payment-methods">
-                                                                        <img src="/techdream_theme/static/src/img/visa.png" alt="Visa" style="height: 30px; margin: 0 5px;"/>
-                                                                        <img src="/techdream_theme/static/src/img/mastercard.png" alt="Mastercard" style="height: 30px; margin: 0 5px;"/>
-                                                                        <img src="/techdream_theme/static/src/img/paypal.png" alt="PayPal" style="height: 30px; margin: 0 5px;"/>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </footer>
-                                            </xpath>
-                                        </template>
-                                    </odoo>
+                    <div class="footer-bottom">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <p>&copy; 2024 TechDream Mobile. All rights reserved.</p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <div class="payment-methods">
+                                    <img src="/techdream_theme/static/src/img/visa.png" alt="Visa" style="height: 30px; margin: 0 5px;"/>
+                                    <img src="/techdream_theme/static/src/img/mastercard.png" alt="Mastercard" style="height: 30px; margin: 0 5px;"/>
+                                    <img src="/techdream_theme/static/src/img/paypal.png" alt="PayPal" style="height: 30px; margin: 0 5px;"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </xpath>
+    </template>
+</odoo>
