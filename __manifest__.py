@@ -37,15 +37,9 @@
         # Template files (load first)
         'views/theme.xml',
         'views/product_card.xml',
-        'views/shop_templates.xml',
-        'views/product_templates.xml',
-        'views/cart_checkout_templates.xml',
-        'views/contact_templates.xml',
-        'views/comparison_templates.xml',
-        'views/wishlist_templates.xml',
-        'views/backend_views.xml',
+        'views/shop_simple.xml',
 
-        # Data files (load after templates)
+        # Data files that exist
         'data/product_categories.xml',
         'data/sample_products.xml',
         'data/email_templates.xml',
@@ -53,9 +47,11 @@
     ],
     'assets': {
         'web.assets_frontend': [
-            # Only include CSS/JS files if they actually exist
+            # CSS and JS files that exist
             'shasha/static/src/css/techdream.css',
             'shasha/static/src/js/techdream.js',
+            'shasha/static/src/js/cart.js',
+            'shasha/static/src/js/product.js',
         ],
     },
     'images': [

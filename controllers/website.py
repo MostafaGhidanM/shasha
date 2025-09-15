@@ -38,10 +38,5 @@ class TechDreamWebsite(Website):
             'latest_products': latest_products,
         }
 
-        # Try to use custom homepage template, fallback to default
-        try:
-            request.env.ref('shasha.techdream_homepage_enhanced')
-            return request.render('shasha.techdream_homepage_enhanced', values)
-        except:
-            # Use default homepage if custom template doesn't exist
-            return super().index(**kw)
+        # Use default homepage for now to avoid conflicts
+        return super().index(**kw)
