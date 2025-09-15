@@ -26,19 +26,5 @@ class TechDreamWebsiteSale(WebsiteSale):
 
         return domain
 
-    @http.route()
-    def shop(self, page=0, category=None, search='', min_price=0.0, max_price=0.0, ppg=False, **post):
-        """Enhanced shop route with brand support"""
-        # Add brands to context for template
-        result = super().shop(page=page, category=category, search=search,
-                            min_price=min_price, max_price=max_price, ppg=ppg, **post)
-
-        if hasattr(result, 'qcontext'):
-            # Add available brands to template context
-            brands = request.env['product.brand'].sudo().search([
-                ('website_published', '=', True),
-                ('product_count', '>', 0)
-            ], limit=20, order='name')
-            result.qcontext['brands'] = brands
-
-        return result
+    # Remove custom shop route override to avoid template conflicts
+    # Use Odoo's default shop functionality
