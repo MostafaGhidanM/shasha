@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Demo Products for Testing -->
+        <record id="demo_product_pixel_8" model="product.template">
+            <field name="name">Google Pixel 8</field>
+            <field name="description_sale">Google Pixel 8 with Google AI, best-in-class camera, and all-day battery life.</field>
+            <field name="list_price">2699.00</field>
+            <field name="standard_price">2200.00</field>
+            <field name="type">product</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name

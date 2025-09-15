@@ -1,266 +1,1197 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Main Theme Template -->
     <template id="techdream_professional_theme" inherit_id="website.layout">
         <xpath expr="//head" position="inside">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+
             <style>
-                /* Professional Header */
-                .o_main_header, .navbar-light {
-                    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%) !important;
-                    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-                    padding: 0.5rem 0;
+                /* Reset and Base Styles */
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
                 }
                 
-                .o_main_header .navbar-brand {
-                    color: white !important;
-                    font-weight: 700;
-                    font-size: 1.8rem;
-                    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+                body {
+                    font-family: 'Poppins', sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    background-color: #f8f9fa;
                 }
                 
-                .navbar-nav .nav-link {
-                    color: white !important;
-                    font-weight: 500;
-                    padding: 0.75rem 1rem !important;
-                    transition: all 0.3s ease;
-                    border-radius: 6px;
-                    margin: 0 2px;
-                }
-                
-                .navbar-nav .nav-link:hover {
-                    background: rgba(255,255,255,0.15) !important;
-                    transform: translateY(-1px);
-                }
-                
-                /* Professional Product Grid */
-                .oe_product {
-                    background: white;
-                    border-radius: 12px !important;
-                    overflow: hidden;
-                    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
-                    transition: all 0.4s ease;
-                    border: 1px solid #f0f0f0;
-                    margin-bottom: 30px;
-                    position: relative;
-                }
-                
-                .oe_product:hover {
-                    transform: translateY(-8px) scale(1.02);
-                    box-shadow: 0 15px 40px rgba(0,0,0,0.12) !important;
-                    border-color: #3498db;
-                }
-                
-                .oe_product .oe_product_image {
-                    position: relative;
-                    overflow: hidden;
-                    background: #f8f9fa;
-                    padding: 20px;
-                    text-align: center;
-                }
-                
-                .oe_product .oe_product_image img {
-                    max-width: 100%;
-                    height: 200px;
-                    object-fit: contain;
-                    transition: transform 0.3s ease;
-                }
-                
-                .oe_product:hover .oe_product_image img {
-                    transform: scale(1.05);
-                }
-                
-                /* Product Info Styling */
-                .oe_product_cart {
-                    background: linear-gradient(45deg, #3498db, #2980b9) !important;
-                    border: none !important;
-                    border-radius: 8px !important;
-                    padding: 12px 24px !important;
-                    font-weight: 600;
-                    transition: all 0.3s ease;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
-                    font-size: 0.9rem;
-                }
-                
-                .oe_product_cart:hover {
-                    background: linear-gradient(45deg, #2980b9, #1f639a) !important;
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
-                }
-                
-                /* Price Styling */
-                .oe_currency_value {
-                    color: #e74c3c !important;
-                    font-weight: 700;
-                    font-size: 1.4em;
-                    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-                }
-                
-                /* Search Bar */
-                .o_searchbar_form {
-                    background: white;
-                    border-radius: 30px;
-                    padding: 3px;
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                }
-                
-                .o_searchbar_form input {
-                    border: none !important;
-                    box-shadow: none !important;
-                    border-radius: 27px !important;
-                    padding: 12px 20px !important;
-                    font-size: 16px;
-                }
-                
-                /* Professional Footer */
-                .o_footer {
-                    background: linear-gradient(135deg, #2C3E50 0%, #1a252f 100%) !important;
+                /* Top Header Bar */
+                .top-header {
+                    background: #1a252f;
                     color: white;
-                    padding: 60px 0 20px;
+                    padding: 8px 0;
+                    font-size: 13px;
                 }
                 
-                .o_footer h5 {
+                .top-header .contact-info {
+                    display: flex;
+                    gap: 20px;
+                    align-items: center;
+                }
+                
+                .top-header .social-links {
+                    display: flex;
+                    gap: 10px;
+                }
+                
+                .top-header .social-links a {
+                    color: white;
+                    font-size: 14px;
+                    transition: color 0.3s;
+                }
+                
+                .top-header .social-links a:hover {
                     color: #3498db;
-                    font-weight: 600;
-                    margin-bottom: 20px;
                 }
                 
-                .o_footer a {
-                    color: #bdc3c7 !important;
-                    transition: color 0.3s ease;
+                /* Main Header */
+                .main-header {
+                    background: white;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                }
+                
+                .header-content {
+                    padding: 15px 0;
+                }
+                
+                .logo {
+                    font-size: 28px;
+                    font-weight: 700;
+                    color: #2c3e50;
                     text-decoration: none;
                 }
                 
-                .o_footer a:hover {
-                    color: #3498db !important;
+                .logo:hover {
+                    text-decoration: none;
+                    color: #3498db;
                 }
                 
-                /* Professional Buttons */
-                .btn-primary {
-                    background: linear-gradient(45deg, #3498db, #2980b9) !important;
-                    border: none !important;
-                    border-radius: 8px !important;
-                    padding: 12px 30px !important;
-                    font-weight: 600;
-                    transition: all 0.3s ease;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
+                /* Search Bar */
+                .search-container {
+                    position: relative;
+                    max-width: 500px;
+                    margin: 0 auto;
                 }
                 
-                .btn-primary:hover {
-                    background: linear-gradient(45deg, #2980b9, #1f639a) !important;
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+                .search-input {
+                    width: 100%;
+                    padding: 12px 50px 12px 20px;
+                    border: 2px solid #e9ecef;
+                    border-radius: 25px;
+                    font-size: 14px;
+                    transition: border-color 0.3s;
                 }
                 
-                /* Category Cards */
-                .o_category_card {
-                    background: white;
-                    border-radius: 15px;
-                    padding: 30px 20px;
-                    text-align: center;
-                    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-                    transition: all 0.4s ease;
-                    border: 1px solid #f0f0f0;
-                    cursor: pointer;
-                }
-                
-                .o_category_card:hover {
-                    transform: translateY(-10px);
-                    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+                .search-input:focus {
+                    outline: none;
                     border-color: #3498db;
                 }
                 
-                /* Mobile Optimizations */
-                @media (max-width: 768px) {
-                    .oe_product:hover {
-                        transform: none;
-                    }
-                    
-                    .o_main_header .navbar-brand {
-                        font-size: 1.4rem;
-                    }
-                    
-                    .oe_product {
-                        margin-bottom: 20px;
-                    }
+                .search-btn {
+                    position: absolute;
+                    right: 5px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: #3498db;
+                    border: none;
+                    color: white;
+                    padding: 8px 15px;
+                    border-radius: 20px;
+                    cursor: pointer;
                 }
                 
-                /* Page Styling */
-                .container {
-                    max-width: 1200px;
-                }
-                
-                .page-header {
-                    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-                    padding: 40px 0;
-                    margin-bottom: 40px;
-                    border-radius: 0 0 20px 20px;
-                }
-                
-                /* Quick Add to Cart Enhancement */
-                .o_wsale_products_grid_table_wrapper .oe_product {
-                    min-height: 400px;
+                /* Header Actions */
+                .header-actions {
                     display: flex;
-                    flex-direction: column;
+                    align-items: center;
+                    gap: 20px;
                 }
                 
-                .oe_product .product_price {
-                    margin-top: auto;
+                .cart-icon, .user-icon {
+                    position: relative;
+                    font-size: 20px;
+                    color: #2c3e50;
+                    cursor: pointer;
+                    transition: color 0.3s;
+                }
+                
+                .cart-icon:hover, .user-icon:hover {
+                    color: #3498db;
+                }
+                
+                .cart-count {
+                    position: absolute;
+                    top: -8px;
+                    right: -8px;
+                    background: #e74c3c;
+                    color: white;
+                    border-radius: 50%;
+                    font-size: 11px;
+                    padding: 2px 6px;
+                    min-width: 18px;
+                    text-align: center;
+                }
+                
+                /* Navigation Menu */
+                .main-nav {
+                    background: #2c3e50;
+                    padding: 0;
+                }
+                
+                .nav-menu {
+                    display: flex;
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+                }
+                
+                .nav-item {
+                    position: relative;
+                }
+                
+                .nav-link {
+                    display: block;
+                    padding: 15px 25px;
+                    color: white;
+                    text-decoration: none;
+                    font-weight: 500;
+                    transition: all 0.3s;
+                }
+                
+                .nav-link:hover, .nav-item:hover .nav-link {
+                    background: #3498db;
+                    color: white;
+                    text-decoration: none;
+                }
+                
+                /* Dropdown Menu */
+                .dropdown-menu {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    min-width: 200px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                    opacity: 0;
+                    visibility: hidden;
+                    transform: translateY(-10px);
+                    transition: all 0.3s;
+                    z-index: 1000;
+                }
+                
+                .nav-item:hover .dropdown-menu {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(0);
+                }
+                
+                .dropdown-item {
+                    display: block;
+                    padding: 10px 20px;
+                    color: #333;
+                    text-decoration: none;
+                    border-bottom: 1px solid #f0f0f0;
+                    transition: background 0.3s;
+                }
+                
+                .dropdown-item:hover {
+                    background: #f8f9fa;
+                    color: #3498db;
+                    text-decoration: none;
+                }
+                
+                /* Product Grid */
+                .products-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                    gap: 30px;
+                    padding: 30px 0;
+                }
+                
+                .product-card {
+                    background: white;
+                    border-radius: 15px;
+                    overflow: hidden;
+                    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                    transition: all 0.3s;
+                    position: relative;
+                }
+                
+                .product-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+                }
+                
+                .product-image {
+                    position: relative;
+                    height: 250px;
+                    overflow: hidden;
+                    background: #f8f9fa;
+                }
+                
+                .product-image img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                    transition: transform 0.3s;
+                }
+                
+                .product-card:hover .product-image img {
+                    transform: scale(1.05);
+                }
+                
+                .product-badge {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    background: #e74c3c;
+                    color: white;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+                
+                .product-badge.new {
+                    background: #27ae60;
+                }
+                
+                .product-badge.sale {
+                    background: #f39c12;
+                }
+                
+                .product-info {
                     padding: 20px;
                 }
+                
+                .product-title {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #2c3e50;
+                    margin-bottom: 8px;
+                    line-height: 1.4;
+                }
+                
+                .product-price {
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #e74c3c;
+                    margin-bottom: 15px;
+                }
+                
+                .product-price .old-price {
+                    font-size: 14px;
+                    color: #7f8c8d;
+                    text-decoration: line-through;
+                    margin-left: 10px;
+                }
+                
+                .product-rating {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    margin-bottom: 15px;
+                }
+                
+                .stars {
+                    color: #f39c12;
+                }
+                
+                .rating-count {
+                    font-size: 12px;
+                    color: #7f8c8d;
+                }
+                
+                .add-to-cart-btn {
+                    width: 100%;
+                    padding: 12px;
+                    background: #3498db;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background 0.3s;
+                }
+                
+                .add-to-cart-btn:hover {
+                    background: #2980b9;
+                }
+                
+                /* Category Sidebar */
+                .category-sidebar {
+                    background: white;
+                    border-radius: 10px;
+                    padding: 20px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                    margin-bottom: 30px;
+                }
+                
+                .category-title {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #2c3e50;
+                    margin-bottom: 15px;
+                    padding-bottom: 10px;
+                    border-bottom: 2px solid #3498db;
+                }
+                
+                .category-list {
+                    list-style: none;
+                }
+                
+                .category-item {
+                    margin-bottom: 8px;
+                }
+                
+                .category-link {
+                    display: flex;
+                    justify-content: between;
+                    align-items: center;
+                    padding: 8px 12px;
+                    color: #555;
+                    text-decoration: none;
+                    border-radius: 6px;
+                    transition: all 0.3s;
+                }
+                
+                .category-link:hover {
+                    background: #f8f9fa;
+                    color: #3498db;
+                    text-decoration: none;
+                }
+                
+                .category-count {
+                    font-size: 12px;
+                    color: #7f8c8d;
+                    background: #ecf0f1;
+                    padding: 2px 6px;
+                    border-radius: 10px;
+                }
+                
+                /* Filters */
+                .filter-section {
+                    background: white;
+                    border-radius: 10px;
+                    padding: 20px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                    margin-bottom: 30px;
+                }
+                
+                .filter-title {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #2c3e50;
+                    margin-bottom: 15px;
+                }
+                
+                .price-range {
+                    margin-bottom: 15px;
+                }
+                
+                .price-inputs {
+                    display: flex;
+                    gap: 10px;
+                    margin-bottom: 10px;
+                }
+                
+                .price-input {
+                    flex: 1;
+                    padding: 8px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    font-size: 14px;
+                }
+                
+                .brand-filter {
+                    margin-bottom: 10px;
+                }
+                
+                .brand-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin-bottom: 8px;
+                }
+                
+                .brand-checkbox {
+                    margin: 0;
+                }
+                
+                .brand-label {
+                    font-size: 14px;
+                    color: #555;
+                    cursor: pointer;
+                }
+                
+                /* Breadcrumb */
+                .breadcrumb-section {
+                    background: white;
+                    padding: 15px 0;
+                    border-bottom: 1px solid #eee;
+                }
+                
+                .breadcrumb-nav {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 14px;
+                }
+                
+                .breadcrumb-item {
+                    color: #7f8c8d;
+                }
+                
+                .breadcrumb-item a {
+                    color: #3498db;
+                    text-decoration: none;
+                }
+                
+                .breadcrumb-item a:hover {
+                    text-decoration: underline;
+                }
+                
+                .breadcrumb-separator {
+                    color: #bdc3c7;
+                }
+                
+                /* Product Detail Page */
+                .product-detail {
+                    background: white;
+                    border-radius: 15px;
+                    padding: 30px;
+                    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                    margin: 30px 0;
+                }
+                
+                .product-gallery {
+                    margin-bottom: 30px;
+                }
+                
+                .main-image {
+                    width: 100%;
+                    height: 400px;
+                    object-fit: contain;
+                    border-radius: 10px;
+                    margin-bottom: 15px;
+                }
+                
+                .thumbnail-images {
+                    display: flex;
+                    gap: 10px;
+                    overflow-x: auto;
+                }
+                
+                .thumbnail {
+                    width: 80px;
+                    height: 80px;
+                    object-fit: contain;
+                    border-radius: 8px;
+                    border: 2px solid transparent;
+                    cursor: pointer;
+                    transition: border-color 0.3s;
+                }
+                
+                .thumbnail:hover, .thumbnail.active {
+                    border-color: #3498db;
+                }
+                
+                .product-details h1 {
+                    font-size: 28px;
+                    font-weight: 700;
+                    color: #2c3e50;
+                    margin-bottom: 15px;
+                }
+                
+                .product-details .price {
+                    font-size: 32px;
+                    font-weight: 700;
+                    color: #e74c3c;
+                    margin-bottom: 20px;
+                }
+                
+                .product-options {
+                    margin-bottom: 25px;
+                }
+                
+                .option-group {
+                    margin-bottom: 20px;
+                }
+                
+                .option-label {
+                    font-weight: 600;
+                    color: #2c3e50;
+                    margin-bottom: 8px;
+                    display: block;
+                }
+                
+                .option-buttons {
+                    display: flex;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                }
+                
+                .option-btn {
+                    padding: 8px 16px;
+                    border: 2px solid #ddd;
+                    background: white;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                }
+                
+                .option-btn:hover, .option-btn.active {
+                    border-color: #3498db;
+                    background: #3498db;
+                    color: white;
+                }
+                
+                .quantity-selector {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    margin-bottom: 25px;
+                }
+                
+                .quantity-label {
+                    font-weight: 600;
+                    color: #2c3e50;
+                }
+                
+                .quantity-controls {
+                    display: flex;
+                    align-items: center;
+                    border: 2px solid #ddd;
+                    border-radius: 6px;
+                    overflow: hidden;
+                }
+                
+                .qty-btn {
+                    width: 40px;
+                    height: 40px;
+                    border: none;
+                    background: #f8f9fa;
+                    cursor: pointer;
+                    font-size: 18px;
+                    transition: background 0.3s;
+                }
+                
+                .qty-btn:hover {
+                    background: #e9ecef;
+                }
+                
+                .qty-input {
+                    width: 60px;
+                    height: 40px;
+                    border: none;
+                    text-align: center;
+                    font-size: 16px;
+                    background: white;
+                }
+                
+                .action-buttons {
+                    display: flex;
+                    gap: 15px;
+                    margin-bottom: 30px;
+                }
+                
+                .btn-add-cart {
+                    flex: 2;
+                    padding: 15px;
+                    background: #3498db;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background 0.3s;
+                }
+                
+                .btn-add-cart:hover {
+                    background: #2980b9;
+                }
+                
+                .btn-wishlist {
+                    padding: 15px;
+                    background: white;
+                    color: #e74c3c;
+                    border: 2px solid #e74c3c;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                }
+                
+                .btn-wishlist:hover {
+                    background: #e74c3c;
+                    color: white;
+                }
+                
+                /* Product Tabs */
+                .product-tabs {
+                    margin-top: 40px;
+                }
+                
+                .tab-buttons {
+                    display: flex;
+                    border-bottom: 2px solid #eee;
+                    margin-bottom: 25px;
+                }
+                
+                .tab-btn {
+                    padding: 12px 24px;
+                    background: none;
+                    border: none;
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #7f8c8d;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    border-bottom: 2px solid transparent;
+                }
+                
+                .tab-btn.active {
+                    color: #3498db;
+                    border-bottom-color: #3498db;
+                }
+                
+                .tab-content {
+                    line-height: 1.8;
+                    color: #555;
+                }
+                
+                /* Cart Page */
+                .cart-table {
+                    background: white;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                    margin-bottom: 30px;
+                }
+                
+                .cart-table table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                
+                .cart-table th {
+                    background: #f8f9fa;
+                    padding: 15px;
+                    font-weight: 600;
+                    color: #2c3e50;
+                    border-bottom: 1px solid #eee;
+                }
+                
+                .cart-table td {
+                    padding: 20px 15px;
+                    border-bottom: 1px solid #f0f0f0;
+                }
+                
+                .cart-item-image {
+                    width: 80px;
+                    height: 80px;
+                    object-fit: contain;
+                    border-radius: 8px;
+                }
+                
+                .cart-item-details h5 {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #2c3e50;
+                    margin-bottom: 5px;
+                }
+                
+                .cart-item-details p {
+                    font-size: 14px;
+                    color: #7f8c8d;
+                    margin: 0;
+                }
+                
+                .remove-item {
+                    color: #e74c3c;
+                    font-size: 18px;
+                    cursor: pointer;
+                    transition: color 0.3s;
+                }
+                
+                .remove-item:hover {
+                    color: #c0392b;
+                }
+                
+                .cart-summary {
+                    background: white;
+                    border-radius: 10px;
+                    padding: 25px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                }
+                
+                .summary-row {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 15px;
+                    padding-bottom: 15px;
+                    border-bottom: 1px solid #f0f0f0;
+                }
+                
+                .summary-row:last-child {
+                    border-bottom: none;
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #2c3e50;
+                }
+                
+                .checkout-btn {
+                    width: 100%;
+                    padding: 15px;
+                    background: #27ae60;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background 0.3s;
+                    margin-top: 20px;
+                }
+                
+                .checkout-btn:hover {
+                    background: #229954;
+                }
+                
+                /* Footer */
+                .footer {
+                    background: #2c3e50;
+                    color: white;
+                    padding: 50px 0 20px;
+                    margin-top: 60px;
+                }
+                
+                .footer-content {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 40px;
+                    margin-bottom: 30px;
+                }
+                
+                .footer-section h4 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin-bottom: 20px;
+                    color: #3498db;
+                }
+                
+                .footer-section ul {
+                    list-style: none;
+                }
+                
+                .footer-section li {
+                    margin-bottom: 8px;
+                }
+                
+                .footer-section a {
+                    color: #bdc3c7;
+                    text-decoration: none;
+                    transition: color 0.3s;
+                }
+                
+                .footer-section a:hover {
+                    color: #3498db;
+                }
+                
+                .footer-bottom {
+                    border-top: 1px solid #34495e;
+                    padding-top: 20px;
+                    text-align: center;
+                    color: #bdc3c7;
+                }
+                
+                /* Responsive Design */
+                @media (max-width: 768px) {
+                    .header-content {
+                        flex-direction: column;
+                        gap: 15px;
+                    }
+                    
+                    .search-container {
+                        order: 3;
+                        max-width: 100%;
+                    }
+                    
+                    .nav-menu {
+                        flex-direction: column;
+                    }
+                    
+                    .products-grid {
+                        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                        gap: 20px;
+                    }
+                    
+                    .action-buttons {
+                        flex-direction: column;
+                    }
+                    
+                    .tab-buttons {
+                        flex-wrap: wrap;
+                    }
+                }
+                
+                /* Utility Classes */
+                .text-center { text-align: center; }
+                .text-right { text-align: right; }
+                .mb-0 { margin-bottom: 0; }
+                .mb-1 { margin-bottom: 0.5rem; }
+                .mb-2 { margin-bottom: 1rem; }
+                .mb-3 { margin-bottom: 1.5rem; }
+                .mb-4 { margin-bottom: 2rem; }
+                .mb-5 { margin-bottom: 3rem; }
+                .mt-3 { margin-top: 1.5rem; }
+                .mt-4 { margin-top: 2rem; }
+                .mt-5 { margin-top: 3rem; }
+                .d-flex { display: flex; }
+                .justify-content-between { justify-content: space-between; }
+                .align-items-center { align-items: center; }
+                .w-100 { width: 100%; }
             </style>
         </xpath>
-    </template>
-    
-    <!-- Professional Homepage -->
-    <template id="techdream_homepage" inherit_id="website.homepage">
-        <xpath expr="//div[@id='wrap']" position="replace">
-            <div id="wrap" class="oe_structure">
-                <!-- Hero Section -->
-                <section class="s_banner" style="background: linear-gradient(135deg, #2C3E50 0%, #3498db 100%); min-height: 60vh; display: flex; align-items: center;">
+
+        <!-- Replace default header -->
+        <xpath expr="//header" position="replace">
+            <header>
+                <!-- Top Header -->
+                <div class="top-header d-none d-md-block">
                     <div class="container">
-                        <div class="row">
-                            <div class="col-lg-8 mx-auto text-center text-white">
-                                <h1 class="display-3 mb-4 font-weight-bold">TechDream Mobile</h1>
-                                <p class="lead mb-4" style="font-size: 1.3rem;">Premium Smartphones &amp; Accessories at Unbeatable Prices</p>
-                                <a href="/shop" class="btn btn-primary btn-lg px-5 py-3">Shop Now</a>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="contact-info">
+                                <span>
+                                    <i class="fas fa-phone"></i> +971 4 123 4567</span>
+                                <span>
+                                    <i class="fas fa-envelope"></i> info@techdream.ae</span>
+                                <span>
+                                    <i class="fas fa-map-marker-alt"></i> Dubai, UAE</span>
+                            </div>
+                            <div class="social-links">
+                                <a href="#">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Header -->
+                <div class="main-header">
+                    <div class="container">
+                        <div class="header-content d-flex justify-content-between align-items-center">
+                            <!-- Logo -->
+                            <a href="/" class="logo">
+                                <i class="fas fa-mobile-alt"></i> TechDream
+                            </a>
+
+                            <!-- Search Bar -->
+                            <div class="search-container">
+                                <form action="/shop" method="get" class="d-flex">
+                                    <input type="text" name="search" class="search-input" placeholder="Search for products..."/>
+                                    <button type="submit" class="search-btn">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Header Actions -->
+                            <div class="header-actions">
+                                <a href="/my/account" class="user-icon">
+                                    <i class="fas fa-user"></i>
+                                </a>
+                                <a href="/shop/cart" class="cart-icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="cart-count">0</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Menu -->
+                <nav class="main-nav">
+                    <div class="container">
+                        <ul class="nav-menu">
+                            <li class="nav-item">
+                                <a href="/" class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/shop" class="nav-link">
+                                    <i class="fas fa-mobile-alt"></i> Smartphones
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="/shop/category/iphone" class="dropdown-item">iPhone</a>
+                                    <a href="/shop/category/samsung" class="dropdown-item">Samsung</a>
+                                    <a href="/shop/category/google" class="dropdown-item">Google Pixel</a>
+                                    <a href="/shop/category/huawei" class="dropdown-item">Huawei</a>
+                                    <a href="/shop/category/xiaomi" class="dropdown-item">Xiaomi</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/shop/accessories" class="nav-link">
+                                    <i class="fas fa-headphones"></i> Accessories
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="/shop/category/cases" class="dropdown-item">Cases &amp; Covers</a>
+                                    <a href="/shop/category/chargers" class="dropdown-item">Chargers</a>
+                                    <a href="/shop/category/cables" class="dropdown-item">Cables</a>
+                                    <a href="/shop/category/screen-protectors" class="dropdown-item">Screen Protectors</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/shop/audio" class="nav-link">
+                                    <i class="fas fa-volume-up"></i> Audio
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="/shop/category/airpods" class="dropdown-item">AirPods</a>
+                                    <a href="/shop/category/headphones" class="dropdown-item">Headphones</a>
+                                    <a href="/shop/category/speakers" class="dropdown-item">Speakers</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/shop/smartwatches" class="nav-link">
+                                    <i class="fas fa-clock"></i> Smartwatches
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/shop/offers" class="nav-link">
+                                    <i class="fas fa-tags"></i> Special Offers
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/contact" class="nav-link">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+        </xpath>
+    </template>
+
+    <!-- Enhanced Homepage -->
+    <template id="techdream_homepage_enhanced" inherit_id="website.homepage">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div id="wrap">
+                <!-- Hero Slider Section -->
+                <section class="hero-slider" style="background: linear-gradient(135deg, #2C3E50 0%, #3498db 100%); min-height: 70vh; display: flex; align-items: center;">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div style="color: white;">
+                                    <h1 class="display-4 mb-4" style="font-weight: 700;">Latest iPhone 15 Pro Max</h1>
+                                    <p class="lead mb-4" style="font-size: 1.2rem;">Experience the ultimate smartphone with titanium design and A17 Pro chip</p>
+                                    <div class="mb-4">
+                                        <span style="font-size: 2rem; font-weight: 700; color: #f39c12;">AED 4,999</span>
+                                        <span style="font-size: 1.2rem; text-decoration: line-through; margin-left: 15px; opacity: 0.8;">AED 5,499</span>
+                                    </div>
+                                    <a href="/shop/product/iphone-15-pro-max" class="btn btn-primary btn-lg px-5 py-3 me-3">Shop Now</a>
+                                    <a href="/shop" class="btn btn-outline-light btn-lg px-5 py-3">View All</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 text-center">
+                                <img src="/techdream_theme/static/src/img/iphone-15-hero.png" alt="iPhone 15 Pro Max" style="max-width: 100%; height: auto;"/>
                             </div>
                         </div>
                     </div>
                 </section>
-                
+
                 <!-- Featured Categories -->
                 <section class="py-5" style="background: #f8f9fa;">
                     <div class="container">
-                        <h2 class="text-center mb-5 font-weight-bold" style="color: #2C3E50;">Shop by Category</h2>
+                        <h2 class="text-center mb-5" style="font-weight: 700; color: #2c3e50;">Shop by Category</h2>
                         <div class="row">
-                            <div class="col-md-3 mb-4">
-                                <div class="o_category_card" onclick="location.href='/shop'">
-                                    <div style="font-size: 3rem; color: #3498db; margin-bottom: 20px;">📱</div>
-                                    <h4 style="color: #2C3E50;">Smartphones</h4>
-                                    <p style="color: #7f8c8d;">Latest iPhone, Samsung, Google</p>
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="category-card text-center" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); transition: all 0.3s; cursor: pointer;" onclick="location.href='/shop/smartphones'">
+                                    <div style="font-size: 4rem; color: #3498db; margin-bottom: 20px;">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <h4 style="color: #2c3e50; font-weight: 600;">Smartphones</h4>
+                                    <p style="color: #7f8c8d;">Latest iPhone, Samsung, Google Pixel</p>
+                                    <span style="color: #3498db; font-weight: 600;">500+ Products</span>
                                 </div>
                             </div>
-                            <div class="col-md-3 mb-4">
-                                <div class="o_category_card" onclick="location.href='/shop'">
-                                    <div style="font-size: 3rem; color: #3498db; margin-bottom: 20px;">🎧</div>
-                                    <h4 style="color: #2C3E50;">Audio</h4>
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="category-card text-center" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); transition: all 0.3s; cursor: pointer;" onclick="location.href='/shop/accessories'">
+                                    <div style="font-size: 4rem; color: #3498db; margin-bottom: 20px;">
+                                        <i class="fas fa-mobile"></i>
+                                    </div>
+                                    <h4 style="color: #2c3e50; font-weight: 600;">Accessories</h4>
+                                    <p style="color: #7f8c8d;">Cases, chargers, cables &amp; more</p>
+                                    <span style="color: #3498db; font-weight: 600;">200+ Products</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="category-card text-center" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); transition: all 0.3s; cursor: pointer;" onclick="location.href='/shop/audio'">
+                                    <div style="font-size: 4rem; color: #3498db; margin-bottom: 20px;">
+                                        <i class="fas fa-headphones"></i>
+                                    </div>
+                                    <h4 style="color: #2c3e50; font-weight: 600;">Audio</h4>
                                     <p style="color: #7f8c8d;">AirPods, headphones, speakers</p>
+                                    <span style="color: #3498db; font-weight: 600;">150+ Products</span>
                                 </div>
                             </div>
-                            <div class="col-md-3 mb-4">
-                                <div class="o_category_card" onclick="location.href='/shop'">
-                                    <div style="font-size: 3rem; color: #3498db; margin-bottom: 20px;">🛡️</div>
-                                    <h4 style="color: #2C3E50;">Accessories</h4>
-                                    <p style="color: #7f8c8d;">Cases, chargers, cables</p>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-4">
-                                <div class="o_category_card" onclick="location.href='/shop'">
-                                    <div style="font-size: 3rem; color: #3498db; margin-bottom: 20px;">⌚</div>
-                                    <h4 style="color: #2C3E50;">Smartwatches</h4>
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="category-card text-center" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); transition: all 0.3s; cursor: pointer;" onclick="location.href='/shop/smartwatches'">
+                                    <div style="font-size: 4rem; color: #3498db; margin-bottom: 20px;">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <h4 style="color: #2c3e50; font-weight: 600;">Smartwatches</h4>
                                     <p style="color: #7f8c8d;">Apple Watch, Galaxy Watch</p>
+                                    <span style="color: #3498db; font-weight: 600;">80+ Products</span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Featured Products -->
+                <section class="py-5">
+                    <div class="container">
+                        <div class="d-flex justify-content-between align-items-center mb-5">
+                            <h2 style="font-weight: 700; color: #2c3e50;">Featured Products</h2>
+                            <a href="/shop" class="btn btn-outline-primary">View All Products</a>
+                        </div>
+                        <div class="products-grid">
+                            <!-- Sample Featured Products -->
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <span class="product-badge new">New</span>
+                                    <img src="/techdream_theme/static/src/img/iphone-15.jpg" alt="iPhone 15"/>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title">iPhone 15 128GB</h3>
+                                    <div class="product-rating">
+                                        <div class="stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="rating-count">(24 reviews)</span>
+                                    </div>
+                                    <div class="product-price">
+                                        AED 3,399
+                                        <span class="old-price">AED 3,599</span>
+                                    </div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <span class="product-badge sale">Sale</span>
+                                    <img src="/techdream_theme/static/src/img/samsung-s24.jpg" alt="Samsung Galaxy S24"/>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title">Samsung Galaxy S24 Ultra</h3>
+                                    <div class="product-rating">
+                                        <div class="stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="rating-count">(18 reviews)</span>
+                                    </div>
+                                    <div class="product-price">
+                                        AED 4,299
+                                        <span class="old-price">AED 4,699</span>
+                                    </div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <img src="/techdream_theme/static/src/img/airpods-pro.jpg" alt="AirPods Pro"/>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title">AirPods Pro (2nd Gen)</h3>
+                                    <div class="product-rating">
+                                        <div class="stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="rating-count">(31 reviews)</span>
+                                    </div>
+                                    <div class="product-price">AED 899</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <img src="/techdream_theme/static/src/img/apple-watch.jpg" alt="Apple Watch"/>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title">Apple Watch Series 9</h3>
+                                    <div class="product-rating">
+                                        <div class="stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="rating-count">(15 reviews)</span>
+                                    </div>
+                                    <div class="product-price">AED 1,599</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Brands Section -->
+                <section class="py-5" style="background: white;">
+                    <div class="container">
+                        <h2 class="text-center mb-5" style="font-weight: 700; color: #2c3e50;">Our Brands</h2>
+                        <div class="row text-center">
+                            <div class="col-lg-2 col-md-4 col-6 mb-4">
+                                <img src="/techdream_theme/static/src/img/brand-apple.png" alt="Apple" style="max-height: 60px; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'"/>
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-6 mb-4">
+                                <img src="/techdream_theme/static/src/img/brand-samsung.png" alt="Samsung" style="max-height: 60px; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'"/>
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-6 mb-4">
+                                <img src="/techdream_theme/static/src/img/brand-google.png" alt="Google" style="max-height: 60px; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'"/>
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-6 mb-4">
+                                <img src="/techdream_theme/static/src/img/brand-huawei.png" alt="Huawei" style="max-height: 60px; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'"/>
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-6 mb-4">
+                                <img src="/techdream_theme/static/src/img/brand-xiaomi.png" alt="Xiaomi" style="max-height: 60px; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'"/>
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-6 mb-4">
+                                <img src="/techdream_theme/static/src/img/brand-oneplus.png" alt="OnePlus" style="max-height: 60px; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'"/>
                             </div>
                         </div>
                     </div>
@@ -268,4 +1199,1289 @@
             </div>
         </xpath>
     </template>
-</odoo>
+
+    <!-- Shop Page Template -->
+    <template id="shop_page_template" name="Shop Page">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb-section">
+                    <div class="container">
+                        <div class="breadcrumb-nav">
+                            <span class="breadcrumb-item">
+                                <a href="/">Home</a>
+                            </span>
+                            <span class="breadcrumb-separator">/</span>
+                            <span class="breadcrumb-item">Shop</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container py-4">
+                    <div class="row">
+                        <!-- Sidebar -->
+                        <div class="col-lg-3">
+                            <!-- Categories -->
+                            <div class="category-sidebar">
+                                <h3 class="category-title">Categories</h3>
+                                <ul class="category-list">
+                                    <li class="category-item">
+                                        <a href="/shop/smartphones" class="category-link">
+                                            <span>Smartphones</span>
+                                            <span class="category-count">245</span>
+                                        </a>
+                                    </li>
+                                    <li class="category-item">
+                                        <a href="/shop/accessories" class="category-link">
+                                            <span>Accessories</span>
+                                            <span class="category-count">156</span>
+                                        </a>
+                                    </li>
+                                    <li class="category-item">
+                                        <a href="/shop/audio" class="category-link">
+                                            <span>Audio</span>
+                                            <span class="category-count">89</span>
+                                        </a>
+                                    </li>
+                                    <li class="category-item">
+                                        <a href="/shop/smartwatches" class="category-link">
+                                            <span>Smartwatches</span>
+                                            <span class="category-count">67</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Price Filter -->
+                            <div class="filter-section">
+                                <h4 class="filter-title">Price Range</h4>
+                                <div class="price-range">
+                                    <div class="price-inputs">
+                                        <input type="number" class="price-input" placeholder="Min" value="0"/>
+                                        <input type="number" class="price-input" placeholder="Max" value="10000"/>
+                                    </div>
+                                    <button class="btn btn-primary btn-sm w-100">Apply Filter</button>
+                                </div>
+                            </div>
+
+                            <!-- Brand Filter -->
+                            <div class="filter-section">
+                                <h4 class="filter-title">Brands</h4>
+                                <div class="brand-filter">
+                                    <div class="brand-item">
+                                        <input type="checkbox" class="brand-checkbox" id="apple"/>
+                                        <label for="apple" class="brand-label">Apple (89)</label>
+                                    </div>
+                                    <div class="brand-item">
+                                        <input type="checkbox" class="brand-checkbox" id="samsung"/>
+                                        <label for="samsung" class="brand-label">Samsung (67)</label>
+                                    </div>
+                                    <div class="brand-item">
+                                        <input type="checkbox" class="brand-checkbox" id="google"/>
+                                        <label for="google" class="brand-label">Google (34)</label>
+                                    </div>
+                                    <div class="brand-item">
+                                        <input type="checkbox" class="brand-checkbox" id="huawei"/>
+                                        <label for="huawei" class="brand-label">Huawei (28)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Content -->
+                        <div class="col-lg-9">
+                            <!-- Shop Header -->
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <h1 style="font-weight: 700; color: #2c3e50;">All Products</h1>
+                                    <p class="text-muted">Showing 1-12 of 557 results</p>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <select class="form-select" style="width: auto;">
+                                        <option>Sort by Latest</option>
+                                        <option>Sort by Price: Low to High</option>
+                                        <option>Sort by Price: High to Low</option>
+                                        <option>Sort by Rating</option>
+                                    </select>
+                                    <div class="btn-group">
+                                        <button class="btn btn-outline-secondary active">
+                                            <i class="fas fa-th"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary">
+                                            <i class="fas fa-list"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Products Grid -->
+                            <div class="products-grid">
+                                <!-- Products will be loaded here dynamically -->
+                            </div>
+
+                            <!-- Pagination -->
+                            <nav class="mt-5">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Previous</span>
+                                    </li>
+                                    <li class="page-item active">
+                                        <span class="page-link">1</span>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">2</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">3</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Product Detail Template -->
+    <template id="product_detail_template" name="Product Detail">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb-section">
+                    <div class="container">
+                        <div class="breadcrumb-nav">
+                            <span class="breadcrumb-item">
+                                <a href="/">Home</a>
+                            </span>
+                            <span class="breadcrumb-separator">/</span>
+                            <span class="breadcrumb-item">
+                                <a href="/shop">Shop</a>
+                            </span>
+                            <span class="breadcrumb-separator">/</span>
+                            <span class="breadcrumb-item">
+                                <a href="/shop/smartphones">Smartphones</a>
+                            </span>
+                            <span class="breadcrumb-separator">/</span>
+                            <span class="breadcrumb-item">iPhone 15 Pro Max</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="product-detail">
+                        <div class="row">
+                            <!-- Product Images -->
+                            <div class="col-lg-6">
+                                <div class="product-gallery">
+                                    <img src="/techdream_theme/static/src/img/iphone-15-main.jpg" alt="iPhone 15 Pro Max" class="main-image" id="mainImage"/>
+                                    <div class="thumbnail-images">
+                                        <img src="/techdream_theme/static/src/img/iphone-15-1.jpg" alt="iPhone 15" class="thumbnail active" onclick="changeMainImage(this)"/>
+                                        <img src="/techdream_theme/static/src/img/iphone-15-2.jpg" alt="iPhone 15" class="thumbnail" onclick="changeMainImage(this)"/>
+                                        <img src="/techdream_theme/static/src/img/iphone-15-3.jpg" alt="iPhone 15" class="thumbnail" onclick="changeMainImage(this)"/>
+                                        <img src="/techdream_theme/static/src/img/iphone-15-4.jpg" alt="iPhone 15" class="thumbnail" onclick="changeMainImage(this)"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product Info -->
+                            <div class="col-lg-6">
+                                <div class="product-details">
+                                    <h1>iPhone 15 Pro Max</h1>
+
+                                    <div class="product-rating mb-3">
+                                        <div class="stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="rating-count">(24 reviews)</span>
+                                    </div>
+
+                                    <div class="price">
+                                        AED 4,999
+                                        <span class="old-price" style="font-size: 20px;">AED 5,499</span>
+                                    </div>
+
+                                    <p class="product-description mb-4">
+                                        The iPhone 15 Pro Max features a stunning titanium design, the powerful A17 Pro chip, 
+                                        and an advanced camera system with 5x telephoto zoom. Experience the future of smartphone technology.
+                                    </p>
+
+                                    <!-- Product Options -->
+                                    <div class="product-options">
+                                        <div class="option-group">
+                                            <label class="option-label">Storage:</label>
+                                            <div class="option-buttons">
+                                                <button class="option-btn active">256GB</button>
+                                                <button class="option-btn">512GB</button>
+                                                <button class="option-btn">1TB</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="option-group">
+                                            <label class="option-label">Color:</label>
+                                            <div class="option-buttons">
+                                                <button class="option-btn active">Natural Titanium</button>
+                                                <button class="option-btn">Blue Titanium</button>
+                                                <button class="option-btn">White Titanium</button>
+                                                <button class="option-btn">Black Titanium</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quantity -->
+                                    <div class="quantity-selector">
+                                        <span class="quantity-label">Quantity:</span>
+                                        <div class="quantity-controls">
+                                            <button class="qty-btn" onclick="decreaseQty()">-</button>
+                                            <input type="number" class="qty-input" value="1" min="1" id="quantity"/>
+                                            <button class="qty-btn" onclick="increaseQty()">+</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="action-buttons">
+                                        <button class="btn-add-cart">
+                                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                                        </button>
+                                        <button class="btn-wishlist">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Product Features -->
+                                    <div class="product-features mt-4">
+                                        <h4 style="color: #2c3e50; margin-bottom: 15px;">Key Features:</h4>
+                                        <ul style="list-style: none; padding: 0;">
+                                            <li style="margin-bottom: 8px;">
+                                                <i class="fas fa-check" style="color: #27ae60; margin-right: 10px;"></i> A17 Pro chip with 6-core GPU</li>
+                                            <li style="margin-bottom: 8px;">
+                                                <i class="fas fa-check" style="color: #27ae60; margin-right: 10px;"></i> 48MP Main camera system</li>
+                                            <li style="margin-bottom: 8px;">
+                                                <i class="fas fa-check" style="color: #27ae60; margin-right: 10px;"></i> 5x Telephoto camera</li>
+                                            <li style="margin-bottom: 8px;">
+                                                <i class="fas fa-check" style="color: #27ae60; margin-right: 10px;"></i> All-day battery life</li>
+                                            <li style="margin-bottom: 8px;">
+                                                <i class="fas fa-check" style="color: #27ae60; margin-right: 10px;"></i> USB-C connectivity</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product Tabs -->
+                        <div class="product-tabs">
+                            <div class="tab-buttons">
+                                <button class="tab-btn active" onclick="showTab('description')">Description</button>
+                                <button class="tab-btn" onclick="showTab('specifications')">Specifications</button>
+                                <button class="tab-btn" onclick="showTab('reviews')">Reviews (24)</button>
+                                <button class="tab-btn" onclick="showTab('shipping')">Shipping Info</button>
+                            </div>
+
+                            <div id="description" class="tab-content">
+                                <h4>Product Description</h4>
+                                <p>The iPhone 15 Pro Max represents the pinnacle of smartphone innovation. Built with aerospace-grade titanium, 
+                                it's the lightest Pro model ever. The A17 Pro chip delivers incredible performance and efficiency, 
+                                while the advanced camera system captures stunning photos and videos in any lighting condition.</p>
+
+                                <p>With USB-C, you can charge your Mac or iPad with the same cable you use to charge iPhone 15 Pro Max. 
+                                The Action button gives you a physical way to instantly launch your most-used feature.</p>
+                            </div>
+
+                            <div id="specifications" class="tab-content" style="display: none;">
+                                <h4>Technical Specifications</h4>
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            <strong>Display:</strong>
+                                        </td>
+                                        <td>6.7" Super Retina XDR OLED</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Chip:</strong>
+                                        </td>
+                                        <td>A17 Pro</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Storage:</strong>
+                                        </td>
+                                        <td>256GB, 512GB, 1TB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Camera:</strong>
+                                        </td>
+                                        <td>48MP Main, 12MP Ultra Wide, 12MP Telephoto</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Video:</strong>
+                                        </td>
+                                        <td>4K ProRes, Cinematic mode</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Battery:</strong>
+                                        </td>
+                                        <td>Up to 29 hours video playback</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div id="reviews" class="tab-content" style="display: none;">
+                                <h4>Customer Reviews</h4>
+                                <div class="review-summary mb-4">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="text-center">
+                                                <div style="font-size: 3rem; font-weight: 700; color: #f39c12;">4.8</div>
+                                                <div class="stars mb-2">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                                <p>Based on 24 reviews</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="rating-breakdown">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <span class="me-2">5 stars</span>
+                                                    <div class="progress flex-grow-1 me-2">
+                                                        <div class="progress-bar bg-warning" style="width: 80%"></div>
+                                                    </div>
+                                                    <span>20</span>
+                                                </div>
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <span class="me-2">4 stars</span>
+                                                    <div class="progress flex-grow-1 me-2">
+                                                        <div class="progress-bar bg-warning" style="width: 15%"></div>
+                                                    </div>
+                                                    <span>3</span>
+                                                </div>
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <span class="me-2">3 stars</span>
+                                                    <div class="progress flex-grow-1 me-2">
+                                                        <div class="progress-bar bg-warning" style="width: 5%"></div>
+                                                    </div>
+                                                    <span>1</span>
+                                                </div>
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <span class="me-2">2 stars</span>
+                                                    <div class="progress flex-grow-1 me-2">
+                                                        <div class="progress-bar bg-warning" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0</span>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="me-2">1 star</span>
+                                                    <div class="progress flex-grow-1 me-2">
+                                                        <div class="progress-bar bg-warning" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="reviews-list">
+                                    <div class="review-item mb-4 p-3" style="border: 1px solid #eee; border-radius: 8px;">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <strong>Ahmed Al-Rashid</strong>
+                                            <span class="text-muted">2 days ago</span>
+                                        </div>
+                                        <div class="stars mb-2">
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                        </div>
+                                        <p>Excellent phone! The camera quality is outstanding and the titanium build feels premium. Delivery was fast and packaging was perfect.</p>
+                                    </div>
+
+                                    <div class="review-item mb-4 p-3" style="border: 1px solid #eee; border-radius: 8px;">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <strong>Sarah Johnson</strong>
+                                            <span class="text-muted">1 week ago</span>
+                                        </div>
+                                        <div class="stars mb-2">
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                        </div>
+                                        <p>Best iPhone yet! The Action button is incredibly useful and the new cameras are amazing. Great service from TechDream!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="shipping" class="tab-content" style="display: none;">
+                                <h4>Shipping Information</h4>
+                                <div class="shipping-options">
+                                    <div class="shipping-option mb-3 p-3" style="border: 1px solid #eee; border-radius: 8px;">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <strong>Free Standard Delivery</strong>
+                                                <p class="mb-0 text-muted">3-5 business days within UAE</p>
+                                            </div>
+                                            <span class="text-success font-weight-bold">FREE</span>
+                                        </div>
+                                    </div>
+                                    <div class="shipping-option mb-3 p-3" style="border: 1px solid #eee; border-radius: 8px;">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <strong>Express Delivery</strong>
+                                                <p class="mb-0 text-muted">Next day delivery in Dubai & Abu Dhabi</p>
+                                            </div>
+                                            <span class="font-weight-bold">AED 25</span>
+                                        </div>
+                                    </div>
+                                    <div class="shipping-option mb-3 p-3" style="border: 1px solid #eee; border-radius: 8px;">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <strong>Same Day Delivery</strong>
+                                                <p class="mb-0 text-muted">Order before 2 PM (Dubai only)</p>
+                                            </div>
+                                            <span class="font-weight-bold">AED 50</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h5 class="mt-4">Return Policy</h5>
+                                <ul>
+                                    <li>14-day return policy for unopened items</li>
+                                    <li>Free returns for defective products</li>
+                                    <li>Original packaging required</li>
+                                    <li>Refund processed within 5-7 business days</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Products -->
+                    <section class="mt-5">
+                        <h2 class="mb-4" style="font-weight: 700; color: #2c3e50;">Related Products</h2>
+                        <div class="products-grid">
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <img src="/techdream_theme/static/src/img/iphone-15.jpg" alt="iPhone 15"/>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title">iPhone 15</h3>
+                                    <div class="product-price">AED 3,399</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <img src="/techdream_theme/static/src/img/iphone-15-plus.jpg" alt="iPhone 15 Plus"/>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title">iPhone 15 Plus</h3>
+                                    <div class="product-price">AED 3,799</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <img src="/techdream_theme/static/src/img/iphone-15-pro.jpg" alt="iPhone 15 Pro"/>
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title">iPhone 15 Pro</h3>
+                                    <div class="product-price">AED 4,299</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <script>
+                function changeMainImage(thumbnail) {
+                    document.getElementById('mainImage').src = thumbnail.src;
+                    document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                    thumbnail.classList.add('active');
+                }
+
+                function showTab(tabName) {
+                    document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+                    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    document.getElementById(tabName).style.display = 'block';
+                    event.target.classList.add('active');
+                }
+
+                function increaseQty() {
+                    const qtyInput = document.getElementById('quantity');
+                    qtyInput.value = parseInt(qtyInput.value) + 1;
+                }
+
+                function decreaseQty() {
+                    const qtyInput = document.getElementById('quantity');
+                    if (parseInt(qtyInput.value) > 1) {
+                        qtyInput.value = parseInt(qtyInput.value) - 1;
+                    }
+                }
+            </script>
+        </t>
+    </template>
+
+    <!-- Cart Page Template -->
+    <template id="cart_page_template" name="Shopping Cart">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb-section">
+                    <div class="container">
+                        <div class="breadcrumb-nav">
+                            <span class="breadcrumb-item">
+                                <a href="/">Home</a>
+                            </span>
+                            <span class="breadcrumb-separator">/</span>
+                            <span class="breadcrumb-item">Shopping Cart</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container py-4">
+                    <h1 class="mb-4" style="font-weight: 700; color: #2c3e50;">Shopping Cart</h1>
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="cart-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="/techdream_theme/static/src/img/iphone-15.jpg" alt="iPhone 15" class="cart-item-image me-3"/>
+                                                    <div class="cart-item-details">
+                                                        <h5>iPhone 15 Pro Max</h5>
+                                                        <p>256GB, Natural Titanium</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="font-weight-bold">AED 4,999</td>
+                                            <td>
+                                                <div class="quantity-controls">
+                                                    <button class="qty-btn">-</button>
+                                                    <input type="number" class="qty-input" value="1"/>
+                                                    <button class="qty-btn">+</button>
+                                                </div>
+                                            </td>
+                                            <td class="font-weight-bold text-primary">AED 4,999</td>
+                                            <td>
+                                                <i class="fas fa-trash remove-item"></i>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="/techdream_theme/static/src/img/airpods-pro.jpg" alt="AirPods Pro" class="cart-item-image me-3"/>
+                                                    <div class="cart-item-details">
+                                                        <h5>AirPods Pro (2nd Gen)</h5>
+                                                        <p>with MagSafe Charging Case</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="font-weight-bold">AED 899</td>
+                                            <td>
+                                                <div class="quantity-controls">
+                                                    <button class="qty-btn">-</button>
+                                                    <input type="number" class="qty-input" value="1"/>
+                                                    <button class="qty-btn">+</button>
+                                                </div>
+                                            </td>
+                                            <td class="font-weight-bold text-primary">AED 899</td>
+                                            <td>
+                                                <i class="fas fa-trash remove-item"></i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Coupon Section -->
+                            <div class="mt-4 p-3" style="background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                                <h5 class="mb-3">Have a Coupon Code?</h5>
+                                <div class="d-flex gap-3">
+                                    <input type="text" class="form-control" placeholder="Enter coupon code"/>
+                                    <button class="btn btn-primary">Apply</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="cart-summary">
+                                <h4 class="mb-4" style="color: #2c3e50;">Order Summary</h4>
+
+                                <div class="summary-row">
+                                    <span>Subtotal</span>
+                                    <span>AED 5,898</span>
+                                </div>
+
+                                <div class="summary-row">
+                                    <span>Shipping</span>
+                                    <span class="text-success">FREE</span>
+                                </div>
+
+                                <div class="summary-row">
+                                    <span>Tax (5%)</span>
+                                    <span>AED 294.90</span>
+                                </div>
+
+                                <div class="summary-row">
+                                    <span>Total</span>
+                                    <span>AED 6,192.90</span>
+                                </div>
+
+                                <button class="checkout-btn">Proceed to Checkout</button>
+
+                                <div class="mt-3 text-center">
+                                    <a href="/shop" class="btn btn-outline-primary">Continue Shopping</a>
+                                </div>
+                            </div>
+
+                            <!-- Security Features -->
+                            <div class="mt-4 p-3 text-center" style="background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                                <h6 class="mb-3">Secure Checkout</h6>
+                                <div class="d-flex justify-content-center gap-3">
+                                    <img src="/techdream_theme/static/src/img/visa.png" alt="Visa" style="height: 30px;"/>
+                                    <img src="/techdream_theme/static/src/img/mastercard.png" alt="Mastercard" style="height: 30px;"/>
+                                    <img src="/techdream_theme/static/src/img/paypal.png" alt="PayPal" style="height: 30px;"/>
+                                </div>
+                                <p class="mt-2 text-muted small">Your payment information is secure and encrypted</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Checkout Page Template -->
+    <template id="checkout_page_template" name="Checkout">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container py-4">
+                    <h1 class="mb-4 text-center" style="font-weight: 700; color: #2c3e50;">Checkout</h1>
+
+                    <!-- Checkout Steps -->
+                    <div class="checkout-steps mb-5">
+                        <div class="d-flex justify-content-center">
+                            <div class="step active">
+                                <div class="step-number">1</div>
+                                <div class="step-label">Shipping</div>
+                            </div>
+                            <div class="step-line"></div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-label">Payment</div>
+                            </div>
+                            <div class="step-line"></div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-label">Review</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Shipping Information -->
+                            <div class="checkout-section" style="background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                                <h4 class="mb-4" style="color: #2c3e50;">Shipping Information</h4>
+
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">First Name *</label>
+                                            <input type="text" class="form-control" required/>
+</div>
+<div class="col-md-6 mb-3">
+                                                <label class="form-label">Last Name *</label>
+                                                <input type="text" class="form-control" required/>
+</div>
+</div>
+
+<div class="mb-3">
+                                                    <label class="form-label">Email Address *</label>
+                                                    <input type="email" class="form-control" required/>
+</div>
+
+<div class="mb-3">
+                                                        <label class="form-label">Phone Number *</label>
+                                                        <input type="tel" class="form-control" required/>
+</div>
+
+<div class="mb-3">
+                                                            <label class="form-label">Address *</label>
+                                                            <input type="text" class="form-control" placeholder="Street address" required/>
+</div>
+
+<div class="row">
+                                                                <div class="col-md-6 mb-3">
+                                                                    <label class="form-label">City *</label>
+                                                                    <select class="form-select" required>
+<option value="">Select City</option>
+                                                                    <option value="dubai">Dubai</option>
+                                                                    <option value="abu-dhabi">Abu Dhabi</option>
+                                                                    <option value="sharjah">Sharjah</option>
+                                                                    <option value="ajman">Ajman</option>
+                                                                    <option value="ras-al-khaimah">Ras Al Khaimah</option>
+                                                                    <option value="fujairah">Fujairah</option>
+                                                                    <option value="umm-al-qaiwain">Umm Al Qaiwain</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-6 mb-3">
+                                                                <label class="form-label">Postal Code</label>
+                                                                <input type="text" class="form-control"/>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                                <!-- Delivery Options -->
+                                                <div class="checkout-section" style="background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                                                    <h4 class="mb-4" style="color: #2c3e50;">Delivery Options</h4>
+
+                                                    <div class="delivery-options">
+                                                        <div class="delivery-option mb-3">
+                                                            <input type="radio" name="delivery" id="standard" value="standard" checked/>
+<label for="standard" class="delivery-label">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div>
+                                                                        <strong>Standard Delivery</strong>
+                                                                        <p class="mb-0 text-muted">3-5 business days</p>
+                                                                    </div>
+                                                                    <span class="text-success font-weight-bold">FREE</span>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="delivery-option mb-3">
+                                                            <input type="radio" name="delivery" id="express" value="express"/>
+                                                            <label for="express" class="delivery-label">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div>
+                                                                        <strong>Express Delivery</strong>
+                                                                        <p class="mb-0 text-muted">Next day delivery</p>
+                                                                    </div>
+                                                                    <span class="font-weight-bold">AED 25</span>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="delivery-option">
+                                                            <input type="radio" name="delivery" id="same-day" value="same-day"/>
+                                                            <label for="same-day" class="delivery-label">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div>
+                                                                        <strong>Same Day Delivery</strong>
+                                                                        <p class="mb-0 text-muted">Order before 2 PM</p>
+                                                                    </div>
+                                                                    <span class="font-weight-bold">AED 50</span>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Payment Method -->
+                                                <div class="checkout-section" style="background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                                                    <h4 class="mb-4" style="color: #2c3e50;">Payment Method</h4>
+
+                                                    <div class="payment-methods">
+                                                        <div class="payment-option mb-3">
+                                                            <input type="radio" name="payment" id="card" value="card" checked/>
+<label for="card" class="payment-label">
+                                                                <i class="fas fa-credit-card me-2"></i>
+                                            Credit/Debit Card
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="payment-option mb-3">
+                                                            <input type="radio" name="payment" id="paypal" value="paypal"/>
+                                                            <label for="paypal" class="payment-label">
+                                                                <i class="fab fa-paypal me-2"></i>
+                                            PayPal
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="payment-option">
+                                                            <input type="radio" name="payment" id="cod" value="cod"/>
+                                                            <label for="cod" class="payment-label">
+                                                                <i class="fas fa-money-bill-wave me-2"></i>
+                                            Cash on Delivery
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Card Details Form -->
+                                                    <div id="card-details" class="mt-4">
+                                                        <div class="row">
+                                                            <div class="col-12 mb-3">
+                                                                <label class="form-label">Card Number</label>
+                                                                <input type="text" class="form-control" placeholder="1234 5678 9012 3456"/>
+                                                            </div>
+                                                            <div class="col-md-6 mb-3">
+                                                                <label class="form-label">Expiry Date</label>
+                                                                <input type="text" class="form-control" placeholder="MM/YY"/>
+                                                            </div>
+                                                            <div class="col-md-6 mb-3">
+                                                                <label class="form-label">CVV</label>
+                                                                <input type="text" class="form-control" placeholder="123"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <!-- Order Summary -->
+                                                <div class="order-summary" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: sticky; top: 20px;">
+                                                    <h4 class="mb-4" style="color: #2c3e50;">Order Summary</h4>
+
+                                                    <!-- Order Items -->
+                                                    <div class="order-items mb-4">
+                                                        <div class="order-item d-flex align-items-center mb-3">
+                                                            <img src="/techdream_theme/static/src/img/iphone-15.jpg" alt="iPhone 15" style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px; margin-right: 15px;"/>
+                                                            <div class="flex-grow-1">
+                                                                <h6 class="mb-1">iPhone 15 Pro Max</h6>
+                                                                <small class="text-muted">256GB, Natural Titanium</small>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span>Qty: 1</span>
+                                                                    <span class="font-weight-bold">AED 4,999</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="order-item d-flex align-items-center mb-3">
+                                                            <img src="/techdream_theme/static/src/img/airpods-pro.jpg" alt="AirPods Pro" style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px; margin-right: 15px;"/>
+                                                            <div class="flex-grow-1">
+                                                                <h6 class="mb-1">AirPods Pro (2nd Gen)</h6>
+                                                                <small class="text-muted">with MagSafe Case</small>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span>Qty: 1</span>
+                                                                    <span class="font-weight-bold">AED 899</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Order Totals -->
+                                                    <div class="order-totals">
+                                                        <div class="d-flex justify-content-between mb-2">
+                                                            <span>Subtotal</span>
+                                                            <span>AED 5,898</span>
+                                                        </div>
+
+                                                        <div class="d-flex justify-content-between mb-2">
+                                                            <span>Shipping</span>
+                                                            <span class="text-success">FREE</span>
+                                                        </div>
+
+                                                        <div class="d-flex justify-content-between mb-3">
+                                                            <span>Tax (5%)</span>
+                                                            <span>AED 294.90</span>
+                                                        </div>
+
+                                                        <hr/>
+
+                                                        <div class="d-flex justify-content-between mb-4">
+                                                            <span class="h5 font-weight-bold">Total</span>
+                                                            <span class="h5 font-weight-bold text-primary">AED 6,192.90</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <button class="btn btn-primary w-100 py-3 font-weight-bold">
+                                    Place Order
+                                                    </button>
+
+                                                    <div class="mt-3 text-center">
+                                                        <small class="text-muted">
+                                                            <i class="fas fa-lock me-1"></i>
+                                        Your order is secured with SSL encryption
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <style>
+                .checkout-steps .step {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    opacity: 0.5;
+                }
+                
+                .checkout-steps .step.active {
+                    opacity: 1;
+                }
+                
+                .checkout-steps .step-number {
+                    width: 40px;
+                    height: 40px;
+                    background: #e9ecef;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+                    margin-bottom: 8px;
+                }
+                
+                .checkout-steps .step.active .step-number {
+                    background: #3498db;
+                    color: white;
+                }
+                
+                .checkout-steps .step-line {
+                    width: 100px;
+                    height: 2px;
+                    background: #e9ecef;
+                    margin: 20px 0;
+                }
+                
+                .delivery-option, .payment-option {
+                    border: 2px solid #e9ecef;
+                    border-radius: 8px;
+                    padding: 0;
+                    transition: border-color 0.3s;
+                }
+                
+                .delivery-option:has(input:checked), .payment-option:has(input:checked) {
+                    border-color: #3498db;
+                }
+                
+                .delivery-label, .payment-label {
+                    display: block;
+                    padding: 15px;
+                    cursor: pointer;
+                    margin: 0;
+                    width: 100%;
+                }
+                
+                .delivery-option input, .payment-option input {
+                    position: absolute;
+                    opacity: 0;
+                }
+                                </style>
+                            </t>
+                        </template>
+
+                        <!-- Contact Page Template -->
+                        <template id="contact_page_template" name="Contact Us">
+                            <t t-call="website.layout">
+                                <div id="wrap">
+                                    <!-- Breadcrumb -->
+                                    <div class="breadcrumb-section">
+                                        <div class="container">
+                                            <div class="breadcrumb-nav">
+                                                <span class="breadcrumb-item">
+                                                    <a href="/">Home</a>
+                                                </span>
+                                                <span class="breadcrumb-separator">/</span>
+                                                <span class="breadcrumb-item">Contact Us</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="container py-5">
+                                        <div class="row">
+                                            <div class="col-12 text-center mb-5">
+                                                <h1 style="font-weight: 700; color: #2c3e50;">Get in Touch</h1>
+                                                <p class="lead text-muted">We're here to help with any questions about our products</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-8 mb-5">
+                                                <div style="background: white; border-radius: 15px; padding: 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
+                                                    <h3 class="mb-4" style="color: #2c3e50;">Send us a Message</h3>
+
+                                                    <form>
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-3">
+                                                                <label class="form-label">First Name *</label>
+                                                                <input type="text" class="form-control" required/>
+</div>
+<div class="col-md-6 mb-3">
+                                                                    <label class="form-label">Last Name *</label>
+                                                                    <input type="text" class="form-control" required/>
+</div>
+</div>
+
+<div class="row">
+                                                                        <div class="col-md-6 mb-3">
+                                                                            <label class="form-label">Email Address *</label>
+                                                                            <input type="email" class="form-control" required/>
+</div>
+<div class="col-md-6 mb-3">
+                                                                                <label class="form-label">Phone Number</label>
+                                                                                <input type="tel" class="form-control"/>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Subject *</label>
+                                                                            <select class="form-select" required>
+<option value="">Select Subject</option>
+                                                                            <option value="general">General Inquiry</option>
+                                                                            <option value="product">Product Question</option>
+                                                                            <option value="order">Order Support</option>
+                                                                            <option value="technical">Technical Support</option>
+                                                                            <option value="return">Return/Exchange</option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="mb-4">
+                                                                        <label class="form-label">Message *</label>
+                                                                        <textarea class="form-control" rows="6" placeholder="Tell us how we can help you..." required></textarea>
+</div>
+
+<button type="submit" class="btn btn-primary btn-lg px-5">
+                                                                            <i class="fas fa-paper-plane me-2"></i>
+                                        Send Message
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <!-- Contact Information -->
+                                                                <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                                                                    <h4 class="mb-4" style="color: #2c3e50;">Contact Information</h4>
+
+                                                                    <div class="contact-item mb-4">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div style="width: 50px; height: 50px; background: #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                                                                <i class="fas fa-map-marker-alt" style="color: white;"></i>
+                                                                            </div>
+                                                                            <div>
+                                                                                <h6 class="mb-1" style="color: #2c3e50;">Address</h6>
+                                                                                <p class="mb-0 text-muted">Sheikh Zayed Road, Dubai, UAE</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="contact-item mb-4">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div style="width: 50px; height: 50px; background: #27ae60; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                                                                <i class="fas fa-phone" style="color: white;"></i>
+                                                                            </div>
+                                                                            <div>
+                                                                                <h6 class="mb-1" style="color: #2c3e50;">Phone</h6>
+                                                                                <p class="mb-0 text-muted">+971 4 123 4567</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="contact-item mb-4">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div style="width: 50px; height: 50px; background: #e74c3c; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                                                                <i class="fas fa-envelope" style="color: white;"></i>
+                                                                            </div>
+                                                                            <div>
+                                                                                <h6 class="mb-1" style="color: #2c3e50;">Email</h6>
+                                                                                <p class="mb-0 text-muted">info@techdream.ae</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="contact-item">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div style="width: 50px; height: 50px; background: #f39c12; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                                                                <i class="fas fa-clock" style="color: white;"></i>
+                                                                            </div>
+                                                                            <div>
+                                                                                <h6 class="mb-1" style="color: #2c3e50;">Business Hours</h6>
+                                                                                <p class="mb-0 text-muted">9 AM - 9 PM (Daily)</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Social Media -->
+                                                                <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
+                                                                    <h4 class="mb-4" style="color: #2c3e50;">Follow Us</h4>
+                                                                    <div class="social-media d-flex gap-3">
+                                                                        <a href="#" style="width: 50px; height: 50px; background: #3b5998; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                                                            <i class="fab fa-facebook-f"></i>
+                                                                        </a>
+                                                                        <a href="#" style="width: 50px; height: 50px; background: #E4405F; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                                                            <i class="fab fa-instagram"></i>
+                                                                        </a>
+                                                                        <a href="#" style="width: 50px; height: 50px; background: #1DA1F2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                                                            <i class="fab fa-twitter"></i>
+                                                                        </a>
+                                                                        <a href="#" style="width: 50px; height: 50px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                                                            <i class="fab fa-whatsapp"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </template>
+
+                                        <!-- Enhanced Footer -->
+                                        <template id="techdream_footer" inherit_id="website.layout">
+                                            <xpath expr="//footer" position="replace">
+                                                <footer class="footer">
+                                                    <div class="container">
+                                                        <div class="footer-content">
+                                                            <div class="footer-section">
+                                                                <h4>TechDream Mobile</h4>
+                                                                <p style="color: #bdc3c7; line-height: 1.6;">Your trusted partner for premium smartphones and accessories in the UAE. We bring you the latest technology at competitive prices.</p>
+                                                                <div class="social-links mt-3">
+                                                                    <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
+                                                                        <i class="fab fa-facebook"></i>
+                                                                    </a>
+                                                                    <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
+                                                                        <i class="fab fa-instagram"></i>
+                                                                    </a>
+                                                                    <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
+                                                                        <i class="fab fa-twitter"></i>
+                                                                    </a>
+                                                                    <a href="#" style="color: #bdc3c7; font-size: 18px; margin-right: 15px; transition: color 0.3s;">
+                                                                        <i class="fab fa-whatsapp"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="footer-section">
+                                                                <h4>Quick Links</h4>
+                                                                <ul>
+                                                                    <li>
+                                                                        <a href="/">Home</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/shop">Shop</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/shop/smartphones">Smartphones</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/shop/accessories">Accessories</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/shop/offers">Special Offers</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/contact">Contact Us</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+
+                                                            <div class="footer-section">
+                                                                <h4>Categories</h4>
+                                                                <ul>
+                                                                    <li>
+                                                                        <a href="/shop/category/iphone">iPhone</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/shop/category/samsung">Samsung</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/shop/category/google">Google Pixel</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/shop/category/airpods">AirPods</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/shop/category/smartwatches">Smartwatches</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/shop/category/cases">Cases &amp; Covers</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+
+                                                            <div class="footer-section">
+                                                                <h4>Customer Service</h4>
+                                                                <ul>
+                                                                    <li>
+                                                                        <a href="/my/account">My Account</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/my/orders">Order Tracking</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/shop/cart">Shopping Cart</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/support">Support Center</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/return-policy">Return Policy</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/shipping">Shipping Info</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+
+                                                            <div class="footer-section">
+                                                                <h4>Contact Info</h4>
+                                                                <div style="color: #bdc3c7;">
+                                                                    <p>
+                                                                        <i class="fas fa-map-marker-alt" style="margin-right: 8px; color: #3498db;"></i> Sheikh Zayed Road, Dubai, UAE</p>
+                                                                    <p>
+                                                                        <i class="fas fa-phone" style="margin-right: 8px; color: #3498db;"></i> +971 4 123 4567</p>
+                                                                    <p>
+                                                                        <i class="fas fa-envelope" style="margin-right: 8px; color: #3498db;"></i> info@techdream.ae</p>
+                                                                    <p>
+                                                                        <i class="fas fa-clock" style="margin-right: 8px; color: #3498db;"></i> 9 AM - 9 PM (Daily)</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="footer-bottom">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-md-6">
+                                                                    <p>&copy; 2024 TechDream Mobile. All rights reserved.</p>
+                                                                </div>
+                                                                <div class="col-md-6 text-md-end">
+                                                                    <div class="payment-methods">
+                                                                        <img src="/techdream_theme/static/src/img/visa.png" alt="Visa" style="height: 30px; margin: 0 5px;"/>
+                                                                        <img src="/techdream_theme/static/src/img/mastercard.png" alt="Mastercard" style="height: 30px; margin: 0 5px;"/>
+                                                                        <img src="/techdream_theme/static/src/img/paypal.png" alt="PayPal" style="height: 30px; margin: 0 5px;"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </footer>
+                                            </xpath>
+                                        </template>
+                                    </odoo>

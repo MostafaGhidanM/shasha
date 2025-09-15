@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Cart Page Template -->
+    <template id="cart_page_template" name="Shopping Cart">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb-section">
+                    <div class="container">
+                        <div class="breadcrumb-nav">
+                            <span class="breadcrumb-item">
+                                <a href="/">Home</a>
+                            </span>
+                            <span class="breadcrumb-separator">/</span>
+                            <span class="breadcrumb-item">Shopping Cart</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container py-4">
+                    <h1 class="mb-4" style="font-weight: 700; color: #2c3e50;">Shopping Cart</h1>
+
+                    <t t-if="website_sale_order and website_sale_order.order_line">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="cart-table">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="website_sale_order.order_line" t-as="line">
+                                                <tr t-att-data-line-id="line.id">
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <img t-attf-src="/web/image/product.product/#{line.product_id.id}/image_128" t-att-alt="line.product_id.name" class="cart-item-image me-3"/>
+                                                            <div class="cart-item-details">
+                                                                <h5 t-field="line.product_id.name"/>
+                                                                <p t-if="line.product_id.default_code">
+                                                                    SKU: <span t-field="line.product_id.default_code"/>
+                                                                </p>
+                                                                <t t-if="line.product_template_attribute_value_ids">
+                                                                    <p class="text-muted">
+                                                                        <t t-foreach="line.product_template_attribute_value_ids" t-as="attribute_value">
+                                                                            <span t-field="attribute_value.attribute_id.name"/>
+: 
+                                                                            <span t-field="attribute_value.name"/>
+                                                                            <t t-if="not attribute_value_last">, </t>
+                                                                        </t>
+                                                                    </p>
+                                                                </t>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="font-weight-bold">
+                                                        <span t-field="line.currency_id.symbol"/>
+                                                        <span t-field="line.price_unit" t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="quantity-controls">
+                                                            <button class="qty-btn minus-btn" t-att-data-line-id="line.id">-</button>
+                                                            <input type="number" class="qty-input" t-att-value="line.product_uom_qty" min="1" t-att-data-line-id="line.id"/>
+                                                            <button class="qty-btn plus-btn" t-att-data-line-id="line.id">+</button>
+                                                        </div>
+                                                    </td>
+                                                    <td class="font-weight-bold text-primary">
+                                                        <span t-field="line.currency_id.symbol"/>
+                                                        <span t-field="line.price_subtotal" t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"/>
+                                                    </td>
+                                                    <td>
+                                                        <i class="fas fa-trash remove-item" t-att-data-line-id="line.id" style="cursor: pointer; color: #e74c3c;"></i>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Coupon Section -->
+                                <div class="mt-4 p-3" style="background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                                    <h5 class="mb-3">Have a Coupon Code?</h5>
+                                    <form method="post" action="/shop/cart/update">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <div class="d-flex gap-3">
+                                            <input type="text" name="promo" class="form-control" placeholder="Enter coupon code"/>
+                                            <button type="submit" class="btn btn-primary">Apply</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Continue Shopping -->
+                                <div class="mt-4">
+                                    <a href="/shop" class="btn btn-outline-primary">
+                                        <i class="fas fa-arrow-left"></i> Continue Shopping
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="cart-summary">
+                                    <h4 class="mb-4" style="color: #2c3e50;">Order Summary</h4>
+
+                                    <div class="summary-row">
+                                        <span>Subtotal (<span t-esc="len(website_sale_order.order_line)"/>
+ items)</span>
+                                        <span class="cart-subtotal">
+                                            <span t-field="website_sale_order.currency_id.symbol"/>
+                                            <span t-field="website_sale_order.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                                        </span>
+                                    </div>
+
+                                    <div class="summary-row" t-if="website_sale_order.amount_delivery > 0">
+                                        <span>Shipping</span>
+                                        <span>
+                                            <span t-field="website_sale_order.currency_id.symbol"/>
+                                            <span t-field="website_sale_order.amount_delivery" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                                        </span>
+                                    </div>
+
+                                    <div class="summary-row" t-if="website_sale_order.amount_delivery == 0">
+                                        <span>Shipping</span>
+                                        <span class="text-success">FREE</span>
+                                    </div>
+
+                                    <div class="summary-row" t-if="website_sale_order.amount_tax > 0">
+                                        <span>Tax</span>
+                                        <span>
+                                            <span t-field="website_sale_order.currency_id.symbol"/>
+                                            <span t-field="website_sale_order.amount_tax" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                                        </span>
+                                    </div>
+
+                                    <div class="summary-row">
+                                        <span>Total</span>
+                                        <span class="cart-total">
+                                            <span t-field="website_sale_order.currency_id.symbol"/>
+                                            <span t-field="website_sale_order.amount_total" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                                        </span>
+                                    </div>
+
+                                    <a href="/shop/checkout" class="checkout-btn">Proceed to Checkout</a>
+
+                                    <div class="mt-3 text-center">
+                                        <small class="text-muted">
+                                            <i class="fas fa-shield-alt"></i> Secure Checkout
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Security Features -->
+                                <div class="mt-4 p-3 text-center" style="background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                                    <h6 class="mb-3">We Accept</h6>
+                                    <div class="d-flex justify-content-center gap-3">
+                                        <img src="/techdream_theme/static/src/img/visa.png" alt="Visa" style="height: 30px;"/>
+                                        <img src="/techdream_theme/static/src/img/mastercard.png" alt="Mastercard" style="height: 30px;"/>
+                                        <img src="/techdream_theme/static/src/img/paypal.png" alt="PayPal" style="height: 30px;"/>
+                                    </div>
+                                    <p class="mt-2 text-muted small">Your payment information is secure and encrypted</p>
+                                </div>
+
+                                <!-- Suggested Products -->
+                                <div class="mt-4" t-if="suggested_products">
+                                    <h6 class="mb-3">You might also like</h6>
+                                    <t t-foreach="suggested_products" t-as="suggested_product">
+                                        <div class="d-flex align-items-center mb-3 p-2" style="border: 1px solid #eee; border-radius: 8px;">
+                                            <img t-attf-src="/web/image/product.template/#{suggested_product.id}/image_128" t-att-alt="suggested_product.name" style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;"/>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1" style="font-size: 14px;" t-field="suggested_product.name"/>
+                                                <div class="text-primary font-weight-bold">
+                                                    <span t-field="suggested_product.currency_id.symbol"/>
+                                                    <span t-field="suggested_product.list_price" t-options="{'widget': 'monetary', 'display_currency': suggested_product.currency_id}"/>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-primary add-to-cart-btn" t-att-data-product-id="suggested_product.id">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Empty Cart -->
+                    <div class="text-center py-5" t-if="not website_sale_order or not website_sale_order.order_line">
+                        <div style="font-size: 5rem; color: #bdc3c7; margin-bottom: 2rem;">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>Your cart is empty</h3>
+                        <p class="text-muted mb-4">Looks like you haven't made your choice yet.</p>
+                        <a href="/shop" class="btn btn-primary btn-lg">Start Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Checkout Page Template -->
+    <template id="checkout_page_template" name="Checkout">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container py-4">
+                    <h1 class="mb-4 text-center" style="font-weight: 700; color: #2c3e50;">Checkout</h1>
+
+                    <!-- Checkout Steps -->
+                    <div class="checkout-steps mb-5">
+                        <div class="d-flex justify-content-center">
+                            <div class="checkout-step active">
+                                <div class="step-number">1</div>
+                                <div class="step-label">Shipping</div>
+                            </div>
+                            <div class="step-line"></div>
+                            <div class="checkout-step">
+                                <div class="step-number">2</div>
+                                <div class="step-label">Payment</div>
+                            </div>
+                            <div class="step-line"></div>
+                            <div class="checkout-step">
+                                <div class="step-number">3</div>
+                                <div class="step-label">Review</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="post" action="/shop/checkout" id="checkout-form">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <!-- Shipping Information -->
+                                <div class="checkout-section" style="background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                                    <h4 class="mb-4" style="color: #2c3e50;">Shipping Information</h4>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">First Name *</label>
+                                            <input type="text" name="partner_name" class="form-control" required="true"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Last Name *</label>
+                                            <input type="text" name="partner_name" class="form-control" required="true"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Address *</label>
+                                        <input type="email" name="partner_email" class="form-control" required="true"/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Phone Number *</label>
+                                        <input type="tel" name="partner_phone" class="form-control" required="true"/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Address *</label>
+                                        <input type="text" name="partner_street" class="form-control" placeholder="Street address" required="true"/>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">City *</label>
+                                            <select name="partner_city" class="form-select" required="true">
+                                                <option value="">Select City</option>
+                                                <option value="dubai">Dubai</option>
+                                                <option value="abu-dhabi">Abu Dhabi</option>
+                                                <option value="sharjah">Sharjah</option>
+                                                <option value="ajman">Ajman</option>
+                                                <option value="ras-al-khaimah">Ras Al Khaimah</option>
+                                                <option value="fujairah">Fujairah</option>
+                                                <option value="umm-al-qaiwain">Umm Al Qaiwain</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Postal Code</label>
+                                            <input type="text" name="partner_zip" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Delivery Options -->
+                                <div class="checkout-section" style="background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                                    <h4 class="mb-4" style="color: #2c3e50;">Delivery Options</h4>
+
+                                    <div class="delivery-options">
+                                        <t t-if="shipping_methods">
+                                            <t t-foreach="shipping_methods" t-as="shipping_method">
+                                                <div class="delivery-option mb-3">
+                                                    <input type="radio" name="carrier_id" t-attf-id="shipping_#{shipping_method.id}" t-att-value="shipping_method.id" t-att-checked="'checked' if shipping_method_first else None"/>
+                                                    <label t-attf-for="shipping_#{shipping_method.id}" class="delivery-label">
+                                                        <div class="d-flex justify-content-between">
+                                                            <div>
+                                                                <strong t-field="shipping_method.name"/>
+                                                                <p class="mb-0 text-muted" t-field="shipping_method.website_description"/>
+                                                            </div>
+                                                            <span class="font-weight-bold">
+                                                                <t t-if="shipping_method.fixed_price == 0">
+                                                                    <span class="text-success">FREE</span>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <span t-field="website_sale_order.currency_id.symbol"/>
+                                                                    <span t-field="shipping_method.fixed_price"/>
+                                                                </t>
+                                                            </span>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="delivery-option mb-3">
+                                                <input type="radio" name="carrier_id" id="standard" value="0" checked="checked"/>
+                                                <label for="standard" class="delivery-label">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div>
+                                                            <strong>Standard Delivery</strong>
+                                                            <p class="mb-0 text-muted">3-5 business days</p>
+                                                        </div>
+                                                        <span class="text-success font-weight-bold">FREE</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Method -->
+                                <div class="checkout-section" style="background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                                    <h4 class="mb-4" style="color: #2c3e50;">Payment Method</h4>
+
+                                    <div class="payment-methods">
+                                        <div class="payment-option mb-3">
+                                            <input type="radio" name="payment_method" id="card" value="card" checked="checked"/>
+                                            <label for="card" class="payment-label">
+                                                <i class="fas fa-credit-card me-2"></i>
+                                                Credit/Debit Card
+                                            </label>
+                                        </div>
+
+                                        <div class="payment-option mb-3">
+                                            <input type="radio" name="payment_method" id="paypal" value="paypal"/>
+                                            <label for="paypal" class="payment-label">
+                                                <i class="fab fa-paypal me-2"></i>
+                                                PayPal
+                                            </label>
+                                        </div>
+
+                                        <div class="payment-option">
+                                            <input type="radio" name="payment_method" id="cod" value="cod"/>
+                                            <label for="cod" class="payment-label">
+                                                <i class="fas fa-money-bill-wave me-2"></i>
+                                                Cash on Delivery
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card Details Form -->
+                                    <div id="card-details" class="mt-4">
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label">Card Number</label>
+                                                <input type="text" name="card_number" class="form-control" placeholder="1234 5678 9012 3456"/>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Expiry Date</label>
+                                                <input type="text" name="card_expiry" class="form-control" placeholder="MM/YY"/>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">CVV</label>
+                                                <input type="text" name="card_cvv" class="form-control" placeholder="123"/>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label">Cardholder Name</label>
+                                                <input type="text" name="card_name" class="form-control" placeholder="John Doe"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <!-- Order Summary -->
+                                <div class="order-summary" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: sticky; top: 20px;">
+                                    <h4 class="mb-4" style="color: #2c3e50;">Order Summary</h4>
+
+                                    <!-- Order Items -->
+                                    <div class="order-items mb-4" t-if="website_sale_order">
+                                        <t t-foreach="website_sale_order.order_line" t-as="line">
+                                            <div class="order-item d-flex align-items-center mb-3">
+                                                <img t-attf-src="/web/image/product.product/#{line.product_id.id}/image_128" t-att-alt="line.product_id.name" style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px; margin-right: 15px;"/>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1" t-field="line.product_id.name"/>
+                                                    <small class="text-muted">
+                                                        <t t-if="line.product_template_attribute_value_ids">
+                                                            <t t-foreach="line.product_template_attribute_value_ids" t-as="attr_val">
+                                                                <span t-field="attr_val.name"/>
+                                                                <t t-if="not attr_val_last">, </t>
+                                                            </t>
+                                                        </t>
+                                                    </small>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span>Qty: <span t-field="line.product_uom_qty"/>
+                                                        </span>
+                                                        <span class="font-weight-bold">
+                                                            <span t-field="line.currency_id.symbol"/>
+                                                            <span t-field="line.price_subtotal" t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+
+                                    <!-- Order Totals -->
+                                    <div class="order-totals" t-if="website_sale_order">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Subtotal</span>
+                                            <span>
+                                                <span t-field="website_sale_order.currency_id.symbol"/>
+                                                <span t-field="website_sale_order.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                                            </span>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Shipping</span>
+                                            <span t-if="website_sale_order.amount_delivery > 0">
+                                                <span t-field="website_sale_order.currency_id.symbol"/>
+                                                <span t-field="website_sale_order.amount_delivery" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                                            </span>
+                                            <span t-else="" class="text-success">FREE</span>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between mb-3" t-if="website_sale_order.amount_tax > 0">
+                                            <span>Tax</span>
+                                            <span>
+                                                <span t-field="website_sale_order.currency_id.symbol"/>
+                                                <span t-field="website_sale_order.amount_tax" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                                            </span>
+                                        </div>
+
+                                        <hr/>
+
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <span class="h5 font-weight-bold">Total</span>
+                                            <span class="h5 font-weight-bold text-primary">
+                                                <span t-field="website_sale_order.currency_id.symbol"/>
+                                                <span t-field="website_sale_order.amount_total" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary w-100 py-3 font-weight-bold">
+                                        <i class="fas fa-lock me-2"></i>
+                                        Place Order
+                                    </button>
+
+                                    <div class="mt-3 text-center">
+                                        <small class="text-muted">
+                                            <i class="fas fa-shield-alt me-1"></i>
+                                            Your order is secured with SSL encryption
+                                        </small>
+                                    </div>
+
+                                    <!-- Back to Cart -->
+                                    <div class="mt-3 text-center">
+                                        <a href="/shop/cart" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-arrow-left"></i> Back to Cart
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <style>
+                .checkout-steps .checkout-step {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    opacity: 0.5;
+                }
+                
+                .checkout-steps .checkout-step.active {
+                    opacity: 1;
+                }
+                
+                .checkout-steps .step-number {
+                    width: 40px;
+                    height: 40px;
+                    background: #e9ecef;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+                    margin-bottom: 8px;
+                }
+                
+                .checkout-steps .checkout-step.active .step-number {
+                    background: #3498db;
+                    color: white;
+                }
+                
+                .checkout-steps .step-line {
+                    width: 100px;
+                    height: 2px;
+                    background: #e9ecef;
+                    margin: 20px 0;
+                }
+                
+                .delivery-option, .payment-option {
+                    border: 2px solid #e9ecef;
+                    border-radius: 8px;
+                    padding: 0;
+                    transition: border-color 0.3s;
+                }
+                
+                .delivery-option:has(input:checked), .payment-option:has(input:checked) {
+                    border-color: #3498db;
+                }
+                
+                .delivery-label, .payment-label {
+                    display: block;
+                    padding: 15px;
+                    cursor: pointer;
+                    margin: 0;
+                    width: 100%;
+                }
+                
+                .delivery-option input, .payment-option input {
+                    position: absolute;
+                    opacity: 0;
+                }
+                
+                #card-details {
+                    display: block;
+                } input[name="payment_method"]:not(#card):checked ~ #card-details {
+                    display: none;
+                }
+            </style>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Toggle card details based on payment method
+                    const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
+                    const cardDetails = document.getElementById('card-details');
+                    
+                    paymentMethods.forEach(method => {
+                        method.addEventListener('change', function() {
+                            if (this.value === 'card') {
+                                cardDetails.style.display = 'block';
+                            } else {
+                                cardDetails.style.display = 'none';
+                            }
+                        });
+                    });
+                    
+                    // Form validation
+                    const form = document.getElementById('checkout-form');
+                    form.addEventListener('submit', function(e) {
+                        const requiredFields = form.querySelectorAll('input[required], select[required]');
+                        let isValid = true;
+                        
+                        requiredFields.forEach(field => {
+                            if (!field.value.trim()) {
+                                field.style.borderColor = '#e74c3c';
+                                isValid = false;
+                            } else {
+                                field.style.borderColor = '#ddd';
+                            }
+                        });
+                        
+                        if (!isValid) {
+                            e.preventDefault();
+                            alert('Please fill in all required fields.');
+                        }
+                    });
+                });
+            </script>
+        </t>
+    </template>
+
+    <!-- Order Confirmation Template -->
+    <template id="order_confirmation_template" name="Order Confirmation">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container py-5 text-center">
+                    <div style="font-size: 5rem; color: #27ae60; margin-bottom: 2rem;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+
+                    <h1 class="mb-4" style="color: #2c3e50;">Order Confirmed!</h1>
+
+                    <div class="alert alert-success d-inline-block">
+                        <strong>Order #<span t-field="order.name"/>
+                        </strong> has been successfully placed.
+                    </div>
+
+                    <p class="lead mb-4">
+                        Thank you for your purchase! We've sent a confirmation email to 
+                        <strong t-field="order.partner_id.email"/>
+.
+                    </p>
+
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Order Details</h5>
+                                </div>
+                                <div class="card-body text-left">
+                                    <p>
+                                        <strong>Order Number:</strong>
+                                        <span t-field="order.name"/>
+                                    </p>
+                                    <p>
+                                        <strong>Order Date:</strong>
+                                        <span t-field="order.date_order" t-options="{'widget': 'date'}"/>
+                                    </p>
+                                    <p>
+                                        <strong>Total Amount:</strong>
+                                        <span t-field="order.currency_id.symbol"/>
+                                        <span t-field="order.amount_total" t-options="{'widget': 'monetary', 'display_currency': order.currency_id}"/>
+                                    </p>
+                                    <p>
+                                        <strong>Payment Method:</strong>
+                                        <span t-field="order.payment_term_id.name"/>
+                                    </p>
+                                    <p>
+                                        <strong>Delivery Address:</strong>
+                                        <br/>
+                                        <span t-field="order.partner_shipping_id" t-options="{'widget': 'contact', 'fields': ['name', 'address'], 'no_marker': True}"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="/my/orders" class="btn btn-primary me-3">Track Your Order</a>
+                        <a href="/shop" class="btn btn-outline-primary">Continue Shopping</a>
+                    </div>
+
+                    <div class="mt-5">
+                        <h4>What's Next?</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <div style="font-size: 3rem; color: #3498db; margin-bottom: 1rem;">
+                                        <i class="fas fa-box"></i>
+                                    </div>
+                                    <h6>Order Processing</h6>
+                                    <p class="text-muted">We'll prepare your order within 24 hours</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <div style="font-size: 3rem; color: #f39c12; margin-bottom: 1rem;">
+                                        <i class="fas fa-shipping-fast"></i>
+                                    </div>
+                                    <h6>Shipping</h6>
+                                    <p class="text-muted">Your order will be shipped within 2-3 business days</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <div style="font-size: 3rem; color: #27ae60; margin-bottom: 1rem;">
+                                        <i class="fas fa-home"></i>
+                                    </div>
+                                    <h6>Delivery</h6>
+                                    <p class="text-muted">Receive your order at your doorstep</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Mini Cart Widget -->
+    <template id="mini_cart_widget" name="Mini Cart">
+        <div class="mini-cart-dropdown">
+            <div class="mini-cart-header">
+                <h6>Shopping Cart</h6>
+                <span class="cart-count-badge" t-esc="len(website_sale_order.order_line) if website_sale_order else 0"/>
+            </div>
+
+            <div class="mini-cart-items" t-if="website_sale_order and website_sale_order.order_line">
+                <t t-foreach="website_sale_order.order_line[:3]" t-as="line">
+                    <div class="mini-cart-item">
+                        <img t-attf-src="/web/image/product.product/#{line.product_id.id}/image_128" t-att-alt="line.product_id.name"/>
+                        <div class="item-details">
+                            <h6 t-field="line.product_id.name"/>
+                            <div class="item-price">
+                                <span t-field="line.product_uom_qty"/>
+ × 
+                                <span t-field="line.currency_id.symbol"/>
+                                <span t-field="line.price_unit"/>
+                            </div>
+                        </div>
+                        <button class="remove-mini-item" t-att-data-line-id="line.id">×</button>
+                    </div>
+                </t>
+
+                <div class="mini-cart-total">
+                    <strong>
+                        Total: <span t-field="website_sale_order.currency_id.symbol"/>
+                    <span t-field="website_sale_order.amount_total"/>
+                </strong>
+            </div>
+
+            <div class="mini-cart-actions">
+                <a href="/shop/cart" class="btn btn-outline-primary btn-sm">View Cart</a>
+                <a href="/shop/checkout" class="btn btn-primary btn-sm">Checkout</a>
+            </div>
+        </div>
+
+        <div class="mini-cart-empty" t-if="not website_sale_order or not website_sale_order.order_line">
+            <p>Your cart is empty</p>
+            <a href="/shop" class="btn btn-primary btn-sm">Start Shopping</a>
+        </div>
+    </div>
+</template>
+</odoo>
