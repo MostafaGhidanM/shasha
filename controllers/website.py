@@ -11,32 +11,5 @@ _logger = logging.getLogger(__name__)
 class TechDreamWebsite(Website):
     """Enhanced website controller for TechDream theme"""
 
-    @http.route('/', type='http', auth="public", website=True, sitemap=True)
-    def index(self, **kw):
-        """Enhanced homepage with featured products and categories"""
-
-        # Get featured products
-        featured_products = request.env['product.template'].sudo().search([
-            ('website_published', '=', True),
-            ('sale_ok', '=', True),
-        ], limit=8, order='website_sequence, create_date desc')
-
-        # Get product categories
-        categories = request.env['product.public.category'].sudo().search([
-            ('parent_id', '=', False),
-        ], limit=4, order='sequence, name')
-
-        # Get latest products
-        latest_products = request.env['product.template'].sudo().search([
-            ('website_published', '=', True),
-            ('sale_ok', '=', True),
-        ], limit=4, order='create_date desc')
-
-        values = {
-            'featured_products': featured_products,
-            'categories': categories,
-            'latest_products': latest_products,
-        }
-
-        # Use default homepage for now to avoid conflicts
-        return super().index(**kw)
+    # Remove custom homepage route to avoid conflicts - use Odoo's default
+    pass

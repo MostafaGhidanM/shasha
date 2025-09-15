@@ -34,8 +34,7 @@
         # Security
         'security/ir.model.access.csv',
 
-        # Template files (load first)
-        'views/theme.xml',
+        # Template files (load first) - minimal set to avoid conflicts
         'views/product_card.xml',
         'views/shop_simple.xml',
 

@@ -30,7 +30,7 @@
                                         <li class="category-item">
                                             <a t-attf-href="/shop?category=#{category.id}" class="category-link">
                                                 <span t-field="category.name"/>
-                                                <span class="category-count" t-esc="category.product_count or 0"/>
+                                                <span class="category-count" t-esc="getattr(category, 'product_count', 0) or 0"/>
                                             </a>
                                         </li>
                                     </t>
@@ -62,7 +62,7 @@
                                             <input type="checkbox" class="brand-checkbox" t-attf-id="brand_#{brand.id}" name="brand" t-att-value="brand.id"/>
                                             <label t-attf-for="brand_#{brand.id}" class="brand-label">
                                                 <span t-field="brand.name"/>
- (                                                <span t-esc="brand.product_count or 0"/>
+ (                                                <span t-esc="getattr(brand, 'product_count', 0) or 0"/>
 )
                                             </label>
                                         </div>
