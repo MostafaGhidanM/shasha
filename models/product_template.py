@@ -165,15 +165,14 @@ class ProductTemplate(models.Model):
             else:
                 product.stock_status = 'in_stock'
 
-    def _get_combination_info(self, combination=False, product_id=False, add_qty=1, pricelist=None, parent_combination=False, only_template=False):
+    def _get_combination_info(self, combination=False, product_id=False, add_qty=1, **kwargs):
         """Override to add stock information to combination info"""
+        # Use **kwargs to handle any additional parameters Odoo 17 might pass
         combination_info = super()._get_combination_info(
             combination=combination,
             product_id=product_id,
             add_qty=add_qty,
-            pricelist=pricelist,
-            parent_combination=parent_combination,
-            only_template=only_template
+            **kwargs
         )
 
         # Add stock information

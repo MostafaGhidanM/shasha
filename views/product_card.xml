@@ -1,21 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Very minimal enhancement - just add to the end of the template -->
+        <!-- Safe product card enhancement -->
         <template id="products_item_enhanced" inherit_id="website_sale.products_item">
-            <!-- Add stock status at the end of product item -->
+            <!-- Add CSS styling and stock badge at the end -->
             <xpath expr="." position="inside">
-                <div class="stock-status-badge text-center mt-1">
+                <style>
+                    .oe_product {
+                        border: 1px solid #e9ecef !important;
+                        border-radius: 8px !important;
+                        padding: 15px !important;
+                        margin-bottom: 20px !important;
+                        transition: all 0.3s ease !important;
+                        background: white !important;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+                    }
+                    .oe_product:hover {
+                        transform: translateY(-2px) !important;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+                        border-color: #007bff !important;
+                    }
+                    .oe_product_image {
+                        position: relative !important;
+                        margin-bottom: 10px !important;
+                    }
+                    .stock-status-info {
+                        text-align: center;
+                        margin-top: 8px;
+                        font-size: 0.85em;
+                    }
+                    .quick-actions {
+                        margin-top: 8px;
+                        text-align: center;
+                    }
+                    .quick-actions .btn {
+                        margin: 2px;
+                        font-size: 0.8em;
+                        padding: 4px 8px;
+                    }
+                </style>
+
+                <!-- Stock status information -->
+                <div class="stock-status-info">
                     <t t-set="total_qty" t-value="sum(product.product_variant_ids.mapped('qty_available'))"/>
                     <t t-if="total_qty == 0">
-                        <small><span class="badge bg-danger">Out of Stock</span></small>
+                        <span class="badge bg-danger">Out of Stock</span>
                     </t>
                     <t t-elif="total_qty &lt;= 10">
-                        <small><span class="badge bg-warning text-dark">Low Stock</span></small>
+                        <span class="badge bg-warning text-dark">Low Stock</span>
                     </t>
                     <t t-else="">
-                        <small><span class="badge bg-success">In Stock</span></small>
+                        <span class="badge bg-success">In Stock</span>
                     </t>
+                </div>
+
+                <!-- Quick action buttons -->
+                <div class="quick-actions">
+                    <a t-attf-href="/shop/product/#{slug(product)}" class="btn btn-outline-primary btn-sm">
+                        <i class="fa fa-eye"></i> View Details
+                    </a>
                 </div>
             </xpath>
         </template>
