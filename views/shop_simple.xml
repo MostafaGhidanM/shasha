@@ -1,38 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Enhance the shop page with better filtering -->
-        <template id="shop_enhanced" inherit_id="website_sale.products">
-            <!-- Add brand filter to the sidebar -->
-            <xpath expr="//div[@id='products_grid_before']" position="after">
-                <div class="row mb-3" t-if="brands and brands">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0">Filter by Brand</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <t t-foreach="brands[:6]" t-as="brand">
-                                        <div class="col-md-2 col-sm-4 col-6 mb-2">
-                                            <a t-attf-href="/shop?brand=#{brand.id}"
-                                               class="btn btn-outline-secondary btn-sm w-100"
-                                               t-field="brand.name"/>
-                                        </div>
-                                    </t>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </xpath>
-        </template>
-
-        <!-- Enhance product search with better results -->
-        <template id="search_enhanced" inherit_id="website_sale.search">
-            <xpath expr="//form[@action='/shop']" position="inside">
-                <input type="hidden" name="brand" t-att-value="request.httprequest.args.get('brand', '')"/>
-            </xpath>
-        </template>
+        <!-- Placeholder file - no template modifications to avoid xpath errors -->
     </data>
 </odoo>
