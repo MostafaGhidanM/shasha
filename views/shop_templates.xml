@@ -111,12 +111,8 @@
                             <t t-foreach="products" t-as="product">
                                 <div class="product-card" t-att-data-product-id="product.id">
                                     <div class="product-image">
-                                        <t t-if="product.product_label">
-                                            <span class="product-badge" t-att-class="'product-badge ' + product.product_label" t-field="product.product_label"/>
-                                        </t>
-                                        <t t-if="product.discount_percentage > 0">
-                                            <span class="product-badge sale">-                                                <span t-field="product.discount_percentage"/>
-%</span>
+                                        <t t-if="product.ribbon_id">
+                                            <span class="product-badge" t-field="product.ribbon_id.html_class" t-field="product.ribbon_id.name"/>
                                         </t>
                                         <a t-attf-href="/shop/product/#{slug(product)}">
                                             <img t-attf-src="/web/image/product.template/#{product.id}/image_1024" t-att-alt="product.name" loading="lazy"/>
@@ -134,9 +130,6 @@
                                         <h3 class="product-title">
                                             <a t-attf-href="/shop/product/#{slug(product)}" t-field="product.name"/>
                                         </h3>
-                                        <div class="product-brand" t-if="product.brand_id">
-                                            <small class="text-muted" t-field="product.brand_id.name"/>
-                                        </div>
                                         <div class="product-rating">
                                             <div class="stars">
                                                 <i class="fas fa-star"></i>
@@ -150,7 +143,7 @@
                                         <div class="product-price">
                                             <span class="currency" t-field="product.currency_id.symbol"/>
                                             <span class="price" t-field="product.list_price" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
-                                            <t t-if="product.compare_list_price > product.list_price">
+                                            <t t-if="product.compare_list_price and product.compare_list_price > product.list_price">
                                                 <span class="old-price">
                                                     <span t-field="product.currency_id.symbol"/>
                                                     <span t-field="product.compare_list_price" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
@@ -218,7 +211,27 @@
  products</p>
 
                 <div class="products-grid" t-if="products">
-                    <!-- Same product grid as shop page -->
+                    <t t-foreach="products" t-as="product">
+                        <div class="product-card" t-att-data-product-id="product.id">
+                            <div class="product-image">
+                                <a t-attf-href="/shop/product/#{slug(product)}">
+                                    <img t-attf-src="/web/image/product.template/#{product.id}/image_1024" t-att-alt="product.name" loading="lazy"/>
+                                </a>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">
+                                    <a t-attf-href="/shop/product/#{slug(product)}" t-field="product.name"/>
+                                </h3>
+                                <div class="product-price">
+                                    <span t-field="product.currency_id.symbol"/>
+                                    <span t-field="product.list_price" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
+                                </div>
+                                <button class="add-to-cart-btn" t-att-data-product-id="product.id">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </t>
                 </div>
 
                 <div class="text-center py-5" t-if="not products">

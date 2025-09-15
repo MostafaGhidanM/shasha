@@ -51,12 +51,6 @@
                                 <div class="product-details">
                                     <h1 t-field="product.name"/>
 
-                                    <div class="product-brand mb-2" t-if="product.brand_id">
-                                        <span class="badge badge-secondary">
-                                            <span t-field="product.brand_id.name"/>
-                                        </span>
-                                    </div>
-
                                     <div class="product-rating mb-3">
                                         <div class="stars">
                                             <i class="fas fa-star"></i>
@@ -72,14 +66,10 @@
                                     <div class="price">
                                         <span t-field="product.currency_id.symbol"/>
                                         <span t-field="product.list_price" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
-                                        <t t-if="product.compare_list_price > product.list_price">
+                                        <t t-if="product.compare_list_price and product.compare_list_price > product.list_price">
                                             <span class="old-price" style="font-size: 20px;">
                                                 <span t-field="product.currency_id.symbol"/>
                                                 <span t-field="product.compare_list_price" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
-                                            </span>
-                                            <span class="discount-badge">
-                                                Save <span t-field="product.discount_percentage"/>
-%
                                             </span>
                                         </t>
                                     </div>
@@ -89,7 +79,7 @@
                                     </div>
 
                                     <!-- Product Options -->
-                                    <div class="product-options" t-if="product.product_template_attribute_value_ids">
+                                    <div class="product-options" t-if="product.attribute_line_ids">
                                         <t t-foreach="product.attribute_line_ids" t-as="attribute_line">
                                             <div class="option-group">
                                                 <label class="option-label" t-field="attribute_line.attribute_id.name"/>
@@ -185,171 +175,160 @@
 
                             <div id="specifications" class="tab-content" style="display: none;">
                                 <h4>Technical Specifications</h4>
-                                <div t-field="product.technical_specs" t-if="product.technical_specs"/>
-                                <div t-if="not product.technical_specs">
-                                    <table class="table table-striped">
-                                        <tr>
-                                            <td>
-                                                <strong>Brand:</strong>
-                                            </td>
-                                            <td t-field="product.brand_id.name"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
+                                <table class="table table-striped">
+                                    <tr t-if="product.default_code">
                                         <td>
                                             <strong>Model:</strong>
                                         </td>
                                         <td t-field="product.default_code"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>Weight:</strong>
-                                    </td>
-                                    <td>TBD</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>Dimensions:</strong>
-                                    </td>
-                                    <td>TBD</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>Warranty:</strong>
-                                    </td>
-                                    <td>1 Year International Warranty</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Weight:</strong>
+                                        </td>
+                                        <td>TBD</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Dimensions:</strong>
+                                        </td>
+                                        <td>TBD</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Warranty:</strong>
+                                        </td>
+                                        <td>1 Year International Warranty</td>
+                                    </tr>
+                                </table>
+                            </div>
 
-                    <div id="reviews" class="tab-content" style="display: none;">
-                        <h4>Customer Reviews</h4>
-                        <div class="review-summary mb-4">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="text-center">
-                                        <div style="font-size: 3rem; font-weight: 700; color: #f39c12;">4.8</div>
+                            <div id="reviews" class="tab-content" style="display: none;">
+                                <h4>Customer Reviews</h4>
+                                <div class="review-summary mb-4">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="text-center">
+                                                <div style="font-size: 3rem; font-weight: 700; color: #f39c12;">4.8</div>
+                                                <div class="stars mb-2">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                                <p>Based on 24 reviews</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="rating-breakdown">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <span class="me-2">5 stars</span>
+                                                    <div class="progress flex-grow-1 me-2">
+                                                        <div class="progress-bar bg-warning" style="width: 80%"></div>
+                                                    </div>
+                                                    <span>20</span>
+                                                </div>
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <span class="me-2">4 stars</span>
+                                                    <div class="progress flex-grow-1 me-2">
+                                                        <div class="progress-bar bg-warning" style="width: 15%"></div>
+                                                    </div>
+                                                    <span>3</span>
+                                                </div>
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <span class="me-2">3 stars</span>
+                                                    <div class="progress flex-grow-1 me-2">
+                                                        <div class="progress-bar bg-warning" style="width: 5%"></div>
+                                                    </div>
+                                                    <span>1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="reviews-list">
+                                    <div class="review-item mb-4 p-3" style="border: 1px solid #eee; border-radius: 8px;">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <strong>Ahmed Al-Rashid</strong>
+                                            <span class="text-muted">2 days ago</span>
+                                        </div>
                                         <div class="stars mb-2">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
+                                            <i class="fas fa-star text-warning"></i>
                                         </div>
-                                        <p>Based on 24 reviews</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="rating-breakdown">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <span class="me-2">5 stars</span>
-                                            <div class="progress flex-grow-1 me-2">
-                                                <div class="progress-bar bg-warning" style="width: 80%"></div>
-                                            </div>
-                                            <span>20</span>
-                                        </div>
-                                        <div class="d-flex align-items-center mb-2">
-                                            <span class="me-2">4 stars</span>
-                                            <div class="progress flex-grow-1 me-2">
-                                                <div class="progress-bar bg-warning" style="width: 15%"></div>
-                                            </div>
-                                            <span>3</span>
-                                        </div>
-                                        <div class="d-flex align-items-center mb-2">
-                                            <span class="me-2">3 stars</span>
-                                            <div class="progress flex-grow-1 me-2">
-                                                <div class="progress-bar bg-warning" style="width: 5%"></div>
-                                            </div>
-                                            <span>1</span>
-                                        </div>
+                                        <p>Excellent product! Quality is outstanding and delivery was fast. Highly recommended!</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="reviews-list">
-                            <div class="review-item mb-4 p-3" style="border: 1px solid #eee; border-radius: 8px;">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <strong>Ahmed Al-Rashid</strong>
-                                    <span class="text-muted">2 days ago</span>
+                            <div id="shipping" class="tab-content" style="display: none;">
+                                <h4>Shipping Information</h4>
+                                <div class="shipping-options">
+                                    <div class="shipping-option mb-3 p-3" style="border: 1px solid #eee; border-radius: 8px;">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <strong>Free Standard Delivery</strong>
+                                                <p class="mb-0 text-muted">3-5 business days within UAE</p>
+                                            </div>
+                                            <span class="text-success fw-bold">FREE</span>
+                                        </div>
+                                    </div>
+                                    <div class="shipping-option mb-3 p-3" style="border: 1px solid #eee; border-radius: 8px;">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <strong>Express Delivery</strong>
+                                                <p class="mb-0 text-muted">Next day delivery in Dubai &amp; Abu Dhabi</p>
+                                            </div>
+                                            <span class="fw-bold">AED 25</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="stars mb-2">
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                </div>
-                                <p>Excellent product! Quality is outstanding and delivery was fast. Highly recommended!</p>
+
+                                <h5 class="mt-4">Return Policy</h5>
+                                <ul>
+                                    <li>14-day return policy for unopened items</li>
+                                    <li>Free returns for defective products</li>
+                                    <li>Original packaging required</li>
+                                    <li>Refund processed within 5-7 business days</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
 
-                    <div id="shipping" class="tab-content" style="display: none;">
-                        <h4>Shipping Information</h4>
-                        <div class="shipping-options">
-                            <div class="shipping-option mb-3 p-3" style="border: 1px solid #eee; border-radius: 8px;">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <strong>Free Standard Delivery</strong>
-                                        <p class="mb-0 text-muted">3-5 business days within UAE</p>
+                    <!-- Related Products -->
+                    <section class="mt-5" t-if="related_products">
+                        <h2 class="mb-4" style="font-weight: 700; color: #2c3e50;">Related Products</h2>
+                        <div class="products-grid">
+                            <t t-foreach="related_products" t-as="related_product">
+                                <div class="product-card">
+                                    <div class="product-image">
+                                        <a t-attf-href="/shop/product/#{slug(related_product)}">
+                                            <img t-attf-src="/web/image/product.template/#{related_product.id}/image_512" t-att-alt="related_product.name"/>
+                                        </a>
                                     </div>
-                                    <span class="text-success font-weight-bold">FREE</span>
-                                </div>
-                            </div>
-                            <div class="shipping-option mb-3 p-3" style="border: 1px solid #eee; border-radius: 8px;">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <strong>Express Delivery</strong>
-                                        <p class="mb-0 text-muted">Next day delivery in Dubai &amp; Abu Dhabi</p>
+                                    <div class="product-info">
+                                        <h3 class="product-title">
+                                            <a t-attf-href="/shop/product/#{slug(related_product)}" t-field="related_product.name"/>
+                                        </h3>
+                                        <div class="product-price">
+                                            <span t-field="related_product.currency_id.symbol"/>
+                                            <span t-field="related_product.list_price" t-options="{'widget': 'monetary', 'display_currency': related_product.currency_id}"/>
+                                        </div>
+                                        <button class="add-to-cart-btn" t-att-data-product-id="related_product.id">Add to Cart</button>
                                     </div>
-                                    <span class="font-weight-bold">AED 25</span>
                                 </div>
-                            </div>
+                            </t>
                         </div>
-
-                        <h5 class="mt-4">Return Policy</h5>
-                        <ul>
-                            <li>14-day return policy for unopened items</li>
-                            <li>Free returns for defective products</li>
-                            <li>Original packaging required</li>
-                            <li>Refund processed within 5-7 business days</li>
-                        </ul>
-                    </div>
+                    </section>
                 </div>
             </div>
 
-            <!-- Related Products -->
-            <section class="mt-5" t-if="related_products">
-                <h2 class="mb-4" style="font-weight: 700; color: #2c3e50;">Related Products</h2>
-                <div class="products-grid">
-                    <t t-foreach="related_products" t-as="related_product">
-                        <div class="product-card">
-                            <div class="product-image">
-                                <a t-attf-href="/shop/product/#{slug(related_product)}">
-                                    <img t-attf-src="/web/image/product.template/#{related_product.id}/image_512" t-att-alt="related_product.name"/>
-                                </a>
-                            </div>
-                            <div class="product-info">
-                                <h3 class="product-title">
-                                    <a t-attf-href="/shop/product/#{slug(related_product)}" t-field="related_product.name"/>
-                                </h3>
-                                <div class="product-price">
-                                    <span t-field="related_product.currency_id.symbol"/>
-                                    <span t-field="related_product.list_price" t-options="{'widget': 'monetary', 'display_currency': related_product.currency_id}"/>
-                                </div>
-                                <button class="add-to-cart-btn" t-att-data-product-id="related_product.id">Add to Cart</button>
-                            </div>
-                        </div>
-                    </t>
-                </div>
-            </section>
-        </div>
-    </div>
-
-    <script>
+            <script>
                 function changeMainImage(thumbnail) {
                     document.getElementById('mainImage').src = thumbnail.src;
                     document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
@@ -374,34 +353,34 @@
                         qtyInput.value = parseInt(qtyInput.value) - 1;
                     }
                 }
-    </script>
-</t>
-</template>
+            </script>
+        </t>
+    </template>
 
-<!-- Product Quick View Modal -->
-<template id="product_quick_view_modal" name="Product Quick View">
-<div class="modal fade" id="quickViewModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Quick View</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <img id="quickViewImage" src="" alt="" class="img-fluid"/>
+    <!-- Product Quick View Modal -->
+    <template id="product_quick_view_modal" name="Product Quick View">
+        <div class="modal fade" id="quickViewModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Quick View</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="col-md-6">
-                        <h4 id="quickViewTitle"></h4>
-                        <div id="quickViewPrice" class="h5 text-primary"></div>
-                        <div id="quickViewDescription" class="mb-3"></div>
-                        <button id="quickViewAddToCart" class="btn btn-primary">Add to Cart</button>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img id="quickViewImage" src="" alt="" class="img-fluid"/>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 id="quickViewTitle"></h4>
+                                <div id="quickViewPrice" class="h5 text-primary"></div>
+                                <div id="quickViewDescription" class="mb-3"></div>
+                                <button id="quickViewAddToCart" class="btn btn-primary">Add to Cart</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-</template>
+    </template>
 </odoo>

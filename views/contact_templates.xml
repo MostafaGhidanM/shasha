@@ -36,12 +36,12 @@
                             <div class="alert alert-success alert-dismissible fade show" t-if="success">
                                 <i class="fas fa-check-circle me-2"></i>
                                 Thank you for your message! We'll get back to you within 24 hours.
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                             <div class="alert alert-danger alert-dismissible fade show" t-if="error">
                                 <i class="fas fa-exclamation-triangle me-2"></i>
                                 There was an error sending your message. Please try again or contact us directly.
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         </div>
                     </div>
@@ -217,19 +217,19 @@ Dubai, UAE</p>
                             <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
                                 <h4 class="mb-4" style="color: #2c3e50;">Follow Us</h4>
                                 <div class="social-media d-flex gap-3">
-                                    <a href="https://facebook.com/techdream" target="_blank" style="width: 50px; height: 50px; background: #3b5998; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                    <a href="https://facebook.com/techdream" target="_blank" style="width: 50px; height: 50px; background: #3b5998; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;" rel="noopener">
                                         <i class="fab fa-facebook-f"></i>
                                     </a>
-                                    <a href="https://instagram.com/techdream" target="_blank" style="width: 50px; height: 50px; background: #E4405F; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                    <a href="https://instagram.com/techdream" target="_blank" style="width: 50px; height: 50px; background: #E4405F; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;" rel="noopener">
                                         <i class="fab fa-instagram"></i>
                                     </a>
-                                    <a href="https://twitter.com/techdream" target="_blank" style="width: 50px; height: 50px; background: #1DA1F2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                    <a href="https://twitter.com/techdream" target="_blank" style="width: 50px; height: 50px; background: #1DA1F2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;" rel="noopener">
                                         <i class="fab fa-twitter"></i>
                                     </a>
-                                    <a href="https://linkedin.com/company/techdream" target="_blank" style="width: 50px; height: 50px; background: #0077B5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                    <a href="https://linkedin.com/company/techdream" target="_blank" style="width: 50px; height: 50px; background: #0077B5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;" rel="noopener">
                                         <i class="fab fa-linkedin-in"></i>
                                     </a>
-                                    <a href="https://youtube.com/techdream" target="_blank" style="width: 50px; height: 50px; background: #FF0000; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;">
+                                    <a href="https://youtube.com/techdream" target="_blank" style="width: 50px; height: 50px; background: #FF0000; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none;" rel="noopener">
                                         <i class="fab fa-youtube"></i>
                                     </a>
                                 </div>
@@ -252,11 +252,11 @@ Dubai, UAE</p>
                                     <div class="accordion" id="faqAccordion1">
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="faq1">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
                                                     What is your return policy?
                                                 </button>
                                             </h2>
-                                            <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion1">
+                                            <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#faqAccordion1">
                                                 <div class="accordion-body">
                                                     We offer a 14-day return policy for unopened items in original packaging. Items must be returned in new condition with all accessories and documentation.
                                                 </div>
@@ -265,11 +265,11 @@ Dubai, UAE</p>
 
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="faq2">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
                                                     Do you offer warranty on products?
                                                 </button>
                                             </h2>
-                                            <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion1">
+                                            <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion1">
                                                 <div class="accordion-body">
                                                     Yes, all our products come with manufacturer warranty. Most smartphones have 1-2 year international warranty, and accessories typically have 6-12 months warranty.
                                                 </div>
@@ -278,11 +278,11 @@ Dubai, UAE</p>
 
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="faq3">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
                                                     What payment methods do you accept?
                                                 </button>
                                             </h2>
-                                            <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion1">
+                                            <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion1">
                                                 <div class="accordion-body">
                                                     We accept Visa, Mastercard, PayPal, and Cash on Delivery. All online payments are processed securely through encrypted payment gateways.
                                                 </div>
@@ -295,11 +295,11 @@ Dubai, UAE</p>
                                     <div class="accordion" id="faqAccordion2">
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="faq4">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
                                                     How long does delivery take?
                                                 </button>
                                             </h2>
-                                            <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion2">
+                                            <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion2">
                                                 <div class="accordion-body">
                                                     Standard delivery takes 3-5 business days within UAE. Express delivery (1-2 days) and same-day delivery are available in Dubai and Abu Dhabi for an additional fee.
                                                 </div>
@@ -308,11 +308,11 @@ Dubai, UAE</p>
 
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="faq5">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
                                                     Do you have a physical store?
                                                 </button>
                                             </h2>
-                                            <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion2">
+                                            <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="faq5" data-bs-parent="#faqAccordion2">
                                                 <div class="accordion-body">
                                                     Yes, we have showrooms in Dubai and Abu Dhabi. You can visit us to see products in person, get technical support, or collect your online orders.
                                                 </div>
@@ -321,11 +321,11 @@ Dubai, UAE</p>
 
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="faq6">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
                                                     Do you offer bulk discounts?
                                                 </button>
                                             </h2>
-                                            <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion2">
+                                            <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="faq6" data-bs-parent="#faqAccordion2">
                                                 <div class="accordion-body">
                                                     Yes, we offer special pricing for bulk orders, corporate purchases, and educational institutions. Contact us with your requirements for a custom quote.
                                                 </div>
@@ -344,7 +344,7 @@ Dubai, UAE</p>
                             <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
                                 <div class="row">
                                     <div class="col-lg-8">
-                                        <!-- Google Maps Embed -->
+                                        <!-- Google Maps Placeholder -->
                                         <div style="width: 100%; height: 400px; background: #f8f9fa; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                                             <div class="text-center">
                                                 <i class="fas fa-map-marked-alt" style="font-size: 3rem; color: #bdc3c7; margin-bottom: 1rem;"></i>
@@ -361,7 +361,8 @@ Dubai, UAE</p>
                                             <p class="mb-1">Level 2, Dubai Mall</p>
                                             <p class="mb-1">Downtown Dubai, UAE</p>
                                             <p class="mb-1">
-                                                <i class="fas fa-phone"></i> +971 4 123 4567</p>
+                                                <i class="fas fa-phone"></i> +971 4 123 4567
+                                            </p>
                                             <p class="text-muted">Open: 10 AM - 12 AM</p>
                                         </div>
 
@@ -370,7 +371,8 @@ Dubai, UAE</p>
                                             <p class="mb-1">Shop 15, Marina Walk</p>
                                             <p class="mb-1">Dubai Marina, UAE</p>
                                             <p class="mb-1">
-                                                <i class="fas fa-phone"></i> +971 4 234 5678</p>
+                                                <i class="fas fa-phone"></i> +971 4 234 5678
+                                            </p>
                                             <p class="text-muted">Open: 9 AM - 11 PM</p>
                                         </div>
 
@@ -393,13 +395,13 @@ Dubai, UAE</p>
                     const form = document.getElementById('contact-form');
                     const submitBtn = form.querySelector('button[type="submit"]');
                     
-                    form.addEventListener('submit', function(e) {
-                        // Show loading state
-                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-                        submitBtn.disabled = true;
-                        
-                        // Form will submit normally, this just provides visual feedback
-                    });
+                    if (form &amp;&amp; submitBtn) {
+                        form.addEventListener('submit', function(e) {
+                            // Show loading state
+                            submitBtn.innerHTML = '&lt;i class="fas fa-spinner fa-spin me-2"&gt;&lt;/i&gt;Sending...';
+                            submitBtn.disabled = true;
+                        });
+                    }
                     
                     // Phone number formatting
                     const phoneInput = form.querySelector('input[name="phone"]');
@@ -417,7 +419,6 @@ Dubai, UAE</p>
                 });
                 
                 function startLiveChat() {
-                    // Integrate with your live chat system
                     alert('Live chat will be available soon! Please use WhatsApp or call us for immediate support.');
                 }
             </script>
@@ -436,11 +437,14 @@ Dubai, UAE</p>
                             <div class="store-card" style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
                                 <h4 class="text-primary">Dubai Mall Store</h4>
                                 <p>
-                                    <i class="fas fa-map-marker-alt text-danger"></i> Level 2, Dubai Mall, Downtown Dubai</p>
+                                    <i class="fas fa-map-marker-alt text-danger"></i> Level 2, Dubai Mall, Downtown Dubai
+                                </p>
                                 <p>
-                                    <i class="fas fa-phone text-success"></i> +971 4 123 4567</p>
+                                    <i class="fas fa-phone text-success"></i> +971 4 123 4567
+                                </p>
                                 <p>
-                                    <i class="fas fa-clock text-warning"></i> 10 AM - 12 AM (Daily)</p>
+                                    <i class="fas fa-clock text-warning"></i> 10 AM - 12 AM (Daily)
+                                </p>
                                 <div class="mt-3">
                                     <span class="badge bg-success">Largest Store</span>
                                     <span class="badge bg-info">Service Center</span>
@@ -456,11 +460,14 @@ Dubai, UAE</p>
                             <div class="store-card" style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
                                 <h4 class="text-primary">Marina Walk Store</h4>
                                 <p>
-                                    <i class="fas fa-map-marker-alt text-danger"></i> Shop 15, Marina Walk, Dubai Marina</p>
+                                    <i class="fas fa-map-marker-alt text-danger"></i> Shop 15, Marina Walk, Dubai Marina
+                                </p>
                                 <p>
-                                    <i class="fas fa-phone text-success"></i> +971 4 234 5678</p>
+                                    <i class="fas fa-phone text-success"></i> +971 4 234 5678
+                                </p>
                                 <p>
-                                    <i class="fas fa-clock text-warning"></i> 9 AM - 11 PM (Daily)</p>
+                                    <i class="fas fa-clock text-warning"></i> 9 AM - 11 PM (Daily)
+                                </p>
                                 <div class="mt-3">
                                     <span class="badge bg-primary">Waterfront</span>
                                     <span class="badge bg-info">Accessories Hub</span>
@@ -476,11 +483,14 @@ Dubai, UAE</p>
                             <div class="store-card" style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
                                 <h4 class="text-primary">Abu Dhabi Store</h4>
                                 <p>
-                                    <i class="fas fa-map-marker-alt text-danger"></i> Yas Mall, Yas Island, Abu Dhabi</p>
+                                    <i class="fas fa-map-marker-alt text-danger"></i> Yas Mall, Yas Island, Abu Dhabi
+                                </p>
                                 <p>
-                                    <i class="fas fa-phone text-success"></i> +971 2 345 6789</p>
+                                    <i class="fas fa-phone text-success"></i> +971 2 345 6789
+                                </p>
                                 <p>
-                                    <i class="fas fa-clock text-warning"></i> 10 AM - 10 PM (Daily)</p>
+                                    <i class="fas fa-clock text-warning"></i> 10 AM - 10 PM (Daily)
+                                </p>
                                 <div class="mt-3">
                                     <span class="badge bg-warning">New Store</span>
                                     <span class="badge bg-info">Gaming Zone</span>
