@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Main Theme Template -->
+    <data>
+        <!-- Main Theme Template -->
     <template id="techdream_professional_theme" inherit_id="website.layout">
         <xpath expr="//head" position="inside">
             <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -1333,4 +1334,5 @@
             </footer>
         </xpath>
     </template>
+    </data>
 </odoo>

@@ -34,13 +34,7 @@
         # Security
         'security/ir.model.access.csv',
 
-        # Data files
-        'data/product_categories.xml',
-        'data/sample_products.xml',
-        'data/website_data.xml',
-        'data/email_templates.xml',
-
-        # Template files
+        # Template files (load first)
         'views/theme.xml',
         'views/shop_templates.xml',
         'views/product_templates.xml',
@@ -49,6 +43,12 @@
         'views/comparison_templates.xml',
         'views/wishlist_templates.xml',
         'views/backend_views.xml',
+
+        # Data files (load after templates)
+        'data/product_categories.xml',
+        'data/sample_products.xml',
+        'data/email_templates.xml',
+        'data/website_data.xml',
     ],
     'assets': {
         'web.assets_frontend': [

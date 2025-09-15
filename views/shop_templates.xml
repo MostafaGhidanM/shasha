@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <data>
     <!-- Shop Page Template -->
     <template id="shop_page_template" name="Shop Page">
         <t t-call="website.layout">
@@ -252,4 +253,5 @@
         </div>
     </t>
 </template>
+    </data>
 </odoo>

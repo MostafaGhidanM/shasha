@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Contact Page Template -->
+    <data>
+        <!-- Contact Page Template -->
     <template id="contact_page_template" name="Contact Us">
         <t t-call="website.layout">
             <div id="wrap">
@@ -506,4 +507,5 @@ Dubai, UAE</p>
             </div>
         </t>
     </template>
+    </data>
 </odoo>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <data>
     <!-- Cart Page Template -->
     <template id="cart_page_template" name="Shopping Cart">
         <t t-call="website.layout">
@@ -587,4 +588,5 @@
         </div>
     </div>
 </template>
+    </data>
 </odoo>
