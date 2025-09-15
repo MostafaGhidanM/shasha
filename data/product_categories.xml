@@ -2,98 +2,73 @@
 <odoo>
     <data noupdate="1">
 
-        <!-- Product Categories -->
+        <!-- Product Categories - Using only core fields -->
         <record id="category_smartphones" model="product.public.category">
             <field name="name">Smartphones</field>
-            <field name="is_published" eval="True"/>
             <field name="sequence">1</field>
         </record>
 
         <record id="category_iphone" model="product.public.category">
             <field name="name">iPhone</field>
             <field name="parent_id" ref="category_smartphones"/>
-            <field name="is_published" eval="True"/>
             <field name="sequence">1</field>
         </record>
 
         <record id="category_samsung" model="product.public.category">
             <field name="name">Samsung</field>
             <field name="parent_id" ref="category_smartphones"/>
-            <field name="is_published" eval="True"/>
             <field name="sequence">2</field>
         </record>
 
         <record id="category_google" model="product.public.category">
             <field name="name">Google Pixel</field>
             <field name="parent_id" ref="category_smartphones"/>
-            <field name="is_published" eval="True"/>
             <field name="sequence">3</field>
         </record>
 
         <record id="category_accessories" model="product.public.category">
             <field name="name">Accessories</field>
-            <field name="is_published" eval="True"/>
             <field name="sequence">2</field>
         </record>
 
         <record id="category_cases" model="product.public.category">
             <field name="name">Cases &amp; Covers</field>
             <field name="parent_id" ref="category_accessories"/>
-            <field name="is_published" eval="True"/>
             <field name="sequence">1</field>
         </record>
 
         <record id="category_chargers" model="product.public.category">
             <field name="name">Chargers</field>
             <field name="parent_id" ref="category_accessories"/>
-            <field name="is_published" eval="True"/>
             <field name="sequence">2</field>
         </record>
 
         <record id="category_cables" model="product.public.category">
             <field name="name">Cables</field>
             <field name="parent_id" ref="category_accessories"/>
-            <field name="is_published" eval="True"/>
             <field name="sequence">3</field>
         </record>
 
         <record id="category_audio" model="product.public.category">
             <field name="name">Audio</field>
-            <field name="is_published" eval="True"/>
             <field name="sequence">3</field>
         </record>
 
         <record id="category_airpods" model="product.public.category">
             <field name="name">AirPods</field>
             <field name="parent_id" ref="category_audio"/>
-            <field name="is_published" eval="True"/>
             <field name="sequence">1</field>
         </record>
 
         <record id="category_headphones" model="product.public.category">
             <field name="name">Headphones</field>
             <field name="parent_id" ref="category_audio"/>
-            <field name="is_published" eval="True"/>
             <field name="sequence">2</field>
         </record>
 
         <record id="category_smartwatches" model="product.public.category">
             <field name="name">Smartwatches</field>
-            <field name="is_published" eval="True"/>
             <field name="sequence">4</field>
-        </record>
-
-        <!-- Product Brands (only if product_brand module is installed) -->
-        <record id="brand_apple" model="product.brand" forcecreate="False">
-            <field name="name">Apple</field>
-        </record>
-
-        <record id="brand_samsung" model="product.brand" forcecreate="False">
-            <field name="name">Samsung</field>
-        </record>
-
-        <record id="brand_google" model="product.brand" forcecreate="False">
-            <field name="name">Google</field>
         </record>
 
     </data>

@@ -2,7 +2,7 @@
 <odoo>
     <data noupdate="1">
 
-        <!-- Sample Products -->
+        <!-- Sample Products - Using only core fields -->
         <record id="product_iphone_15_pro_max" model="product.template">
             <field name="name">iPhone 15 Pro Max</field>
             <field name="description_sale">The iPhone 15 Pro Max features a stunning titanium design, the powerful A17 Pro chip, and an advanced camera system with 5x telephoto zoom.</field>
@@ -11,7 +11,6 @@
             <field name="type">product</field>
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="public_categ_ids" eval="[(6, 0, [ref('category_iphone')])]"/>
-            <field name="is_published" eval="True"/>
             <field name="sale_ok" eval="True"/>
             <field name="purchase_ok" eval="True"/>
             <field name="website_sequence">1</field>
@@ -27,7 +26,6 @@
             <field name="type">product</field>
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="public_categ_ids" eval="[(6, 0, [ref('category_iphone')])]"/>
-            <field name="is_published" eval="True"/>
             <field name="sale_ok" eval="True"/>
             <field name="purchase_ok" eval="True"/>
             <field name="website_sequence">2</field>
@@ -43,7 +41,6 @@
             <field name="type">product</field>
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="public_categ_ids" eval="[(6, 0, [ref('category_samsung')])]"/>
-            <field name="is_published" eval="True"/>
             <field name="sale_ok" eval="True"/>
             <field name="purchase_ok" eval="True"/>
             <field name="website_sequence">3</field>
@@ -58,7 +55,6 @@
             <field name="type">product</field>
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="public_categ_ids" eval="[(6, 0, [ref('category_airpods')])]"/>
-            <field name="is_published" eval="True"/>
             <field name="sale_ok" eval="True"/>
             <field name="purchase_ok" eval="True"/>
             <field name="website_sequence">4</field>
@@ -73,7 +69,6 @@
             <field name="type">product</field>
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="public_categ_ids" eval="[(6, 0, [ref('category_smartwatches')])]"/>
-            <field name="is_published" eval="True"/>
             <field name="sale_ok" eval="True"/>
             <field name="purchase_ok" eval="True"/>
             <field name="website_sequence">5</field>
@@ -88,7 +83,6 @@
             <field name="type">product</field>
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="public_categ_ids" eval="[(6, 0, [ref('category_cases')])]"/>
-            <field name="is_published" eval="True"/>
             <field name="sale_ok" eval="True"/>
             <field name="purchase_ok" eval="True"/>
             <field name="website_sequence">6</field>
@@ -149,7 +143,6 @@
             <field name="name">Standard Delivery</field>
             <field name="delivery_type">fixed</field>
             <field name="fixed_price">0.0</field>
-            <field name="is_published" eval="True"/>
             <field name="sequence">1</field>
         </record>
 
@@ -157,7 +150,6 @@
             <field name="name">Express Delivery</field>
             <field name="delivery_type">fixed</field>
             <field name="fixed_price">25.0</field>
-            <field name="is_published" eval="True"/>
             <field name="sequence">2</field>
         </record>
 
@@ -165,7 +157,6 @@
             <field name="name">Same Day Delivery</field>
             <field name="delivery_type">fixed</field>
             <field name="fixed_price">50.0</field>
-            <field name="is_published" eval="True"/>
             <field name="sequence">3</field>
         </record>
 
