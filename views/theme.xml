@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="techdream_professional_theme" inherit_id="website.layout">
+        <xpath expr="//head" position="inside">
+            <style>
+                /* Professional Header */
+                .o_main_header, .navbar-light {
+                    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%) !important;
+                    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+                    padding: 0.5rem 0;
+                }
+                
+                .o_main_header .navbar-brand {
+                    color: white !important;
+                    font-weight: 700;
+                    font-size: 1.8rem;
+                    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+                }
+                
+                .navbar-nav .nav-link {
+                    color: white !important;
+                    font-weight: 500;
+                    padding: 0.75rem 1rem !important;
+                    transition: all 0.3s ease;
+                    border-radius: 6px;
+                    margin: 0 2px;
+                }
+                
+                .navbar-nav .nav-link:hover {
+                    background: rgba(255,255,255,0.15) !important;
+                    transform: translateY(-1px);
+                }
+                
+                /* Professional Product Grid */
+                .oe_product {
+                    background: white;
+                    border-radius: 12px !important;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+                    transition: all 0.4s ease;
+                    border: 1px solid #f0f0f0;
+                    margin-bottom: 30px;
+                    position: relative;
+                }
+                
+                .oe_product:hover {
+                    transform: translateY(-8px) scale(1.02);
+                    box-shadow: 0 15px 40px rgba(0,0,0,0.12) !important;
+                    border-color: #3498db;
+                }
+                
+                .oe_product .oe_product_image {
+                    position: relative;
+                    overflow: hidden;
+                    background: #f8f9fa;
+                    padding: 20px;
+                    text-align: center;
+                }
+                
+                .oe_product .oe_product_image img {
+                    max-width: 100%;
+                    height: 200px;
+                    object-fit: contain;
+                    transition: transform 0.3s ease;
+                }
+                
+                .oe_product:hover .oe_product_image img {
+                    transform: scale(1.05);
+                }
+                
+                /* Product Info Styling */
+                .oe_product_cart {
+                    background: linear-gradient(45deg, #3498db, #2980b9) !important;
+                    border: none !important;
+                    border-radius: 8px !important;
+                    padding: 12px 24px !important;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    font-size: 0.9rem;
+                }
+                
+                .oe_product_cart:hover {
+                    background: linear-gradient(45deg, #2980b9, #1f639a) !important;
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+                }
+                
+                /* Price Styling */
+                .oe_currency_value {
+                    color: #e74c3c !important;
+                    font-weight: 700;
+                    font-size: 1.4em;
+                    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+                }
+                
+                /* Search Bar */
+                .o_searchbar_form {
+                    background: white;
+                    border-radius: 30px;
+                    padding: 3px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }
+                
+                .o_searchbar_form input {
+                    border: none !important;
+                    box-shadow: none !important;
+                    border-radius: 27px !important;
+                    padding: 12px 20px !important;
+                    font-size: 16px;
+                }
+                
+                /* Professional Footer */
+                .o_footer {
+                    background: linear-gradient(135deg, #2C3E50 0%, #1a252f 100%) !important;
+                    color: white;
+                    padding: 60px 0 20px;
+                }
+                
+                .o_footer h5 {
+                    color: #3498db;
+                    font-weight: 600;
+                    margin-bottom: 20px;
+                }
+                
+                .o_footer a {
+                    color: #bdc3c7 !important;
+                    transition: color 0.3s ease;
+                    text-decoration: none;
+                }
+                
+                .o_footer a:hover {
+                    color: #3498db !important;
+                }
+                
+                /* Professional Buttons */
+                .btn-primary {
+                    background: linear-gradient(45deg, #3498db, #2980b9) !important;
+                    border: none !important;
+                    border-radius: 8px !important;
+                    padding: 12px 30px !important;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                
+                .btn-primary:hover {
+                    background: linear-gradient(45deg, #2980b9, #1f639a) !important;
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+                }
+                
+                /* Category Cards */
+                .o_category_card {
+                    background: white;
+                    border-radius: 15px;
+                    padding: 30px 20px;
+                    text-align: center;
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+                    transition: all 0.4s ease;
+                    border: 1px solid #f0f0f0;
+                    cursor: pointer;
+                }
+                
+                .o_category_card:hover {
+                    transform: translateY(-10px);
+                    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+                    border-color: #3498db;
+                }
+                
+                /* Mobile Optimizations */
+                @media (max-width: 768px) {
+                    .oe_product:hover {
+                        transform: none;
+                    }
+                    
+                    .o_main_header .navbar-brand {
+                        font-size: 1.4rem;
+                    }
+                    
+                    .oe_product {
+                        margin-bottom: 20px;
+                    }
+                }
+                
+                /* Page Styling */
+                .container {
+                    max-width: 1200px;
+                }
+                
+                .page-header {
+                    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                    padding: 40px 0;
+                    margin-bottom: 40px;
+                    border-radius: 0 0 20px 20px;
+                }
+                
+                /* Quick Add to Cart Enhancement */
+                .o_wsale_products_grid_table_wrapper .oe_product {
+                    min-height: 400px;
+                    display: flex;
+                    flex-direction: column;
+                }
+                
+                .oe_product .product_price {
+                    margin-top: auto;
+                    padding: 20px;
+                }
+            </style>
+        </xpath>
+    </template>
+    
+    <!-- Professional Homepage -->
+    <template id="techdream_homepage" inherit_id="website.homepage">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div id="wrap" class="oe_structure">
+                <!-- Hero Section -->
+                <section class="s_banner" style="background: linear-gradient(135deg, #2C3E50 0%, #3498db 100%); min-height: 60vh; display: flex; align-items: center;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 mx-auto text-center text-white">
+                                <h1 class="display-3 mb-4 font-weight-bold">TechDream Mobile</h1>
+                                <p class="lead mb-4" style="font-size: 1.3rem;">Premium Smartphones &amp; Accessories at Unbeatable Prices</p>
+                                <a href="/shop" class="btn btn-primary btn-lg px-5 py-3">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Featured Categories -->
+                <section class="py-5" style="background: #f8f9fa;">
+                    <div class="container">
+                        <h2 class="text-center mb-5 font-weight-bold" style="color: #2C3E50;">Shop by Category</h2>
+                        <div class="row">
+                            <div class="col-md-3 mb-4">
+                                <div class="o_category_card" onclick="location.href='/shop'">
+                                    <div style="font-size: 3rem; color: #3498db; margin-bottom: 20px;">📱</div>
+                                    <h4 style="color: #2C3E50;">Smartphones</h4>
+                                    <p style="color: #7f8c8d;">Latest iPhone, Samsung, Google</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="o_category_card" onclick="location.href='/shop'">
+                                    <div style="font-size: 3rem; color: #3498db; margin-bottom: 20px;">🎧</div>
+                                    <h4 style="color: #2C3E50;">Audio</h4>
+                                    <p style="color: #7f8c8d;">AirPods, headphones, speakers</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="o_category_card" onclick="location.href='/shop'">
+                                    <div style="font-size: 3rem; color: #3498db; margin-bottom: 20px;">🛡️</div>
+                                    <h4 style="color: #2C3E50;">Accessories</h4>
+                                    <p style="color: #7f8c8d;">Cases, chargers, cables</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="o_category_card" onclick="location.href='/shop'">
+                                    <div style="font-size: 3rem; color: #3498db; margin-bottom: 20px;">⌚</div>
+                                    <h4 style="color: #2C3E50;">Smartwatches</h4>
+                                    <p style="color: #7f8c8d;">Apple Watch, Galaxy Watch</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </xpath>
+    </template>
+</odoo>
