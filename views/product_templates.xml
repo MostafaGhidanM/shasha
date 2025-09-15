@@ -181,7 +181,7 @@
                                         <td>
                                             <strong>Model:</strong>
                                         </td>
-                                        <td t-field="product.default_code"/>
+                                        <td><span t-field="product.default_code"/></td>
                                     </tr>
                                     <tr>
                                         <td>
