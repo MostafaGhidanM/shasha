@@ -150,39 +150,63 @@ class TechDreamShop(WebsiteSale):
     @http.route(['/shop/product/<model("product.template"):product>'], type='http', auth="public", website=True)
     def product(self, product, category='', search='', **kwargs):
         """Enhanced product detail page"""
-        
+
+        # Add to recently viewed
+        request.env['product.recently.viewed'].sudo().add_product_view(product.id)
+
         # Get product variants
         variants = product.product_variant_ids.filtered(lambda v: v.active)
-        
+
         # Get related products
-        related_products = request.env['product.template'].sudo().search([
-            ('website_published', '=', True),
-            ('public_categ_ids', 'in', product.public_categ_ids.ids),
-            ('id', '!=', product.id)
-        ], limit=4)
-        
+        related_products = product.get_similar_products(limit=4)
+        if not related_products:
+            related_products = request.env['product.template'].sudo().search([
+                ('website_published', '=', True),
+                ('public_categ_ids', 'in', product.public_categ_ids.ids),
+                ('id', '!=', product.id)
+            ], limit=4)
+
         # Get product reviews (if review module is installed)
         reviews = []
         if hasattr(product, 'website_message_ids'):
             reviews = product.website_message_ids.filtered(
                 lambda m: m.message_type == 'comment' and not m.parent_id
             )[:5]
-        
+
         # Get product specifications
         specifications = []
         if hasattr(product, 'product_template_attribute_value_ids'):
             specifications = product.product_template_attribute_value_ids
-        
+
+        # Check if in wishlist
+        in_wishlist = False
+        if not request.env.user._is_public():
+            in_wishlist = request.env['product.wishlist'].sudo().is_in_wishlist(
+                product.product_variant_id.id,
+                request.env.user.partner_id.id
+            )
+
+        # Get inventory status
+        inventory_status = product.get_inventory_status()
+
+        # Get cross-sell and up-sell products
+        cross_sell_products = product.cross_sell_product_ids.filtered('website_published')[:4]
+        up_sell_products = product.up_sell_product_ids.filtered('website_published')[:4]
+
         values = {
             'product': product,
             'variants': variants,
             'related_products': related_products,
+            'cross_sell_products': cross_sell_products,
+            'up_sell_products': up_sell_products,
             'reviews': reviews,
             'specifications': specifications,
             'category': category,
             'search': search,
+            'in_wishlist': in_wishlist,
+            'inventory_status': inventory_status,
         }
-        
+
         return request.render('techdream_theme.product_detail_template', values)
 
     @http.route(['/shop/cart'], type='http', auth="public", website=True)
@@ -404,20 +428,53 @@ class TechDreamAPI(http.Controller):
             order = request.website.sale_get_order()
             if not order:
                 return {'error': 'No active order'}
-            
+
             line = order.order_line.filtered(lambda l: l.id == line_id)
             if line:
                 line.unlink()
-            
+
             return {
                 'success': True,
                 'cart_quantity': sum(order.order_line.mapped('product_uom_qty')),
                 'cart_total': order.amount_total,
                 'currency': order.currency_id.symbol,
             }
-            
+
         except Exception as e:
             _logger.error(f"Cart remove error: {str(e)}")
+            return {'error': str(e)}
+
+    @http.route(['/api/cart/estimate_shipping'], type='json', auth="public", website=True)
+    def estimate_shipping(self, country_id, state_id=None):
+        """Estimate shipping costs"""
+        try:
+            order = request.website.sale_get_order()
+            if not order:
+                return {'error': 'No active order'}
+
+            # Get available carriers
+            carriers = request.env['delivery.carrier'].sudo().search([
+                ('website_published', '=', True)
+            ])
+
+            shipping_options = []
+            for carrier in carriers:
+                # Calculate shipping cost (simplified)
+                cost = carrier.fixed_price or 0.0
+                shipping_options.append({
+                    'id': carrier.id,
+                    'name': carrier.name,
+                    'cost': cost,
+                    'currency': order.currency_id.symbol,
+                })
+
+            return {
+                'success': True,
+                'shipping_options': shipping_options
+            }
+
+        except Exception as e:
+            _logger.error(f"Shipping estimation error: {str(e)}")
             return {'error': str(e)}
 
     @http.route(['/api/wishlist/toggle'], type='json', auth="public", website=True)
@@ -428,27 +485,17 @@ class TechDreamAPI(http.Controller):
                 product = request.env['product.template'].sudo().browse(product_id)
                 if not product.exists():
                     return {'error': 'Product not found'}
-                
-                wishlist = request.env['product.wishlist'].sudo().search([
-                    ('partner_id', '=', request.env.user.partner_id.id),
-                    ('product_id', '=', product.product_variant_id.id)
-                ])
-                
-                if wishlist:
-                    wishlist.unlink()
-                    in_wishlist = False
-                else:
-                    request.env['product.wishlist'].sudo().create({
-                        'partner_id': request.env.user.partner_id.id,
-                        'product_id': product.product_variant_id.id,
-                    })
-                    in_wishlist = True
-                
+
+                in_wishlist = request.env['product.wishlist'].sudo().toggle_product(
+                    product.product_variant_id.id,
+                    request.env.user.partner_id.id
+                )
+
                 return {
                     'success': True,
                     'in_wishlist': in_wishlist,
                 }
-                
+
             except Exception as e:
                 _logger.error(f"Wishlist toggle error: {str(e)}")
                 return {'error': str(e)}
@@ -478,10 +525,14 @@ class TechDreamAccount(CustomerPortal):
                 ('partner_id', '=', partner.id)
             ])
         
+        # Get recently viewed products
+        recently_viewed = partner.get_recently_viewed_products(limit=8)
+
         values.update({
             'partner': partner,
             'recent_orders': orders,
             'wishlist_items': wishlist_items,
+            'recently_viewed': recently_viewed,
             'page_name': 'account',
         })
         
@@ -542,6 +593,126 @@ class TechDreamBlog(http.Controller):
         
         # Fallback if blog is not installed
         return request.redirect('/shop')
+
+
+class TechDreamComparison(http.Controller):
+    """Product comparison controller"""
+
+    @http.route(['/shop/compare'], type='http', auth="public", website=True)
+    def compare_products(self, **kwargs):
+        """Product comparison page"""
+        comparison = request.env['product.comparison'].sudo().get_comparison_for_user()
+
+        if not comparison or not comparison.product_ids:
+            return request.render('techdream_theme.compare_empty_template')
+
+        # Get comparison attributes
+        attributes = comparison.get_comparison_attributes()
+
+        values = {
+            'comparison': comparison,
+            'products': comparison.product_ids,
+            'attributes': attributes,
+        }
+
+        return request.render('techdream_theme.compare_products_template', values)
+
+    @http.route(['/api/compare/add'], type='json', auth="public", website=True)
+    def add_to_comparison(self, product_id):
+        """Add product to comparison"""
+        try:
+            comparison = request.env['product.comparison'].sudo().get_comparison_for_user()
+
+            if len(comparison.product_ids) >= 4:
+                return {'error': 'Maximum 4 products can be compared'}
+
+            success = comparison.add_product(product_id)
+
+            return {
+                'success': success,
+                'count': len(comparison.product_ids),
+                'message': 'Product added to comparison' if success else 'Product already in comparison'
+            }
+
+        except Exception as e:
+            _logger.error(f"Comparison add error: {str(e)}")
+            return {'error': str(e)}
+
+    @http.route(['/api/compare/remove'], type='json', auth="public", website=True)
+    def remove_from_comparison(self, product_id):
+        """Remove product from comparison"""
+        try:
+            comparison = request.env['product.comparison'].sudo().get_comparison_for_user()
+            success = comparison.remove_product(product_id)
+
+            return {
+                'success': success,
+                'count': len(comparison.product_ids),
+                'message': 'Product removed from comparison'
+            }
+
+        except Exception as e:
+            _logger.error(f"Comparison remove error: {str(e)}")
+            return {'error': str(e)}
+
+    @http.route(['/api/compare/clear'], type='json', auth="public", website=True)
+    def clear_comparison(self):
+        """Clear all products from comparison"""
+        try:
+            comparison = request.env['product.comparison'].sudo().get_comparison_for_user()
+            comparison.product_ids = [(5, 0, 0)]  # Remove all
+
+            return {
+                'success': True,
+                'message': 'Comparison cleared'
+            }
+
+        except Exception as e:
+            _logger.error(f"Comparison clear error: {str(e)}")
+            return {'error': str(e)}
+
+
+class TechDreamWishlist(http.Controller):
+    """Wishlist controller"""
+
+    @http.route(['/my/wishlist'], type='http', auth="user", website=True)
+    def wishlist(self, **kwargs):
+        """Customer wishlist page"""
+        partner = request.env.user.partner_id
+        wishlist_items = partner.get_customer_wishlist()
+
+        values = {
+            'wishlist_items': wishlist_items,
+            'partner': partner,
+        }
+
+        return request.render('techdream_theme.wishlist_template', values)
+
+    @http.route(['/api/wishlist/move_to_cart'], type='json', auth="user", website=True)
+    def move_to_cart(self, product_id, quantity=1):
+        """Move product from wishlist to cart"""
+        try:
+            # Add to cart
+            order = request.website.sale_get_order(force_create=True)
+            order._cart_update(
+                product_id=product_id,
+                add_qty=quantity
+            )
+
+            # Remove from wishlist
+            request.env['product.wishlist'].sudo().toggle_product(
+                product_id,
+                request.env.user.partner_id.id
+            )
+
+            return {
+                'success': True,
+                'message': 'Product moved to cart'
+            }
+
+        except Exception as e:
+            _logger.error(f"Move to cart error: {str(e)}")
+            return {'error': str(e)}
 
 
 class TechDreamUtility(http.Controller):
@@ -658,3 +829,107 @@ Sitemap: {base_url}/sitemap.xml
             json.dumps(manifest),
             [('Content-Type', 'application/json')]
         )
+
+    @http.route(['/api/inventory/check'], type='json', auth="public", website=True)
+    def check_inventory(self, product_id, quantity=1):
+        """Check product inventory availability"""
+        try:
+            product = request.env['product.template'].sudo().browse(product_id)
+            if not product.exists():
+                return {'error': 'Product not found'}
+
+            inventory_status = product.get_inventory_status()
+            available = inventory_status['qty_available'] >= quantity
+
+            return {
+                'success': True,
+                'available': available,
+                'qty_available': inventory_status['qty_available'],
+                'stock_status': inventory_status['stock_status'],
+                'message': 'Available' if available else f'Only {inventory_status["qty_available"]} available'
+            }
+
+        except Exception as e:
+            _logger.error(f"Inventory check error: {str(e)}")
+            return {'error': str(e)}
+
+    @http.route(['/api/products/filter'], type='json', auth="public", website=True)
+    def filter_products(self, filters=None, page=1, limit=12):
+        """Advanced product filtering API"""
+        try:
+            domain = [('website_published', '=', True)]
+
+            if filters:
+                # Category filter
+                if filters.get('category_ids'):
+                    domain.append(('public_categ_ids', 'in', filters['category_ids']))
+
+                # Brand filter
+                if filters.get('brand_ids'):
+                    domain.append(('brand_id', 'in', filters['brand_ids']))
+
+                # Price range
+                if filters.get('min_price'):
+                    domain.append(('list_price', '>=', filters['min_price']))
+                if filters.get('max_price'):
+                    domain.append(('list_price', '<=', filters['max_price']))
+
+                # Stock status
+                if filters.get('in_stock_only'):
+                    domain.append(('stock_status', '!=', 'out_of_stock'))
+
+                # Product labels
+                if filters.get('labels'):
+                    domain.append(('product_label', 'in', filters['labels']))
+
+                # Search term
+                if filters.get('search'):
+                    search_term = filters['search']
+                    domain.extend([
+                        '|', '|',
+                        ('name', 'ilike', search_term),
+                        ('description_sale', 'ilike', search_term),
+                        ('short_description', 'ilike', search_term)
+                    ])
+
+            # Get total count
+            total_count = request.env['product.template'].sudo().search_count(domain)
+
+            # Get products
+            offset = (page - 1) * limit
+            order = filters.get('order', 'website_sequence desc') if filters else 'website_sequence desc'
+            products = request.env['product.template'].sudo().search(
+                domain,
+                limit=limit,
+                offset=offset,
+                order=order
+            )
+
+            # Prepare product data
+            product_data = []
+            for product in products:
+                product_data.append({
+                    'id': product.id,
+                    'name': product.name,
+                    'price': product.list_price,
+                    'compare_price': product.compare_list_price,
+                    'discount_percentage': product.discount_percentage,
+                    'image_url': f'/web/image/product.template/{product.id}/image_1024',
+                    'url': f'/shop/product/{product.id}',
+                    'stock_status': product.stock_status,
+                    'product_label': product.product_label,
+                    'brand': product.brand_id.name if product.brand_id else '',
+                    'short_description': product.short_description or '',
+                })
+
+            return {
+                'success': True,
+                'products': product_data,
+                'total_count': total_count,
+                'page': page,
+                'total_pages': (total_count + limit - 1) // limit
+            }
+
+        except Exception as e:
+            _logger.error(f"Product filter error: {str(e)}")
+            return {'error': str(e)}

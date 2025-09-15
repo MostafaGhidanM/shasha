@@ -19,6 +19,10 @@
         initLazyLoading();
         initTooltips();
         updateCartCounter();
+        initProductComparison();
+        initWishlist();
+        initInventoryCheck();
+        initQuickView();
     }
 
     // Search Autocomplete
@@ -399,10 +403,435 @@
         }, 5000);
     };
 
+    // Product Comparison Functions
+    function initProductComparison() {
+        updateComparisonCounter();
+    }
+
+    window.addToComparison = function(button) {
+        const productId = parseInt(button.dataset.productId);
+
+        fetch('/api/compare/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                params: { product_id: productId }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result.success) {
+                showNotification(data.result.message);
+                updateComparisonCounter();
+                button.classList.add('btn-primary');
+                button.classList.remove('btn-outline-secondary');
+                button.innerHTML = '<i class="fa fa-check"></i> Added';
+            } else {
+                showNotification(data.result.error || 'Error adding to comparison', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Comparison error:', error);
+            showNotification('Error adding to comparison', 'error');
+        });
+    };
+
+    window.removeFromComparison = function(button) {
+        const productId = parseInt(button.dataset.productId);
+
+        fetch('/api/compare/remove', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                params: { product_id: productId }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result.success) {
+                showNotification(data.result.message);
+                updateComparisonCounter();
+                // Remove the product card or reload page
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Comparison remove error:', error);
+        });
+    };
+
+    window.clearComparison = function() {
+        if (confirm('Are you sure you want to clear all products from comparison?')) {
+            fetch('/api/compare/clear', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ params: {} })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result.success) {
+                    showNotification(data.result.message);
+                    window.location.reload();
+                }
+            });
+        }
+    };
+
+    function updateComparisonCounter() {
+        const comparisonCount = document.querySelector('.comparison-count');
+        if (comparisonCount) {
+            // Update comparison counter logic
+            fetch('/api/compare/count')
+                .then(response => response.json())
+                .then(data => {
+                    comparisonCount.textContent = data.count || 0;
+                    comparisonCount.style.display = data.count > 0 ? 'block' : 'none';
+                })
+                .catch(error => console.error('Comparison counter error:', error));
+        }
+    }
+
+    // Wishlist Functions
+    function initWishlist() {
+        updateWishlistCounter();
+    }
+
+    window.toggleWishlist = function(button) {
+        const productId = parseInt(button.dataset.productId);
+
+        fetch('/api/wishlist/toggle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                params: { product_id: productId }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result.success) {
+                const icon = button.querySelector('i');
+                if (data.result.in_wishlist) {
+                    icon.className = 'fa fa-heart';
+                    button.classList.add('active');
+                    showNotification('Added to wishlist');
+                } else {
+                    icon.className = 'fa fa-heart-o';
+                    button.classList.remove('active');
+                    showNotification('Removed from wishlist');
+                }
+                updateWishlistCounter();
+            } else {
+                showNotification(data.result.error || 'Please login to use wishlist', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Wishlist error:', error);
+            showNotification('Error updating wishlist', 'error');
+        });
+    };
+
+    window.moveToCart = function(button) {
+        const productId = parseInt(button.dataset.productId);
+
+        fetch('/api/wishlist/move_to_cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                params: { product_id: productId, quantity: 1 }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result.success) {
+                showNotification(data.result.message);
+                updateCartCounter();
+                updateWishlistCounter();
+                // Remove the item from wishlist page
+                const productCard = button.closest('.wishlist-item');
+                if (productCard) {
+                    productCard.remove();
+                }
+            } else {
+                showNotification(data.result.error || 'Error moving to cart', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Move to cart error:', error);
+        });
+    };
+
+    function updateWishlistCounter() {
+        const wishlistCount = document.querySelector('.wishlist-count');
+        if (wishlistCount) {
+            // This would require an API endpoint to get wishlist count
+            fetch('/api/wishlist/count')
+                .then(response => response.json())
+                .then(data => {
+                    wishlistCount.textContent = data.count || 0;
+                    wishlistCount.style.display = data.count > 0 ? 'block' : 'none';
+                })
+                .catch(error => console.error('Wishlist counter error:', error));
+        }
+    }
+
+    // Inventory Check Functions
+    function initInventoryCheck() {
+        // Auto-check inventory for products on page
+        const productCards = document.querySelectorAll('[data-product-id]');
+        productCards.forEach(card => {
+            const productId = card.dataset.productId;
+            if (productId) {
+                checkInventory(productId, card);
+            }
+        });
+    }
+
+    window.checkInventory = function(productId, element) {
+        fetch('/api/inventory/check', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                params: { product_id: parseInt(productId), quantity: 1 }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result) {
+                updateInventoryDisplay(element, data.result);
+            }
+        })
+        .catch(error => {
+            console.error('Inventory check error:', error);
+        });
+    };
+
+    function updateInventoryDisplay(element, inventoryData) {
+        const stockBadge = element.querySelector('.stock-badge');
+        const addToCartBtn = element.querySelector('.add-to-cart-btn');
+
+        if (stockBadge) {
+            stockBadge.className = 'badge stock-badge';
+
+            switch (inventoryData.stock_status) {
+                case 'out_of_stock':
+                    stockBadge.classList.add('bg-danger');
+                    stockBadge.textContent = 'Out of Stock';
+                    break;
+                case 'low_stock':
+                    stockBadge.classList.add('bg-warning');
+                    stockBadge.textContent = 'Low Stock';
+                    break;
+                default:
+                    stockBadge.classList.add('bg-success');
+                    stockBadge.textContent = 'In Stock';
+            }
+        }
+
+        if (addToCartBtn && inventoryData.stock_status === 'out_of_stock') {
+            addToCartBtn.disabled = true;
+            addToCartBtn.innerHTML = '<i class="fa fa-ban"></i> Out of Stock';
+        }
+    }
+
+    // Quick View Functions
+    function initQuickView() {
+        // Initialize quick view modals
+        const quickViewBtns = document.querySelectorAll('.quick-view-btn');
+        quickViewBtns.forEach(btn => {
+            btn.addEventListener('click', handleQuickView);
+        });
+    }
+
+    function handleQuickView(event) {
+        const button = event.target.closest('.quick-view-btn');
+        const productId = button.dataset.productId;
+
+        // Create and show modal with product details
+        createQuickViewModal(productId);
+    }
+
+    function createQuickViewModal(productId) {
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.innerHTML = `
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Quick View</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Load product details
+        fetch(`/shop/product/${productId}?quick_view=1`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const productContent = doc.querySelector('.product-details');
+
+                if (productContent) {
+                    modal.querySelector('.modal-body').innerHTML = productContent.outerHTML;
+                }
+            })
+            .catch(error => {
+                console.error('Quick view error:', error);
+                modal.querySelector('.modal-body').innerHTML = '<p>Error loading product details</p>';
+            });
+
+        // Show modal
+        const bsModal = new bootstrap.Modal(modal);
+        bsModal.show();
+
+        // Clean up when modal is hidden
+        modal.addEventListener('hidden.bs.modal', function() {
+            modal.remove();
+        });
+    }
+
+    // Enhanced Cart Functions
+    window.addToCart = function(button, productId, quantity = 1) {
+        button.disabled = true;
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Adding...';
+
+        fetch('/api/cart/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                params: {
+                    product_id: parseInt(productId),
+                    quantity: quantity
+                }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result.success) {
+                showNotification('Product added to cart!');
+                updateCartCounter();
+                button.innerHTML = '<i class="fa fa-check"></i> Added!';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }, 2000);
+            } else {
+                showNotification(data.result.error || 'Error adding to cart', 'error');
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Add to cart error:', error);
+            showNotification('Error adding to cart', 'error');
+            button.innerHTML = originalText;
+            button.disabled = false;
+        });
+    };
+
+    // Product Filtering
+    window.filterProducts = function(filters) {
+        const loader = document.querySelector('.products-loader');
+        const productsContainer = document.querySelector('.products-container');
+
+        if (loader) loader.style.display = 'block';
+
+        fetch('/api/products/filter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                params: { filters: filters }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result.success && productsContainer) {
+                updateProductsDisplay(data.result.products, productsContainer);
+            }
+        })
+        .catch(error => {
+            console.error('Filter error:', error);
+        })
+        .finally(() => {
+            if (loader) loader.style.display = 'none';
+        });
+    };
+
+    function updateProductsDisplay(products, container) {
+        // Update products display with filtered results
+        let html = '';
+        products.forEach(product => {
+            html += generateProductCard(product);
+        });
+        container.innerHTML = html;
+
+        // Re-initialize functionality for new elements
+        initInventoryCheck();
+    }
+
+    function generateProductCard(product) {
+        return `
+            <div class="col-md-4 col-lg-3 mb-4">
+                <div class="card product-card h-100" data-product-id="${product.id}">
+                    <div class="position-relative">
+                        <img src="${product.image_url}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
+                        <span class="badge stock-badge position-absolute" style="top: 10px; left: 10px;"></span>
+                        ${product.discount_percentage > 0 ? `<span class="badge bg-danger position-absolute" style="top: 10px; right: 10px;">${product.discount_percentage}% OFF</span>` : ''}
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">${product.name}</h5>
+                        <p class="card-text flex-grow-1">${product.short_description}</p>
+                        <div class="price-section mb-3">
+                            <span class="h5 text-primary">$${product.price}</span>
+                            ${product.compare_price > 0 ? `<del class="text-muted ms-2">$${product.compare_price}</del>` : ''}
+                        </div>
+                        <div class="btn-group w-100">
+                            <button class="btn btn-primary add-to-cart-btn" onclick="addToCart(this, ${product.id})">Add to Cart</button>
+                            <button class="btn btn-outline-secondary compare-btn" onclick="addToComparison(this)" data-product-id="${product.id}"><i class="fa fa-balance-scale"></i></button>
+                            <button class="btn btn-outline-danger wishlist-btn" onclick="toggleWishlist(this)" data-product-id="${product.id}"><i class="fa fa-heart-o"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     // Global utility functions
     window.TechDream = {
         updateCartCounter: updateCartCounter,
         showNotification: window.showNotification,
+        addToCart: window.addToCart,
+        toggleWishlist: window.toggleWishlist,
+        addToComparison: window.addToComparison,
+        filterProducts: window.filterProducts,
+        checkInventory: window.checkInventory,
     };
 
 })();

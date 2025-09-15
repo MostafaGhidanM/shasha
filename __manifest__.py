@@ -25,21 +25,34 @@
         'website',
         'website_sale',
         'sale',
+        'sale_management',
         'product',
+        'stock',
+        'delivery',
+        'payment',
         'portal',
+        'mail',
+        'rating',
     ],
     'data': [
+        # Security
+        'security/ir.model.access.csv',
+
+        # Data files
+        'data/product_categories.xml',
+        'data/sample_products.xml',
+        'data/website_data.xml',
+        'data/email_templates.xml',
+
         # Template files
         'views/theme.xml',
         'views/shop_templates.xml',
         'views/product_templates.xml',
         'views/cart_checkout_templates.xml',
         'views/contact_templates.xml',
-        
-        # Data files  
-        'data/product_categories.xml',
-        'data/sample_products.xml',
-        'data/website_data.xml',
+        'views/comparison_templates.xml',
+        'views/wishlist_templates.xml',
+        'views/backend_views.xml',
     ],
     'assets': {
         'web.assets_frontend': [

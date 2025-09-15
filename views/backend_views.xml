@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Product Brand Views -->
+        <record id="view_product_brand_tree" model="ir.ui.view">
+            <field name="name">product.brand.tree</field>
+            <field name="model">product.brand</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="website_url"/>
+                    <field name="product_count"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_product_brand_form" model="ir.ui.view">
+            <field name="name">product.brand.form</field>
+            <field name="model">product.brand</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="get_brand_products" type="object" class="oe_stat_button" icon="fa-cube">
+                                <field name="product_count" widget="statinfo" string="Products"/>
+                            </button>
+                        </div>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                        <field name="logo" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Brand Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="website_url"/>
+                                <field name="active"/>
+                                <field name="website_published"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                            <page string="SEO">
+                                <group>
+                                    <field name="meta_title"/>
+                                    <field name="meta_description"/>
+                                </group>
+                            </page>
+                            <page string="Products">
+                                <field name="product_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="list_price"/>
+                                        <field name="website_published"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_brand" model="ir.actions.act_window">
+            <field name="name">Product Brands</field>
+            <field name="res_model">product.brand</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Product Template Enhanced Views -->
+        <record id="view_product_template_form_inherit" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="brand_id"/>
+                    <field name="is_featured"/>
+                    <field name="product_label"/>
+                </xpath>
+
+                <xpath expr="//field[@name='list_price']" position="after">
+                    <field name="compare_list_price"/>
+                    <field name="discount_percentage" readonly="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='description_sale']" position="after">
+                    <field name="short_description"/>
+                </xpath>
+
+                <notebook position="inside">
+                    <page string="Ecommerce">
+                        <group>
+                            <group string="Stock Management">
+                                <field name="stock_status" readonly="1"/>
+                                <field name="available_qty" readonly="1"/>
+                                <field name="low_stock_threshold"/>
+                            </group>
+                            <group string="SEO">
+                                <field name="meta_title"/>
+                                <field name="meta_description"/>
+                                <field name="meta_keywords"/>
+                            </group>
+                        </group>
+                        <group string="Media">
+                            <field name="video_url"/>
+                        </group>
+                        <field name="technical_specs"/>
+                    </page>
+                    <page string="Related Products">
+                        <group>
+                            <field name="related_product_ids" widget="many2many_tags"/>
+                            <field name="cross_sell_product_ids" widget="many2many_tags"/>
+                            <field name="up_sell_product_ids" widget="many2many_tags"/>
+                        </group>
+                    </page>
+                    <page string="Comparison Attributes">
+                        <field name="comparison_attributes">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name"/>
+                                <field name="value"/>
+                                <field name="attribute_type"/>
+                                <field name="is_highlighted"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+        <!-- Product Comparison Views -->
+        <record id="view_product_comparison_tree" model="ir.ui.view">
+            <field name="name">product.comparison.tree</field>
+            <field name="model">product.comparison</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="create_date"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_product_comparison_form" model="ir.ui.view">
+            <field name="name">product.comparison.form</field>
+            <field name="model">product.comparison</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="session_id"/>
+                            <field name="active"/>
+                        </group>
+                        <field name="product_ids">
+                            <tree>
+                                <field name="name"/>
+                                <field name="list_price"/>
+                                <field name="brand_id"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Product Wishlist Views -->
+        <record id="view_product_wishlist_tree" model="ir.ui.view">
+            <field name="name">product.wishlist.tree</field>
+            <field name="model">product.wishlist</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="partner_id"/>
+                    <field name="product_id"/>
+                    <field name="date_added"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Enhanced Sale Order Views -->
+        <record id="view_sale_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <field name="website_order_reference"/>
+                    <field name="website_order_status" readonly="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="is_gift"/>
+                    <field name="coupon_code"/>
+                </xpath>
+
+                <notebook position="inside">
+                    <page string="Ecommerce Details">
+                        <group>
+                            <group string="Delivery">
+                                <field name="preferred_delivery_date"/>
+                                <field name="delivery_time_slot"/>
+                                <field name="tracking_number"/>
+                                <field name="carrier_name"/>
+                                <field name="estimated_delivery_date"/>
+                            </group>
+                        </group>
+                        <group string="Special Instructions">
+                            <field name="special_instructions"/>
+                            <field name="gift_message" attrs="{'invisible': [('is_gift', '=', False)]}"/>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+        <!-- Menu Items -->
+        <menuitem
+            id="menu_product_brand"
+            name="Brands"
+            parent="sale.product_menu_catalog"
+            action="action_product_brand"
+            sequence="50"/>
+
+        <record id="action_product_comparison" model="ir.actions.act_window">
+            <field name="name">Product Comparisons</field>
+            <field name="res_model">product.comparison</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_product_wishlist" model="ir.actions.act_window">
+            <field name="name">Product Wishlists</field>
+            <field name="res_model">product.wishlist</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="menu_ecommerce_features"
+            name="Ecommerce Features"
+            parent="website.menu_website_configuration"
+            sequence="60"/>
+
+        <menuitem
+            id="menu_product_comparison_admin"
+            name="Product Comparisons"
+            parent="menu_ecommerce_features"
+            action="action_product_comparison"
+            sequence="10"/>
+
+        <menuitem
+            id="menu_product_wishlist_admin"
+            name="Product Wishlists"
+            parent="menu_ecommerce_features"
+            action="action_product_wishlist"
+            sequence="20"/>
+    </data>
+</odoo>

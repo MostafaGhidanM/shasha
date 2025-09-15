@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Order Confirmation Email Template -->
+        <record id="email_template_order_confirmation" model="mail.template">
+            <field name="name">TechDream - Order Confirmation</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">Order Confirmation - Order #{{ object.name }}</field>
+            <field name="email_from">{{ (object.company_id.email or 'noreply@techdream.ae') }}</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background: linear-gradient(135deg, #2c3e50, #3498db); padding: 30px; text-align: center;">
+        <h1 style="color: white; margin: 0; font-size: 28px;">Order Confirmation</h1>
+        <p style="color: #ecf0f1; margin: 10px 0 0 0; font-size: 16px;">Thank you for your order!</p>
+    </div>
+
+    <div style="padding: 30px; background: #f8f9fa;">
+        <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #2c3e50; margin-top: 0;">Hello {{ object.partner_id.name }},</h2>
+
+            <p style="font-size: 16px; line-height: 1.6; color: #34495e;">
+                We've received your order and are preparing it for shipment. You'll receive a shipping notification once your order is on its way.
+            </p>
+
+            <div style="background: #ecf0f1; padding: 20px; border-radius: 5px; margin: 20px 0;">
+                <h3 style="color: #2c3e50; margin-top: 0;">Order Details</h3>
+                <p><strong>Order Number:</strong> {{ object.name }}</p>
+                <p><strong>Order Date:</strong> {{ object.date_order.strftime('%B %d, %Y') }}</p>
+                <p><strong>Total Amount:</strong> {{ object.currency_id.symbol }}{{ "%.2f"|format(object.amount_total) }}</p>
+            </div>
+
+            <h3 style="color: #2c3e50;">Items Ordered:</h3>
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                <thead>
+                    <tr style="background: #3498db; color: white;">
+                        <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Product</th>
+                        <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Qty</th>
+                        <th style="padding: 12px; text-align: right; border: 1px solid #ddd;">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    % for line in object.order_line:
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #ddd;">{{ line.product_id.name }}</td>
+                        <td style="padding: 12px; text-align: center; border: 1px solid #ddd;">{{ int(line.product_uom_qty) }}</td>
+                        <td style="padding: 12px; text-align: right; border: 1px solid #ddd;">{{ object.currency_id.symbol }}{{ "%.2f"|format(line.price_subtotal) }}</td>
+                    </tr>
+                    % endfor
+                </tbody>
+            </table>
+
+            <div style="background: #e8f4fd; padding: 20px; border-radius: 5px; margin: 20px 0;">
+                <h3 style="color: #2c3e50; margin-top: 0;">Shipping Address</h3>
+                <p style="margin: 0; line-height: 1.6;">
+                    {{ object.partner_shipping_id.name or object.partner_id.name }}<br/>
+                    {{ object.partner_shipping_id.street or object.partner_id.street }}<br/>
+                    % if object.partner_shipping_id.street2 or object.partner_id.street2:
+                    {{ object.partner_shipping_id.street2 or object.partner_id.street2 }}<br/>
+                    % endif
+                    {{ object.partner_shipping_id.city or object.partner_id.city }}, {{ object.partner_shipping_id.state_id.name or object.partner_id.state_id.name }}<br/>
+                    {{ object.partner_shipping_id.country_id.name or object.partner_id.country_id.name }}
+                </p>
+            </div>
+
+            <p style="margin-top: 30px; font-size: 14px; color: #7f8c8d;">
+                If you have any questions about your order, please contact us at info@techdream.ae or call us at +971-XXX-XXXX.
+            </p>
+        </div>
+    </div>
+
+    <div style="background: #2c3e50; padding: 20px; text-align: center;">
+        <p style="color: #bdc3c7; margin: 0; font-size: 14px;">
+            © {{ datetime.now().year }} TechDream Mobile. All rights reserved.
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+
+        <!-- Shipping Notification Email Template -->
+        <record id="email_template_shipping_notification" model="mail.template">
+            <field name="name">TechDream - Shipping Notification</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">Your Order #{{ object.name }} Has Shipped!</field>
+            <field name="email_from">{{ (object.company_id.email or 'noreply@techdream.ae') }}</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+    <div style="background: linear-gradient(135deg, #27ae60, #2ecc71); padding: 30px; text-align: center;">
+        <h1 style="color: white; margin: 0; font-size: 28px;">📦 Your Order Has Shipped!</h1>
+        <p style="color: #d5f4e6; margin: 10px 0 0 0; font-size: 16px;">Track your package below</p>
+    </div>
+
+    <div style="padding: 30px; background: #f8f9fa;">
+        <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #27ae60; margin-top: 0;">Great news, {{ object.partner_id.name }}!</h2>
+
+            <p style="font-size: 16px; line-height: 1.6; color: #34495e;">
+                Your order #{{ object.name }} has been shipped and is on its way to you. You can track your package using the information below.
+            </p>
+
+            % if object.tracking_number:
+            <div style="background: #e8f5e8; padding: 20px; border-radius: 5px; margin: 20px 0; text-align: center;">
+                <h3 style="color: #27ae60; margin-top: 0;">Tracking Information</h3>
+                <p style="font-size: 18px; font-weight: bold; color: #2c3e50; margin: 10px 0;">{{ object.tracking_number }}</p>
+                % if object.carrier_name:
+                <p style="color: #7f8c8d;">Carrier: {{ object.carrier_name }}</p>
+                % endif
+            </div>
+            % endif
+
+            <div style="background: #ecf0f1; padding: 20px; border-radius: 5px; margin: 20px 0;">
+                <h3 style="color: #2c3e50; margin-top: 0;">Order Summary</h3>
+                <p><strong>Order Number:</strong> {{ object.name }}</p>
+                <p><strong>Items:</strong> {{ len(object.order_line) }} item(s)</p>
+                <p><strong>Total:</strong> {{ object.currency_id.symbol }}{{ "%.2f"|format(object.amount_total) }}</p>
+                % if object.estimated_delivery_date:
+                <p><strong>Estimated Delivery:</strong> {{ object.estimated_delivery_date.strftime('%B %d, %Y') }}</p>
+                % endif
+            </div>
+
+            <p style="margin-top: 30px; font-size: 14px; color: #7f8c8d;">
+                Thank you for shopping with TechDream Mobile. If you have any questions, please contact us at info@techdream.ae.
+            </p>
+        </div>
+    </div>
+
+    <div style="background: #2c3e50; padding: 20px; text-align: center;">
+        <p style="color: #bdc3c7; margin: 0; font-size: 14px;">
+            © {{ datetime.now().year }} TechDream Mobile. All rights reserved.
+        </p>
+    </div>
+</div>
+            </field>
+        </record>
+    </data>
+</odoo>
