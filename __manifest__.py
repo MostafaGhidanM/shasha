@@ -36,6 +36,7 @@
 
         # Template files (load first)
         'views/theme.xml',
+        'views/product_card.xml',
         'views/shop_templates.xml',
         'views/product_templates.xml',
         'views/cart_checkout_templates.xml',

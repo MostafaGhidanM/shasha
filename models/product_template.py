@@ -152,6 +152,7 @@ class ProductTemplate(models.Model):
     @api.depends('product_variant_ids.qty_available')
     def _compute_available_qty(self):
         for product in self:
+            # Use Odoo's built-in stock computation
             product.available_qty = sum(product.product_variant_ids.mapped('qty_available'))
 
     @api.depends('available_qty', 'low_stock_threshold')
@@ -163,6 +164,33 @@ class ProductTemplate(models.Model):
                 product.stock_status = 'low_stock'
             else:
                 product.stock_status = 'in_stock'
+
+    def _get_combination_info(self, combination=False, product_id=False, add_qty=1, pricelist=None, parent_combination=False, only_template=False):
+        """Override to add stock information to combination info"""
+        combination_info = super()._get_combination_info(
+            combination=combination,
+            product_id=product_id,
+            add_qty=add_qty,
+            pricelist=pricelist,
+            parent_combination=parent_combination,
+            only_template=only_template
+        )
+
+        # Add stock information
+        if product_id:
+            product = self.env['product.product'].browse(product_id)
+        else:
+            product = self.product_variant_id
+
+        combination_info.update({
+            'qty_available': product.qty_available,
+            'virtual_available': product.virtual_available,
+            'incoming_qty': product.incoming_qty,
+            'outgoing_qty': product.outgoing_qty,
+            'is_available': product.qty_available > 0,
+        })
+
+        return combination_info
 
     @api.depends('message_ids')
     def _compute_review_stats(self):

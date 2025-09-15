@@ -174,12 +174,38 @@
         }
     }
 
-    // Product Carousel for homepage
+    // Product Carousel and hover effects
     function initProductCarousel() {
+        // Add hover effects to product cards
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const actions = this.querySelector('.product-actions');
+                if (actions) {
+                    actions.style.opacity = '1';
+                }
+                const image = this.querySelector('.product-image');
+                if (image) {
+                    image.style.transform = 'scale(1.05)';
+                }
+            });
+
+            card.addEventListener('mouseleave', function() {
+                const actions = this.querySelector('.product-actions');
+                if (actions) {
+                    actions.style.opacity = '0';
+                }
+                const image = this.querySelector('.product-image');
+                if (image) {
+                    image.style.transform = 'scale(1)';
+                }
+            });
+        });
+
+        // Original carousel functionality
         const carousels = document.querySelectorAll('.products-grid');
         carousels.forEach(carousel => {
             if (carousel.children.length > 4) {
-                // Add navigation arrows if more than 4 products
                 addCarouselNavigation(carousel);
             }
         });
@@ -511,30 +537,32 @@
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                jsonrpc: '2.0',
+                method: 'call',
                 params: { product_id: productId }
             })
         })
         .then(response => response.json())
         .then(data => {
-            if (data.result.success) {
+            if (data.result && data.result.success) {
                 const icon = button.querySelector('i');
                 if (data.result.in_wishlist) {
                     icon.className = 'fa fa-heart';
-                    button.classList.add('active');
+                    button.classList.add('text-danger');
                     showNotification('Added to wishlist');
                 } else {
                     icon.className = 'fa fa-heart-o';
-                    button.classList.remove('active');
+                    button.classList.remove('text-danger');
                     showNotification('Removed from wishlist');
                 }
                 updateWishlistCounter();
             } else {
-                showNotification(data.result.error || 'Please login to use wishlist', 'error');
+                showNotification(data.result?.error || 'Please login to use wishlist', 'error');
             }
         })
         .catch(error => {
             console.error('Wishlist error:', error);
-            showNotification('Error updating wishlist', 'error');
+            showNotification('Please login to use wishlist', 'error');
         });
     };
 
@@ -713,7 +741,13 @@
     }
 
     // Enhanced Cart Functions
-    window.addToCart = function(button, productId, quantity = 1) {
+    window.addToCart = function(button) {
+        const productId = button.dataset.productId;
+        if (!productId) {
+            console.error('No product ID found');
+            return;
+        }
+
         button.disabled = true;
         const originalText = button.innerHTML;
         button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Adding...';
@@ -724,16 +758,18 @@
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                jsonrpc: '2.0',
+                method: 'call',
                 params: {
                     product_id: parseInt(productId),
-                    quantity: quantity
+                    quantity: 1
                 }
             })
         })
         .then(response => response.json())
         .then(data => {
-            if (data.result.success) {
-                showNotification('Product added to cart!');
+            if (data.result && data.result.success) {
+                showNotification(data.result.message || 'Product added to cart!');
                 updateCartCounter();
                 button.innerHTML = '<i class="fa fa-check"></i> Added!';
                 setTimeout(() => {
@@ -741,7 +777,7 @@
                     button.disabled = false;
                 }, 2000);
             } else {
-                showNotification(data.result.error || 'Error adding to cart', 'error');
+                showNotification(data.result?.error || 'Error adding to cart', 'error');
                 button.innerHTML = originalText;
                 button.disabled = false;
             }
@@ -823,6 +859,42 @@
         `;
     }
 
+    // Quick View functionality
+    window.quickView = function(button) {
+        const productId = button.dataset.productId;
+        // Open product page in modal or redirect
+        window.open(`/shop/product/${productId}`, '_blank');
+    };
+
+    // Update cart counter from server
+    function updateCartCounter() {
+        // Get cart info from Odoo
+        fetch('/shop/cart', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'text/html',
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            // Parse HTML to get cart quantity
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const cartInfo = doc.querySelector('.my_cart_quantity');
+            if (cartInfo) {
+                const quantity = cartInfo.textContent.trim();
+                const cartCounter = document.querySelector('.cart-count');
+                if (cartCounter) {
+                    cartCounter.textContent = quantity;
+                    cartCounter.style.display = quantity > 0 ? 'inline' : 'none';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Cart counter update error:', error);
+        });
+    }
+
     // Global utility functions
     window.TechDream = {
         updateCartCounter: updateCartCounter,
@@ -832,6 +904,7 @@
         addToComparison: window.addToComparison,
         filterProducts: window.filterProducts,
         checkInventory: window.checkInventory,
+        quickView: window.quickView,
     };
 
 })();

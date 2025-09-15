@@ -64,13 +64,16 @@ class TechDreamShop(WebsiteSale):
         domain = [('website_published', '=', True)]
         
         # Category filter
+        category_obj = None
         if category:
             try:
                 category_obj = request.env['product.public.category'].sudo().browse(int(category))
                 if category_obj.exists():
                     domain.append(('public_categ_ids', 'child_of', category_obj.id))
+                else:
+                    category_obj = None
             except ValueError:
-                pass
+                category_obj = None
         
         # Search filter
         if search:
@@ -128,7 +131,8 @@ class TechDreamShop(WebsiteSale):
             'brands': brands,
             'pager': pager,
             'search': search,
-            'category': category,
+            'category': category_obj,  # Pass the actual category object, not the ID
+            'category_id': category,   # Keep the ID for form inputs
             'min_price': min_price,
             'max_price': max_price,
             'brand': brand,

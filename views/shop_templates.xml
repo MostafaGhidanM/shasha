@@ -47,7 +47,7 @@
                                             <input type="number" name="max_price" class="price-input" placeholder="Max" t-att-value="max_price or ''"/>
                                         </div>
                                         <input type="hidden" name="search" t-att-value="search or ''"/>
-                                        <input type="hidden" name="category" t-att-value="category or ''"/>
+                                        <input type="hidden" name="category" t-att-value="category_id or ''"/>
                                         <button type="submit" class="btn btn-primary btn-sm w-100">Apply Filter</button>
                                     </form>
                                 </div>
@@ -88,7 +88,7 @@
                             <div class="d-flex align-items-center gap-3">
                                 <form method="get" action="/shop" class="d-flex align-items-center gap-2">
                                     <input type="hidden" name="search" t-att-value="search or ''"/>
-                                    <input type="hidden" name="category" t-att-value="category or ''"/>
+                                    <input type="hidden" name="category" t-att-value="category_id or ''"/>
                                     <select name="order" class="form-select" style="width: auto;" onchange="this.form.submit()">
                                         <option value="website_sequence desc" t-att-selected="'selected' if order == 'website_sequence desc' else None">Sort by Latest</option>
                                         <option value="list_price asc" t-att-selected="'selected' if order == 'list_price asc' else None">Price: Low to High</option>
@@ -186,11 +186,14 @@
             <a href="/shop">Shop</a>
         </span>
         <span class="breadcrumb-separator">/</span>
-        <span class="breadcrumb-item" t-field="category.name"/>
+        <span class="breadcrumb-item" t-if="category" t-field="category.name"/>
     </xpath>
 
     <xpath expr="//h1" position="replace">
-        <h1 style="font-weight: 700; color: #2c3e50;" t-field="category.name"/>
+        <h1 style="font-weight: 700; color: #2c3e50;">
+            <span t-if="category" t-field="category.name"/>
+            <span t-if="not category">All Products</span>
+        </h1>
     </xpath>
 </template>
 
