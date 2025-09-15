@@ -1,66 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Enhance Odoo's default product item template -->
+        <!-- Very minimal enhancement - just add to the end of the template -->
         <template id="products_item_enhanced" inherit_id="website_sale.products_item">
-            <!-- Ensure product card is clickable by maintaining original link structure -->
-            <xpath expr="//div[hasclass('oe_product_image')]" position="attributes">
-                <attribute name="style">position: relative;</attribute>
-            </xpath>
-
-            <!-- Add stock status badge -->
-            <xpath expr="//div[hasclass('product_price')]" position="before">
-                <div class="stock-status mb-2">
+            <!-- Add stock status at the end of product item -->
+            <xpath expr="." position="inside">
+                <div class="stock-status-badge text-center mt-1">
                     <t t-set="total_qty" t-value="sum(product.product_variant_ids.mapped('qty_available'))"/>
                     <t t-if="total_qty == 0">
-                        <span class="badge bg-danger">Out of Stock</span>
+                        <small><span class="badge bg-danger">Out of Stock</span></small>
                     </t>
                     <t t-elif="total_qty &lt;= 10">
-                        <span class="badge bg-warning text-dark">Low Stock</span>
+                        <small><span class="badge bg-warning text-dark">Low Stock</span></small>
                     </t>
                     <t t-else="">
-                        <span class="badge bg-success">In Stock</span>
+                        <small><span class="badge bg-success">In Stock</span></small>
                     </t>
                 </div>
             </xpath>
-
-            <!-- Add stock-based styling without breaking existing functionality -->
-            <xpath expr="//div[hasclass('product_price')]" position="after">
-                <t t-set="total_qty" t-value="sum(product.product_variant_ids.mapped('qty_available'))"/>
-                <t t-if="total_qty == 0">
-                    <style>
-                        /* Style out of stock products */
-                        .oe_product.oe_grid .oe_product_cart button {
-                            background-color: #6c757d !important;
-                            border-color: #6c757d !important;
-                            cursor: not-allowed !important;
-                        }
-                        .oe_product.oe_grid .oe_product_cart button:after {
-                            content: " (Out of Stock)";
-                        }
-                    </style>
-                </t>
-            </xpath>
-
-            <!-- Add discount percentage badge -->
-            <xpath expr="//div[hasclass('oe_product_image')]" position="inside">
-                <t t-if="product.compare_list_price and product.compare_list_price &gt; product.list_price">
-                    <div class="discount-badge">
-                        <t t-set="discount" t-value="int(((product.compare_list_price - product.list_price) / product.compare_list_price) * 100)"/>
-                        <span class="badge bg-danger position-absolute" style="top: 10px; right: 10px; z-index: 10;">
-                            -<t t-esc="discount"/>%
-                        </span>
-                    </div>
-                </t>
-            </xpath>
         </template>
-
-        <!-- Add category product count -->
-        <template id="category_count_enhanced" inherit_id="website_sale.categories_recursive">
-            <xpath expr="//a[@t-att-href]" position="inside">
-                <span class="badge bg-secondary ms-2" t-esc="category.product_count or 0"/>
-            </xpath>
-        </template>
-
     </data>
 </odoo>
