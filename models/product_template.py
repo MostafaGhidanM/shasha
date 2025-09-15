@@ -165,31 +165,8 @@ class ProductTemplate(models.Model):
             else:
                 product.stock_status = 'in_stock'
 
-    def _get_combination_info(self, combination=False, product_id=False, add_qty=1, **kwargs):
-        """Override to add stock information to combination info"""
-        # Use **kwargs to handle any additional parameters Odoo 17 might pass
-        combination_info = super()._get_combination_info(
-            combination=combination,
-            product_id=product_id,
-            add_qty=add_qty,
-            **kwargs
-        )
-
-        # Add stock information
-        if product_id:
-            product = self.env['product.product'].browse(product_id)
-        else:
-            product = self.product_variant_id
-
-        combination_info.update({
-            'qty_available': product.qty_available,
-            'virtual_available': product.virtual_available,
-            'incoming_qty': product.incoming_qty,
-            'outgoing_qty': product.outgoing_qty,
-            'is_available': product.qty_available > 0,
-        })
-
-        return combination_info
+    # Removed _get_combination_info override to avoid Odoo 17 compatibility issues
+    # Stock information is available through standard fields
 
     @api.depends('message_ids')
     def _compute_review_stats(self):

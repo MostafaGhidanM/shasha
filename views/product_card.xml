@@ -1,65 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Safe product card enhancement -->
+        <!-- Professional Bootstrap Card Enhancement -->
         <template id="products_item_enhanced" inherit_id="website_sale.products_item">
-            <!-- Add CSS styling and stock badge at the end -->
+            <!-- Add professional card styling -->
             <xpath expr="." position="inside">
                 <style>
+                    /* Professional Bootstrap Card Styling */
                     .oe_product {
-                        border: 1px solid #e9ecef !important;
-                        border-radius: 8px !important;
-                        padding: 15px !important;
-                        margin-bottom: 20px !important;
-                        transition: all 0.3s ease !important;
-                        background: white !important;
-                        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+                        background: #fff !important;
+                        border: 1px solid #dee2e6 !important;
+                        border-radius: 0.5rem !important;
+                        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+                        transition: all 0.15s ease-in-out !important;
+                        margin-bottom: 1.5rem !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                        height: 100% !important;
+                        display: flex !important;
+                        flex-direction: column !important;
                     }
+
                     .oe_product:hover {
-                        transform: translateY(-2px) !important;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+                        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+                        transform: translateY(-0.25rem) !important;
                         border-color: #007bff !important;
                     }
+
                     .oe_product_image {
                         position: relative !important;
-                        margin-bottom: 10px !important;
+                        overflow: hidden !important;
+                        border-radius: 0.5rem 0.5rem 0 0 !important;
+                        height: 200px !important;
+                        background: #f8f9fa !important;
                     }
-                    .stock-status-info {
-                        text-align: center;
-                        margin-top: 8px;
-                        font-size: 0.85em;
+
+                    .oe_product_image img {
+                        width: 100% !important;
+                        height: 100% !important;
+                        object-fit: cover !important;
+                        transition: transform 0.3s ease !important;
                     }
-                    .quick-actions {
-                        margin-top: 8px;
-                        text-align: center;
+
+                    .oe_product:hover .oe_product_image img {
+                        transform: scale(1.05) !important;
                     }
-                    .quick-actions .btn {
-                        margin: 2px;
-                        font-size: 0.8em;
-                        padding: 4px 8px;
+
+                    .product-card-body {
+                        padding: 1rem !important;
+                        flex-grow: 1 !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                    }
+
+                    .product-title {
+                        font-size: 1rem !important;
+                        font-weight: 600 !important;
+                        color: #212529 !important;
+                        margin-bottom: 0.5rem !important;
+                        line-height: 1.4 !important;
+                        text-decoration: none !important;
+                    }
+
+                    .product-title:hover {
+                        color: #007bff !important;
+                        text-decoration: none !important;
+                    }
+
+                    .product-price {
+                        font-size: 1.25rem !important;
+                        font-weight: 700 !important;
+                        color: #28a745 !important;
+                        margin-bottom: 0.75rem !important;
+                    }
+
+                    .stock-badge {
+                        position: absolute !important;
+                        top: 0.5rem !important;
+                        right: 0.5rem !important;
+                        z-index: 10 !important;
+                        font-size: 0.75rem !important;
+                    }
+
+                    .product-actions {
+                        margin-top: auto !important;
+                        padding: 0 !important;
+                    }
+
+                    .btn-add-to-cart {
+                        width: 100% !important;
+                        border-radius: 0.375rem !important;
+                        font-weight: 500 !important;
+                        padding: 0.5rem 1rem !important;
+                        margin-bottom: 0.5rem !important;
+                    }
+
+                    .btn-product-actions {
+                        gap: 0.5rem !important;
+                    }
+
+                    .btn-product-actions .btn {
+                        flex: 1 !important;
+                        font-size: 0.875rem !important;
+                        padding: 0.375rem 0.75rem !important;
+                    }
+
+                    .discount-badge {
+                        position: absolute !important;
+                        top: 0.5rem !important;
+                        left: 0.5rem !important;
+                        z-index: 10 !important;
+                        background: #dc3545 !important;
+                        color: white !important;
+                        font-size: 0.75rem !important;
+                        font-weight: 600 !important;
+                        padding: 0.25rem 0.5rem !important;
+                        border-radius: 0.25rem !important;
                     }
                 </style>
 
-                <!-- Stock status information -->
-                <div class="stock-status-info">
+                <!-- Professional card body structure -->
+                <div class="product-card-body">
+                    <!-- Stock status badge -->
                     <t t-set="total_qty" t-value="sum(product.product_variant_ids.mapped('qty_available'))"/>
                     <t t-if="total_qty == 0">
-                        <span class="badge bg-danger">Out of Stock</span>
+                        <span class="badge bg-danger stock-badge">Out of Stock</span>
                     </t>
                     <t t-elif="total_qty &lt;= 10">
-                        <span class="badge bg-warning text-dark">Low Stock</span>
+                        <span class="badge bg-warning text-dark stock-badge">Low Stock</span>
                     </t>
                     <t t-else="">
-                        <span class="badge bg-success">In Stock</span>
+                        <span class="badge bg-success stock-badge">In Stock</span>
                     </t>
+
+                    <!-- Discount badge -->
+                    <t t-if="product.compare_list_price and product.compare_list_price &gt; product.list_price">
+                        <t t-set="discount" t-value="int(((product.compare_list_price - product.list_price) / product.compare_list_price) * 100)"/>
+                        <span class="discount-badge">-<t t-esc="discount"/>%</span>
+                    </t>
+
+                    <!-- Product title as clickable link -->
+                    <h5 class="card-title mb-2">
+                        <a t-attf-href="/shop/product/#{slug(product)}" class="product-title">
+                            <span t-field="product.name"/>
+                        </a>
+                    </h5>
+
+                    <!-- Product price -->
+                    <div class="product-price mb-3">
+                        <span t-field="product.list_price"
+                              t-options='{"widget": "monetary", "display_currency": website.currency_id}'/>
+                        <t t-if="product.compare_list_price and product.compare_list_price &gt; product.list_price">
+                            <small class="text-muted ms-2">
+                                <del t-field="product.compare_list_price"
+                                     t-options='{"widget": "monetary", "display_currency": website.currency_id}'/>
+                            </small>
+                        </t>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="product-actions">
+                        <!-- Add to Cart Button -->
+                        <t t-if="total_qty &gt; 0">
+                            <form action="/shop/cart/update" method="post" class="d-inline-block w-100">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="hidden" name="product_id" t-att-value="product.product_variant_id.id"/>
+                                <input type="hidden" name="add_qty" value="1"/>
+                                <button type="submit" class="btn btn-primary btn-add-to-cart">
+                                    <i class="fa fa-shopping-cart me-1"></i> Add to Cart
+                                </button>
+                            </form>
+                        </t>
+                        <t t-else="">
+                            <button class="btn btn-secondary btn-add-to-cart" disabled="disabled">
+                                <i class="fa fa-ban me-1"></i> Out of Stock
+                            </button>
+                        </t>
+
+                        <!-- Quick actions -->
+                        <div class="d-flex btn-product-actions">
+                            <a t-attf-href="/shop/product/#{slug(product)}"
+                               class="btn btn-outline-primary btn-sm">
+                                <i class="fa fa-eye me-1"></i> View
+                            </a>
+                            <button class="btn btn-outline-danger btn-sm"
+                                    onclick="addToWishlist(#{product.id})"
+                                    title="Add to Wishlist">
+                                <i class="fa fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Quick action buttons -->
-                <div class="quick-actions">
-                    <a t-attf-href="/shop/product/#{slug(product)}" class="btn btn-outline-primary btn-sm">
-                        <i class="fa fa-eye"></i> View Details
-                    </a>
-                </div>
+                <!-- JavaScript for wishlist -->
+                <script>
+                    function addToWishlist(productId) {
+                        // Simple wishlist functionality
+                        console.log('Added product ' + productId + ' to wishlist');
+                        // You can enhance this with AJAX calls later
+                    }
+                </script>
             </xpath>
         </template>
     </data>
