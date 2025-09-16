@@ -7,6 +7,11 @@
                 <!-- CSRF token for AJAX requests -->
                 <meta name="csrf-token" t-att-content="request.csrf_token()"/>
 
+                <!-- Floating Cart Widget -->
+                <div id="floating-cart-widget" class="position-fixed" style="top: 20px; right: 20px; z-index: 1000;">
+                    <t t-call="shasha.cart_widget"/>
+                </div>
+
                 <!-- Hero Slider Section -->
                 <section class="hero-slider bg-light py-5">
                     <div class="container">
