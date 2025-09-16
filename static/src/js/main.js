@@ -77,21 +77,25 @@
         // Show loading state
         $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Adding...');
 
-        // Use AJAX with proper session handling
+        // Get CSRF token from meta tag
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        // Prepare POST data with CSRF token
+        const postData = {
+            product_id: productId,
+            add_qty: quantity
+        };
+
+        // Add CSRF token as POST parameter (required by Odoo)
+        if (csrfToken) {
+            postData.csrf_token = csrfToken;
+        }
+
+        // Use AJAX with proper CSRF handling
         $.ajax({
             url: '/shop/cart/update',
             type: 'POST',
-            data: {
-                product_id: productId,
-                add_qty: quantity
-            },
-            beforeSend: function(xhr) {
-                // Set CSRF token in header if available
-                const token = $('meta[name="csrf-token"]').attr('content');
-                if (token) {
-                    xhr.setRequestHeader('X-CSRFToken', token);
-                }
-            },
+            data: postData,
             success: function(response) {
                 // Reload page to show updated cart
                 window.location.reload();
