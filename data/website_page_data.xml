@@ -40,7 +40,7 @@
 
         <!-- Wishlist Page -->
         <record id="wishlist_page" model="website.page">
-            <field name="My Wishlist</field>
+            <field name="name">My Wishlist</field>
             <field name="url">/shop/wishlist</field>
             <field name="website_published">True</field>
             <field name="website_id" ref="website.default_website"/>
