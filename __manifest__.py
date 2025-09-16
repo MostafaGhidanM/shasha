@@ -29,7 +29,6 @@
         'sale',
         'stock',
         'portal',
-        'website_sale_comparison',
     ],
     'data': [
         'security/ir.model.access.csv',
