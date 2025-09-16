@@ -34,7 +34,6 @@ class ShashaMain(http.Controller):
     def brands(self, **kw):
         """Brands listing page"""
         brands = request.env['product.brand'].search([
-            ('website_published', '=', True),
             ('active', '=', True),
         ])
         return request.render('shasha.brands_page', {'brands': brands})
@@ -46,163 +45,11 @@ class ShashaMain(http.Controller):
             ('website_published', '=', True),
             ('brand_id', '=', brand.id),
         ])
-        return request.render('shasha.brand_products', {
-            'brand': brand,
+        return request.render('website_sale.products', {
             'products': products,
+            'search': f"Brand: {brand.name}",
         })
 
 
 class ShashaWebsiteSale(WebsiteSale):
-
-    def _get_search_domain(self, search, category, attrib_values, search_in_description=True, brand=None, **kwargs):
-        """Override to add brand filtering"""
-        domain = super()._get_search_domain(search, category, attrib_values, search_in_description, **kwargs)
-
-        if brand:
-            domain += [('brand_id', '=', int(brand))]
-
-        return domain
-
-    @http.route([
-        '/shop',
-        '/shop/page/<int:page>',
-        '/shop/category/<model("product.public.category"):category>',
-        '/shop/category/<model("product.public.category"):category>/page/<int:page>',
-        '/shop/brand/<int:brand>',
-        '/shop/brand/<int:brand>/page/<int:page>',
-    ], type='http', auth='public', website=True, sitemap=True)
-    def shop(self, page=0, category=None, search='', min_price=0.0, max_price=0.0, ppg=False, **post):
-        """Enhanced shop with brand filtering"""
-        add_qty = int(post.get('add_qty', 1))
-        try:
-            min_price = float(min_price)
-        except ValueError:
-            min_price = 0
-        try:
-            max_price = float(max_price)
-        except ValueError:
-            max_price = 0
-
-        category_id = None
-        if category:
-            category_id = category.id
-
-        attrib_list = request.httprequest.args.getlist('attrib')
-        attrib_values = [[int(x) for x in v.split('-')] for v in attrib_list if v]
-        attrib_set = {v[1] for v in attrib_values}
-
-        # Simple URL building without QueryURL dependency
-        def build_url(path, **params):
-            """Simple URL builder"""
-            query_params = []
-            for key, value in params.items():
-                if value not in (None, '', []):
-                    if isinstance(value, list):
-                        for item in value:
-                            query_params.append(f"{key}={item}")
-                    else:
-                        query_params.append(f"{key}={value}")
-
-            if query_params:
-                return f"{path}?{'&'.join(query_params)}"
-            return path
-
-        keep = lambda **kwargs: build_url('/shop',
-                                 category=category_id,
-                                 search=search,
-                                 attrib=attrib_list,
-                                 min_price=min_price,
-                                 max_price=max_price,
-                                 order=post.get('order'),
-                                 **kwargs)
-
-        now = fields.Datetime.now()
-        pricelist = request.env['website'].get_current_website().pricelist_id
-
-        domain = self._get_search_domain(
-            search, category, attrib_values,
-            brand=post.get('brand'),
-            **post
-        )
-
-        if min_price or max_price:
-            # Simple price filtering
-            price_domain = []
-            if min_price:
-                price_domain.append(('list_price', '>=', min_price))
-            if max_price:
-                price_domain.append(('list_price', '<=', max_price))
-            domain += price_domain
-
-        website = request.env['website'].get_current_website()
-        products = request.env['product.template'].search(domain)
-
-        search_count = len(products)
-
-        # Pagination
-        if ppg:
-            try:
-                ppg = int(ppg)
-                post['ppg'] = ppg
-            except ValueError:
-                ppg = False
-        if not ppg:
-            ppg = website.shop_ppg or 20
-
-        pager = request.website.pager(
-            url=request.httprequest.path.partition('?')[0],
-            url_args=post,
-            total=search_count,
-            page=page,
-            step=ppg,
-            scope=7,
-            url_anchor='products_grid',
-        )
-
-        offset = pager['offset']
-        products = products[offset:offset + ppg]
-
-        # Get available brands
-        available_brands = request.env['product.brand'].search([
-            ('website_published', '=', True),
-            ('active', '=', True),
-        ])
-
-        # Get product attributes for filtering
-        ProductAttribute = request.env['product.attribute']
-        attributes = ProductAttribute.search([('attribute_line_ids.product_tmpl_id', 'in', products.ids)])
-
-        values = {
-            'search': search,
-            'category': category,
-            'attrib_values': attrib_values,
-            'attrib_set': attrib_set,
-            'pager': pager,
-            'pricelist': pricelist,
-            'add_qty': add_qty,
-            'products': products,
-            'search_count': search_count,
-            'bins': self._get_bins(products, ppg, website.shop_ppr or 4),
-            'ppg': ppg,
-            'ppr': website.shop_ppr or 4,
-            'categories': request.env['product.public.category'].search([('parent_id', '=', False)]),
-            'brands': available_brands,
-            'selected_brand': int(post.get('brand', 0)),
-            'attributes': attributes,
-            'keep': keep,
-            'search_categories_ids': request.env['product.public.category'].search([]).ids,
-            'layout_mode': request.session.get('website_sale_shop_layout_mode', 'grid'),
-        }
-
-        return request.render('shasha.shop_page', values)
-
-    def _get_bins(self, products, ppg, ppr):
-        """Simple binning for products display"""
-        bins = []
-        current_bin = []
-        for i, product in enumerate(products):
-            current_bin.append(product)
-            if len(current_bin) == ppr or i == len(products) - 1:
-                bins.append(current_bin)
-                current_bin = []
-        return bins
+    pass
