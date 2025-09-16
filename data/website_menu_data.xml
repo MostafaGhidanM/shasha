@@ -50,23 +50,6 @@
             <field name="sequence">6</field>
         </record>
 
-        <!-- User Menu Items -->
-        <record id="user_menu_wishlist" model="website.menu">
-            <field name="name">My Wishlist</field>
-            <field name="url">/shop/wishlist</field>
-            <field name="website_id" ref="website.default_website"/>
-            <field name="parent_id" ref="website.menu_account"/>
-            <field name="sequence">10</field>
-        </record>
-
-        <record id="user_menu_compare" model="website.menu">
-            <field name="name">Product Comparison</field>
-            <field name="url">/shop/compare</field>
-            <field name="website_id" ref="website.default_website"/>
-            <field name="parent_id" ref="website.menu_account"/>
-            <field name="sequence">11</field>
-        </record>
-
         <!-- Footer Menu -->
         <record id="footer_menu_privacy" model="website.menu">
             <field name="name">Privacy Policy</field>
