@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import product_template
-from . import website
-from . import product_comparison
+from . import product_brand
+from . import product_wishlist
 from . import sale_order
+from . import website

@@ -2,77 +2,79 @@
 
 from odoo import models, fields, api
 
+
 class Website(models.Model):
     _inherit = 'website'
-    
+
+    @api.model
     def get_featured_products(self, limit=8):
-        """Get featured products for homepage"""
         return self.env['product.template'].search([
             ('website_published', '=', True),
             ('is_featured', '=', True),
-            ('sale_ok', '=', True)
-        ], limit=limit, order='website_sequence, name')
-    
-    def get_latest_products(self, limit=4):
-        """Get latest products"""
-        return self.env['product.template'].search([
-            ('website_published', '=', True),
-            ('sale_ok', '=', True)
+            ('sale_ok', '=', True),
         ], limit=limit, order='create_date desc')
-    
-    def get_sale_products(self, limit=4):
-        """Get products on sale"""
+
+    @api.model
+    def get_latest_products(self, limit=12):
         return self.env['product.template'].search([
             ('website_published', '=', True),
             ('sale_ok', '=', True),
-            ('compare_list_price', '>', 0),
-            ('list_price', '<', 'compare_list_price')
-        ], limit=limit, order='discount_percentage desc')
+        ], limit=limit, order='create_date desc')
 
+    @api.model
+    def get_best_sellers(self, limit=8):
+        # Get products with highest sales
+        query = """
+            SELECT pt.id, SUM(sol.product_uom_qty) as total_sold
+            FROM product_template pt
+            JOIN product_product pp ON pp.product_tmpl_id = pt.id
+            JOIN sale_order_line sol ON sol.product_id = pp.id
+            JOIN sale_order so ON so.id = sol.order_id
+            WHERE pt.website_published = true
+            AND pt.sale_ok = true
+            AND so.state IN ('sale', 'done')
+            GROUP BY pt.id
+            ORDER BY total_sold DESC
+            LIMIT %s
+        """
+        self.env.cr.execute(query, (limit,))
+        product_ids = [row[0] for row in self.env.cr.fetchall()]
+        return self.env['product.template'].browse(product_ids)
 
-class ProductPublicCategory(models.Model):
-    _inherit = 'product.public.category'
-
-    category_icon = fields.Char(
-        string='Category Icon',
-        help='Font Awesome icon class (e.g., fas fa-mobile-alt)',
-        default='fas fa-cube'
-    )
-
-    category_color = fields.Char(
-        string='Category Color',
-        help='Hex color code for category theme',
-        default='#3498db'
-    )
-
-    is_featured = fields.Boolean(
-        string='Featured Category',
-        default=False,
-        help='Display this category on homepage'
-    )
-
-    banner_image = fields.Binary(
-        string='Banner Image',
-        help='Category banner image'
-    )
-
-    description = fields.Html(
-        string='Description',
-        help='Category description'
-    )
-
-    product_count = fields.Integer(
-        string='Product Count',
-        compute='_compute_product_count',
-        help='Number of products in this category'
-    )
-
-    @api.depends('product_tmpl_ids')
-    def _compute_product_count(self):
-        for category in self:
-            # Count published products in this category
-            category.product_count = self.env['product.template'].search_count([
-                ('public_categ_ids', 'child_of', category.id),
+    @api.model
+    def get_categories_with_products(self):
+        categories = self.env['product.public.category'].search([
+            ('website_published', '=', True),
+            ('parent_id', '=', False),
+        ])
+        result = []
+        for category in categories:
+            product_count = self.env['product.template'].search_count([
                 ('website_published', '=', True),
-                ('sale_ok', '=', True)
+                ('public_categ_ids', 'child_of', category.id)
             ])
+            if product_count > 0:
+                result.append({
+                    'category': category,
+                    'product_count': product_count,
+                })
+        return result
+
+    @api.model
+    def get_brands_with_products(self):
+        brands = self.env['product.brand'].search([
+            ('website_published', '=', True),
+            ('active', '=', True),
+        ])
+        result = []
+        for brand in brands:
+            product_count = self.env['product.template'].search_count([
+                ('website_published', '=', True),
+                ('brand_id', '=', brand.id)
+            ])
+            if product_count > 0:
+                result.append({
+                    'brand': brand,
+                    'product_count': product_count,
+                })
+        return result

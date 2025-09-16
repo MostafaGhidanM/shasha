@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from . import website
-from . import website_sale
+from . import main
+from . import shop
 from . import api

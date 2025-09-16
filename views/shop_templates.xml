@@ -1,243 +1,353 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <!-- Modern Shop Layout Enhancement -->
-        <template id="shop_layout_enhanced" inherit_id="website_sale.products">
-            <xpath expr="." position="inside">
-                <style>
-                    /* Modern Shop Page Styling */
-                    .oe_website_sale {
-                        background: #f8fafc !important;
-                        min-height: 100vh !important;
-                        padding: 20px 0 !important;
-                    }
+    <!-- Shop Page Template -->
+    <template id="shop_page" name="Shasha Shop Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <!-- Breadcrumb -->
+                <div class="container mt-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item" t-if="category"><a href="/shop">Shop</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <t t-if="category" t-esc="category.name"/>
+                                <t t-else="">Shop</t>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
 
-                    /* Clean Page Title */
-                    .oe_website_sale h1,
-                    .oe_website_sale .page-header h1 {
-                        color: #111827 !important;
-                        font-size: 2.5rem !important;
-                        font-weight: 700 !important;
-                        text-align: left !important;
-                        margin-bottom: 30px !important;
-                        padding: 0 !important;
-                        background: none !important;
-                        border: none !important;
-                        box-shadow: none !important;
-                    }
+                <div class="container">
+                    <div class="row">
+                        <!-- Sidebar Filters -->
+                        <div class="col-lg-3">
+                            <div class="shop-sidebar">
+                                <div class="card border-0 shadow-sm mb-4">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0"><i class="fa fa-filter me-2"></i>Filters</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <!-- Search Filter -->
+                                        <div class="filter-section p-3 border-bottom">
+                                            <h6 class="mb-3">Search Products</h6>
+                                            <form method="get">
+                                                <input type="hidden" name="category" t-att-value="category.id if category else ''"/>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="search"
+                                                           placeholder="Search products..." t-att-value="search"/>
+                                                    <button class="btn btn-outline-primary" type="submit">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
 
-                    /* Search Bar Styling */
-                    .oe_website_sale .o_wsale_search_form {
-                        background: white !important;
-                        padding: 20px !important;
-                        border-radius: 8px !important;
-                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-                        margin-bottom: 30px !important;
-                        border: 1px solid #e5e7eb !important;
-                    }
+                                        <!-- Categories Filter -->
+                                        <div class="filter-section p-3 border-bottom">
+                                            <h6 class="mb-3">Categories</h6>
+                                            <ul class="list-unstyled">
+                                                <li class="mb-2">
+                                                    <a href="/shop" class="text-decoration-none">
+                                                        <span t-att-class="'text-primary fw-bold' if not category else 'text-dark'">
+                                                            All Categories
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <t t-foreach="categories" t-as="cat">
+                                                    <li class="mb-2">
+                                                        <a t-attf-href="/shop/category/#{cat.id}" class="text-decoration-none">
+                                                            <span t-att-class="'text-primary fw-bold' if category and category.id == cat.id else 'text-dark'">
+                                                                <t t-esc="cat.name"/>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                </t>
+                                            </ul>
+                                        </div>
 
-                    .oe_website_sale .o_wsale_search_form input {
-                        border: 1px solid #d1d5db !important;
-                        border-radius: 6px !important;
-                        padding: 12px 16px !important;
-                        font-size: 16px !important;
-                        transition: border-color 0.2s ease !important;
-                    }
+                                        <!-- Brands Filter -->
+                                        <div class="filter-section p-3 border-bottom">
+                                            <h6 class="mb-3">Brands</h6>
+                                            <ul class="list-unstyled">
+                                                <li class="mb-2">
+                                                    <a href="/shop" class="text-decoration-none">
+                                                        <span t-att-class="'text-primary fw-bold' if not selected_brand else 'text-dark'">
+                                                            All Brands
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <t t-foreach="brands" t-as="brand">
+                                                    <li class="mb-2">
+                                                        <a t-attf-href="#{keep('brand', brand.id)}" class="text-decoration-none">
+                                                            <span t-att-class="'text-primary fw-bold' if selected_brand == brand.id else 'text-dark'">
+                                                                <t t-esc="brand.name"/>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                </t>
+                                            </ul>
+                                        </div>
 
-                    .oe_website_sale .o_wsale_search_form input:focus {
-                        border-color: #2563eb !important;
-                        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
-                        outline: none !important;
-                    }
+                                        <!-- Price Filter -->
+                                        <div class="filter-section p-3 border-bottom">
+                                            <h6 class="mb-3">Price Range</h6>
+                                            <form method="get" id="priceFilterForm">
+                                                <input type="hidden" name="category" t-att-value="category.id if category else ''"/>
+                                                <input type="hidden" name="search" t-att-value="search"/>
+                                                <div class="row g-2">
+                                                    <div class="col-6">
+                                                        <input type="number" class="form-control form-control-sm"
+                                                               name="min_price" placeholder="Min" min="0" step="0.01"/>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="number" class="form-control form-control-sm"
+                                                               name="max_price" placeholder="Max" min="0" step="0.01"/>
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-outline-primary btn-sm w-100 mt-2">
+                                                    Apply Filter
+                                                </button>
+                                            </form>
+                                        </div>
 
-                    .oe_website_sale .o_wsale_search_form button {
-                        background: #2563eb !important;
-                        border: none !important;
-                        color: white !important;
-                        padding: 12px 24px !important;
-                        border-radius: 6px !important;
-                        font-weight: 600 !important;
-                        transition: background-color 0.2s ease !important;
-                    }
+                                        <!-- Product Attributes Filter -->
+                                        <div t-if="attributes" class="filter-section p-3">
+                                            <h6 class="mb-3">Attributes</h6>
+                                            <t t-foreach="attributes" t-as="attr">
+                                                <div class="mb-3">
+                                                    <div class="fw-bold small mb-2" t-esc="attr.name"/>
+                                                    <t t-foreach="attr.value_ids" t-as="value">
+                                                        <div class="form-check form-check-sm">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                   t-att-id="'attr_%s_%s' % (attr.id, value.id)"
+                                                                   t-att-name="'attrib'"
+                                                                   t-att-value="'%s-%s' % (attr.id, value.id)"
+                                                                   t-att-checked="'%s-%s' % (attr.id, value.id) in ['-'.join(map(str, v)) for v in attrib_values]"/>
+                                                            <label class="form-check-label small"
+                                                                   t-att-for="'attr_%s_%s' % (attr.id, value.id)">
+                                                                <t t-esc="value.name"/>
+                                                            </label>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    .oe_website_sale .o_wsale_search_form button:hover {
-                        background: #1d4ed8 !important;
-                        transform: translateY(-1px) !important;
-                    }
+                        <!-- Main Content -->
+                        <div class="col-lg-9">
+                            <!-- Shop Header -->
+                            <div class="shop-header mb-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <h1 class="h3 mb-0">
+                                            <t t-if="category" t-esc="category.name"/>
+                                            <t t-else="">All Products</t>
+                                        </h1>
+                                        <p class="text-muted mb-0">
+                                            Showing <span t-esc="len(products)"/> of <span t-esc="search_count"/> products
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex justify-content-end align-items-center">
+                                            <!-- View Mode Toggle -->
+                                            <div class="btn-group me-3" role="group">
+                                                <button type="button"
+                                                        t-att-class="'btn btn-outline-primary btn-sm' + (' active' if layout_mode == 'grid' else '')"
+                                                        onclick="setLayoutMode('grid')">
+                                                    <i class="fa fa-th-large"></i>
+                                                </button>
+                                                <button type="button"
+                                                        t-att-class="'btn btn-outline-primary btn-sm' + (' active' if layout_mode == 'list' else '')"
+                                                        onclick="setLayoutMode('list')">
+                                                    <i class="fa fa-list"></i>
+                                                </button>
+                                            </div>
 
-                    /* Sidebar Styling */
-                    .oe_website_sale .o_wsale_products_main_row .col-lg-3 h4 {
-                        color: #111827 !important;
-                        font-weight: 700 !important;
-                        font-size: 1.1rem !important;
-                        margin-bottom: 15px !important;
-                        padding-bottom: 8px !important;
-                        border-bottom: 2px solid #e5e7eb !important;
-                    }
+                                            <!-- Sort Options -->
+                                            <select class="form-select form-select-sm" style="width: auto;" onchange="sortProducts(this.value)">
+                                                <option value="create_date desc">Newest First</option>
+                                                <option value="name asc">Name A-Z</option>
+                                                <option value="name desc">Name Z-A</option>
+                                                <option value="list_price asc">Price Low to High</option>
+                                                <option value="list_price desc">Price High to Low</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                    /* Category Links */
-                    .oe_website_sale .list-unstyled a {
-                        color: #4b5563 !important;
-                        text-decoration: none !important;
-                        font-weight: 500 !important;
-                        padding: 8px 0 !important;
-                        display: block !important;
-                        transition: color 0.2s ease !important;
-                        border-bottom: 1px solid #f3f4f6 !important;
-                    }
+                            <!-- Products Grid/List -->
+                            <div id="products_grid">
+                                <t t-if="not products">
+                                    <div class="text-center py-5">
+                                        <i class="fa fa-search fa-4x text-muted mb-3"></i>
+                                        <h4 class="text-muted">No products found</h4>
+                                        <p class="text-muted">Try adjusting your search criteria</p>
+                                        <a href="/shop" class="btn btn-primary">View All Products</a>
+                                    </div>
+                                </t>
 
-                    .oe_website_sale .list-unstyled a:hover {
-                        color: #2563eb !important;
-                        padding-left: 8px !important;
-                    }
+                                <!-- Grid View -->
+                                <div t-if="products and layout_mode == 'grid'" class="row g-4" id="products-grid">
+                                    <t t-foreach="products" t-as="product">
+                                        <div class="col-xl-4 col-lg-6 col-md-6">
+                                            <t t-call="shasha.product_card"/>
+                                        </div>
+                                    </t>
+                                </div>
 
-                    .oe_website_sale .list-unstyled a:last-child {
-                        border-bottom: none !important;
-                    }
+                                <!-- List View -->
+                                <div t-if="products and layout_mode == 'list'" id="products-list">
+                                    <t t-foreach="products" t-as="product">
+                                        <t t-call="shasha.product_list_item"/>
+                                    </t>
+                                </div>
+                            </div>
 
-                    /* Products Header */
-                    .oe_website_sale .o_wsale_products_searchbar_form {
-                        background: #f9fafb !important;
-                        padding: 15px !important;
-                        border-radius: 6px !important;
-                        margin-bottom: 20px !important;
-                        border: 1px solid #e5e7eb !important;
-                    }
+                            <!-- Pagination -->
+                            <div t-if="pager['page_count'] > 1" class="d-flex justify-content-center mt-5">
+                                <t t-raw="pager"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
 
-                    /* Pagination */
-                    .oe_website_sale .pagination {
-                        justify-content: center !important;
-                        margin-top: 40px !important;
-                        gap: 5px !important;
-                    }
+    <!-- Wishlist Page Template -->
+    <template id="wishlist_page" name="Wishlist Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="container py-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <h1 class="mb-4">My Wishlist</h1>
 
-                    .oe_website_sale .pagination .page-link {
-                        color: #4b5563 !important;
-                        border: 1px solid #d1d5db !important;
-                        padding: 10px 15px !important;
-                        margin: 0 !important;
-                        border-radius: 6px !important;
-                        transition: all 0.2s ease !important;
-                        font-weight: 500 !important;
-                    }
+                            <t t-if="not products">
+                                <div class="text-center py-5">
+                                    <i class="fa fa-heart-o fa-4x text-muted mb-3"></i>
+                                    <h4 class="text-muted">Your wishlist is empty</h4>
+                                    <p class="text-muted">Add products to your wishlist to keep track of items you love</p>
+                                    <a href="/shop" class="btn btn-primary">Continue Shopping</a>
+                                </div>
+                            </t>
 
-                    .oe_website_sale .pagination .page-link:hover {
-                        background: #2563eb !important;
-                        color: white !important;
-                        border-color: #2563eb !important;
-                        transform: translateY(-1px) !important;
-                    }
+                            <t t-if="products">
+                                <div class="row g-4">
+                                    <t t-foreach="products" t-as="product">
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <t t-call="shasha.product_card"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
 
-                    .oe_website_sale .pagination .page-item.active .page-link {
-                        background: #2563eb !important;
-                        border-color: #2563eb !important;
-                        color: white !important;
-                    }
+    <!-- Brands Page Template -->
+    <template id="brands_page" name="Brands Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="container py-5">
+                    <div class="row">
+                        <div class="col-12 text-center mb-5">
+                            <h1 class="display-4 fw-bold">Our Brands</h1>
+                            <p class="lead text-muted">Discover products from your favorite brands</p>
+                        </div>
+                    </div>
 
-                    /* Breadcrumb */
-                    .oe_website_sale .breadcrumb {
-                        background: white !important;
-                        padding: 10px 0 !important;
-                        border: none !important;
-                        border-radius: 0 !important;
-                        box-shadow: none !important;
-                        margin-bottom: 20px !important;
-                        border-bottom: 1px solid #e5e7eb !important;
-                    }
+                    <div class="row g-4">
+                        <t t-foreach="brands" t-as="brand">
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <div class="brand-card">
+                                    <a t-attf-href="/brand/#{brand.id}" class="text-decoration-none">
+                                        <div class="card border-0 shadow-sm h-100 text-center brand-hover">
+                                            <div class="card-body py-4">
+                                                <div class="brand-logo mb-3">
+                                                    <img t-if="brand.image"
+                                                         t-att-src="'data:image/jpeg;base64,' + brand.image.decode('ascii')"
+                                                         t-att-alt="brand.name"
+                                                         class="img-fluid"
+                                                         style="max-height: 80px;"/>
+                                                    <h5 t-if="not brand.image"
+                                                        class="mb-0 text-primary" t-esc="brand.name"/>
+                                                </div>
+                                                <h5 class="card-title mb-2" t-esc="brand.name"/>
+                                                <p class="card-text text-muted" t-if="brand.description">
+                                                    <t t-esc="brand.description[:100]"/>
+                                                    <span t-if="len(brand.description or '') > 100">...</span>
+                                                </p>
+                                                <p class="card-text">
+                                                    <small class="text-muted">
+                                                        <t t-esc="brand.product_count"/> products
+                                                    </small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
 
-                    .oe_website_sale .breadcrumb-item a {
-                        color: #2563eb !important;
-                        text-decoration: none !important;
-                        font-weight: 500 !important;
-                    }
+    <!-- Brand Products Page Template -->
+    <template id="brand_products" name="Brand Products Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="container py-5">
+                    <!-- Brand Header -->
+                    <div class="row mb-5">
+                        <div class="col-12">
+                            <div class="brand-header text-center">
+                                <div class="brand-logo mb-3">
+                                    <img t-if="brand.image"
+                                         t-att-src="'data:image/jpeg;base64,' + brand.image.decode('ascii')"
+                                         t-att-alt="brand.name"
+                                         class="img-fluid"
+                                         style="max-height: 100px;"/>
+                                </div>
+                                <h1 class="display-4 fw-bold" t-esc="brand.name"/>
+                                <p t-if="brand.description" class="lead text-muted" t-esc="brand.description"/>
+                                <p class="text-muted">
+                                    <t t-esc="len(products)"/> products available
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-                    .oe_website_sale .breadcrumb-item a:hover {
-                        text-decoration: underline !important;
-                    }
+                    <!-- Products -->
+                    <div class="row g-4">
+                        <t t-foreach="products" t-as="product">
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <t t-call="shasha.product_card"/>
+                            </div>
+                        </t>
+                    </div>
 
-                    .oe_website_sale .breadcrumb-item.active {
-                        color: #4b5563 !important;
-                        font-weight: 600 !important;
-                    }
-
-                    /* Form Controls */
-                    .oe_website_sale .form-control {
-                        border: 1px solid #d1d5db !important;
-                        border-radius: 6px !important;
-                        padding: 8px 12px !important;
-                        background: white !important;
-                        transition: border-color 0.2s ease !important;
-                        font-size: 14px !important;
-                    }
-
-                    .oe_website_sale .form-control:focus {
-                        border-color: #2563eb !important;
-                        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
-                        outline: none !important;
-                    }
-
-                    /* Buttons */
-                    .oe_website_sale .btn {
-                        border-radius: 6px !important;
-                        font-weight: 600 !important;
-                        padding: 8px 16px !important;
-                        transition: all 0.2s ease !important;
-                        border: 1px solid transparent !important;
-                        font-size: 14px !important;
-                    }
-
-                    .oe_website_sale .btn-primary {
-                        background: #2563eb !important;
-                        color: white !important;
-                        border-color: #2563eb !important;
-                    }
-
-                    .oe_website_sale .btn-primary:hover {
-                        background: #1d4ed8 !important;
-                        border-color: #1d4ed8 !important;
-                        transform: translateY(-1px) !important;
-                    }
-
-                    .oe_website_sale .btn-secondary {
-                        background: #6b7280 !important;
-                        border-color: #6b7280 !important;
-                        color: white !important;
-                    }
-
-                    .oe_website_sale .btn-secondary:hover {
-                        background: #4b5563 !important;
-                        border-color: #4b5563 !important;
-                        transform: translateY(-1px) !important;
-                    }
-
-                    .oe_website_sale .btn-outline-primary {
-                        background: transparent !important;
-                        color: #2563eb !important;
-                        border-color: #2563eb !important;
-                    }
-
-                    .oe_website_sale .btn-outline-primary:hover {
-                        background: #2563eb !important;
-                        color: white !important;
-                    }
-
-                    /* Mobile Responsiveness */
-                    @media (max-width: 991px) {
-                        .oe_website_sale h1,
-                        .oe_website_sale .page-header h1 {
-                            font-size: 2rem !important;
-                            margin-bottom: 20px !important;
-                        }
-                    }
-
-                    @media (max-width: 576px) {
-                        .oe_website_sale h1,
-                        .oe_website_sale .page-header h1 {
-                            font-size: 1.8rem !important;
-                        }
-                    }
-                </style>
-            </xpath>
-        </template>
-    </data>
+                    <t t-if="not products">
+                        <div class="text-center py-5">
+                            <i class="fa fa-cube fa-4x text-muted mb-3"></i>
+                            <h4 class="text-muted">No products available</h4>
+                            <p class="text-muted">This brand doesn't have any products available right now</p>
+                            <a href="/shop" class="btn btn-primary">Browse Other Products</a>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
 </odoo>

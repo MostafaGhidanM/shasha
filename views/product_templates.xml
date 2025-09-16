@@ -1,382 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-    <!-- Product Detail Template -->
-    <template id="product_detail_template" name="Product Detail">
-        <t t-call="website.layout">
-            <div id="wrap">
-                <!-- Breadcrumb -->
-                <div class="breadcrumb-section">
-                    <div class="container">
-                        <div class="breadcrumb-nav">
-                            <span class="breadcrumb-item">
-                                <a href="/">Home</a>
-                            </span>
-                            <span class="breadcrumb-separator">/</span>
-                            <span class="breadcrumb-item">
-                                <a href="/shop">Shop</a>
-                            </span>
-                            <t t-if="product.public_categ_ids">
-                                <span class="breadcrumb-separator">/</span>
-                                <span class="breadcrumb-item">
-                                    <a t-attf-href="/shop?category=#{product.public_categ_ids[0].id}" t-field="product.public_categ_ids[0].name"/>
-                                </span>
-                            </t>
-                            <span class="breadcrumb-separator">/</span>
-                            <span class="breadcrumb-item" t-field="product.name"/>
+    <!-- Product Card Template -->
+    <template id="product_card" name="Product Card">
+        <div class="product-card h-100">
+            <div class="card border-0 shadow-sm h-100 product-hover">
+                <div class="card-img-top position-relative overflow-hidden" style="height: 250px;">
+                    <a t-attf-href="#{product.website_url}">
+                        <img t-if="product.image_1920"
+                             t-att-src="'data:image/jpeg;base64,' + product.image_1920.decode('ascii')"
+                             t-att-alt="product.name"
+                             class="w-100 h-100 object-cover product-image"/>
+                        <div t-if="not product.image_1920"
+                             class="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
+                            <i class="fa fa-image fa-3x text-light"></i>
                         </div>
+                    </a>
+
+                    <!-- Product Badge -->
+                    <div t-if="product.badge_text"
+                         t-attf-class="position-absolute top-0 start-0 badge bg-#{product.badge_color or 'primary'} m-2">
+                        <t t-esc="product.badge_text"/>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="position-absolute top-0 end-0 p-2">
+                        <div class="btn-group-vertical">
+                            <button class="btn btn-sm btn-light rounded-circle mb-1 product-action-btn"
+                                    title="Add to Wishlist"
+                                    t-att-data-product-id="product.id"
+                                    onclick="toggleWishlist(this)">
+                                <i class="fa fa-heart"></i>
+                            </button>
+                            <button class="btn btn-sm btn-light rounded-circle mb-1 product-action-btn"
+                                    title="Quick View"
+                                    t-att-data-product-id="product.id"
+                                    onclick="quickView(this)">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-light rounded-circle product-action-btn"
+                                    title="Add to Compare"
+                                    t-att-data-product-id="product.id"
+                                    onclick="addToCompare(this)">
+                                <i class="fa fa-balance-scale"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Add to Cart Button -->
+                    <div class="position-absolute bottom-0 start-50 translate-middle-x pb-2 quick-cart-btn" style="opacity: 0; transition: opacity 0.3s;">
+                        <button class="btn btn-primary btn-sm"
+                                t-att-data-product-id="product.id"
+                                onclick="quickAddToCart(this)">
+                            <i class="fa fa-shopping-cart me-1"></i> Quick Add
+                        </button>
                     </div>
                 </div>
 
-                <div class="container">
-                    <div class="product-detail">
-                        <div class="row">
-                            <!-- Product Images -->
-                            <div class="col-lg-6">
-                                <div class="product-gallery">
-                                    <img t-attf-src="/web/image/product.template/#{product.id}/image_1024" t-att-alt="product.name" class="main-image" id="mainImage"/>
-                                    <div class="thumbnail-images">
-                                        <img t-attf-src="/web/image/product.template/#{product.id}/image_1024" t-att-alt="product.name" class="thumbnail active" onclick="changeMainImage(this)"/>
-                                        <!-- Additional images would go here -->
-                                        <t t-if="product.product_template_image_ids">
-                                            <t t-foreach="product.product_template_image_ids[:3]" t-as="image">
-                                                <img t-attf-src="/web/image/product.image/#{image.id}/image_1920" t-att-alt="product.name" class="thumbnail" onclick="changeMainImage(this)"/>
-                                            </t>
-                                        </t>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Product Info -->
-                            <div class="col-lg-6">
-                                <div class="product-details">
-                                    <h1 t-field="product.name"/>
-
-                                    <div class="product-rating mb-3">
-                                        <div class="stars">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </div>
-                                        <span class="rating-count">(24 reviews) | </span>
-                                        <span class="stock-status text-success">In Stock</span>
-                                    </div>
-
-                                    <div class="price">
-                                        <span t-field="product.currency_id.symbol"/>
-                                        <span t-field="product.list_price" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
-                                        <t t-if="product.compare_list_price and product.compare_list_price > product.list_price">
-                                            <span class="old-price" style="font-size: 20px;">
-                                                <span t-field="product.currency_id.symbol"/>
-                                                <span t-field="product.compare_list_price" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
-                                            </span>
-                                        </t>
-                                    </div>
-
-                                    <div class="product-description mb-4" t-if="product.description_sale">
-                                        <div t-field="product.description_sale"/>
-                                    </div>
-
-                                    <!-- Product Options -->
-                                    <div class="product-options" t-if="product.attribute_line_ids">
-                                        <t t-foreach="product.attribute_line_ids" t-as="attribute_line">
-                                            <div class="option-group">
-                                                <label class="option-label" t-field="attribute_line.attribute_id.name"/>
-                                                <div class="option-buttons">
-                                                    <t t-foreach="attribute_line.value_ids" t-as="value">
-                                                        <button class="option-btn" t-att-data-attribute-id="attribute_line.attribute_id.id" t-att-data-value-id="value.id">
-                                                            <span t-field="value.name"/>
-                                                        </button>
-                                                    </t>
-                                                </div>
-                                            </div>
-                                        </t>
-                                    </div>
-
-                                    <!-- Quantity -->
-                                    <div class="quantity-selector">
-                                        <span class="quantity-label">Quantity:</span>
-                                        <div class="quantity-controls">
-                                            <button class="qty-btn" onclick="decreaseQty()">-</button>
-                                            <input type="number" class="qty-input" value="1" min="1" id="quantity"/>
-                                            <button class="qty-btn" onclick="increaseQty()">+</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Action Buttons -->
-                                    <div class="action-buttons">
-                                        <button class="btn-add-cart" t-att-data-product-id="product.id">
-                                            <i class="fas fa-shopping-cart"></i> Add to Cart
-                                        </button>
-                                        <button class="btn-wishlist" t-att-data-product-id="product.id">
-                                            <i class="fas fa-heart"></i>
-                                        </button>
-                                    </div>
-
-                                    <!-- Product Features -->
-                                    <div class="product-features mt-4">
-                                        <h4 style="color: #2c3e50; margin-bottom: 15px;">Key Features:</h4>
-                                        <ul style="list-style: none; padding: 0;">
-                                            <li style="margin-bottom: 8px;">
-                                                <i class="fas fa-check" style="color: #27ae60; margin-right: 10px;"></i> 
-                                                Premium Quality Materials
-                                            </li>
-                                            <li style="margin-bottom: 8px;">
-                                                <i class="fas fa-check" style="color: #27ae60; margin-right: 10px;"></i> 
-                                                1 Year Warranty
-                                            </li>
-                                            <li style="margin-bottom: 8px;">
-                                                <i class="fas fa-check" style="color: #27ae60; margin-right: 10px;"></i> 
-                                                Free Shipping in UAE
-                                            </li>
-                                            <li style="margin-bottom: 8px;">
-                                                <i class="fas fa-check" style="color: #27ae60; margin-right: 10px;"></i> 
-                                                30-Day Return Policy
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <!-- Social Share -->
-                                    <div class="social-share mt-4">
-                                        <h6>Share this product:</h6>
-                                        <div class="d-flex gap-2">
-                                            <a href="#" class="btn btn-sm btn-outline-primary">
-                                                <i class="fab fa-facebook-f"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-sm btn-outline-info">
-                                                <i class="fab fa-twitter"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-sm btn-outline-success">
-                                                <i class="fab fa-whatsapp"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product Tabs -->
-                        <div class="product-tabs">
-                            <div class="tab-buttons">
-                                <button class="tab-btn active" onclick="showTab('description')">Description</button>
-                                <button class="tab-btn" onclick="showTab('specifications')">Specifications</button>
-                                <button class="tab-btn" onclick="showTab('reviews')">Reviews (24)</button>
-                                <button class="tab-btn" onclick="showTab('shipping')">Shipping Info</button>
-                            </div>
-
-                            <div id="description" class="tab-content">
-                                <h4>Product Description</h4>
-                                <div t-field="product.description" t-if="product.description"/>
-                                <div t-if="not product.description">
-                                    <p>Detailed product description will be displayed here. This product offers excellent quality and performance for your needs.</p>
-                                </div>
-                            </div>
-
-                            <div id="specifications" class="tab-content" style="display: none;">
-                                <h4>Technical Specifications</h4>
-                                <table class="table table-striped">
-                                    <tr t-if="product.default_code">
-                                        <td>
-                                            <strong>Model:</strong>
-                                        </td>
-                                        <td><span t-field="product.default_code"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Weight:</strong>
-                                        </td>
-                                        <td>TBD</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Dimensions:</strong>
-                                        </td>
-                                        <td>TBD</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Warranty:</strong>
-                                        </td>
-                                        <td>1 Year International Warranty</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <div id="reviews" class="tab-content" style="display: none;">
-                                <h4>Customer Reviews</h4>
-                                <div class="review-summary mb-4">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="text-center">
-                                                <div style="font-size: 3rem; font-weight: 700; color: #f39c12;">4.8</div>
-                                                <div class="stars mb-2">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                </div>
-                                                <p>Based on 24 reviews</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="rating-breakdown">
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <span class="me-2">5 stars</span>
-                                                    <div class="progress flex-grow-1 me-2">
-                                                        <div class="progress-bar bg-warning" style="width: 80%"></div>
-                                                    </div>
-                                                    <span>20</span>
-                                                </div>
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <span class="me-2">4 stars</span>
-                                                    <div class="progress flex-grow-1 me-2">
-                                                        <div class="progress-bar bg-warning" style="width: 15%"></div>
-                                                    </div>
-                                                    <span>3</span>
-                                                </div>
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <span class="me-2">3 stars</span>
-                                                    <div class="progress flex-grow-1 me-2">
-                                                        <div class="progress-bar bg-warning" style="width: 5%"></div>
-                                                    </div>
-                                                    <span>1</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="reviews-list">
-                                    <div class="review-item mb-4 p-3" style="border: 1px solid #eee; border-radius: 8px;">
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <strong>Ahmed Al-Rashid</strong>
-                                            <span class="text-muted">2 days ago</span>
-                                        </div>
-                                        <div class="stars mb-2">
-                                            <i class="fas fa-star text-warning"></i>
-                                            <i class="fas fa-star text-warning"></i>
-                                            <i class="fas fa-star text-warning"></i>
-                                            <i class="fas fa-star text-warning"></i>
-                                            <i class="fas fa-star text-warning"></i>
-                                        </div>
-                                        <p>Excellent product! Quality is outstanding and delivery was fast. Highly recommended!</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="shipping" class="tab-content" style="display: none;">
-                                <h4>Shipping Information</h4>
-                                <div class="shipping-options">
-                                    <div class="shipping-option mb-3 p-3" style="border: 1px solid #eee; border-radius: 8px;">
-                                        <div class="d-flex justify-content-between">
-                                            <div>
-                                                <strong>Free Standard Delivery</strong>
-                                                <p class="mb-0 text-muted">3-5 business days within UAE</p>
-                                            </div>
-                                            <span class="text-success fw-bold">FREE</span>
-                                        </div>
-                                    </div>
-                                    <div class="shipping-option mb-3 p-3" style="border: 1px solid #eee; border-radius: 8px;">
-                                        <div class="d-flex justify-content-between">
-                                            <div>
-                                                <strong>Express Delivery</strong>
-                                                <p class="mb-0 text-muted">Next day delivery in Dubai &amp; Abu Dhabi</p>
-                                            </div>
-                                            <span class="fw-bold">AED 25</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <h5 class="mt-4">Return Policy</h5>
-                                <ul>
-                                    <li>14-day return policy for unopened items</li>
-                                    <li>Free returns for defective products</li>
-                                    <li>Original packaging required</li>
-                                    <li>Refund processed within 5-7 business days</li>
-                                </ul>
-                            </div>
-                        </div>
+                <div class="card-body">
+                    <!-- Brand -->
+                    <div t-if="product.brand_id" class="product-brand mb-2">
+                        <small class="text-muted">
+                            <a t-attf-href="/brand/#{product.brand_id.id}" class="text-decoration-none">
+                                <t t-esc="product.brand_id.name"/>
+                            </a>
+                        </small>
                     </div>
 
-                    <!-- Related Products -->
-                    <section class="mt-5" t-if="related_products">
-                        <h2 class="mb-4" style="font-weight: 700; color: #2c3e50;">Related Products</h2>
-                        <div class="products-grid">
-                            <t t-foreach="related_products" t-as="related_product">
-                                <div class="product-card">
-                                    <div class="product-image">
-                                        <a t-attf-href="/shop/product/#{slug(related_product)}">
-                                            <img t-attf-src="/web/image/product.template/#{related_product.id}/image_512" t-att-alt="related_product.name"/>
-                                        </a>
-                                    </div>
-                                    <div class="product-info">
-                                        <h3 class="product-title">
-                                            <a t-attf-href="/shop/product/#{slug(related_product)}" t-field="related_product.name"/>
-                                        </h3>
-                                        <div class="product-price">
-                                            <span t-field="related_product.currency_id.symbol"/>
-                                            <span t-field="related_product.list_price" t-options="{'widget': 'monetary', 'display_currency': related_product.currency_id}"/>
-                                        </div>
-                                        <button class="add-to-cart-btn" t-att-data-product-id="related_product.id">Add to Cart</button>
-                                    </div>
-                                </div>
-                            </t>
-                        </div>
-                    </section>
+                    <!-- Product Name -->
+                    <h6 class="card-title mb-2">
+                        <a t-attf-href="#{product.website_url}" class="text-decoration-none text-dark">
+                            <t t-esc="product.name"/>
+                        </a>
+                    </h6>
+
+                    <!-- Rating -->
+                    <div t-if="hasattr(product, 'rating_avg') and product.rating_avg" class="product-rating mb-2">
+                        <t t-set="rating" t-value="int(product.rating_avg)"/>
+                        <t t-foreach="range(5)" t-as="star">
+                            <i t-if="star &lt; rating" class="fa fa-star text-warning"></i>
+                            <i t-else="" class="fa fa-star-o text-muted"></i>
+                        </t>
+                        <small class="text-muted ms-1">(<t t-esc="product.rating_count or 0"/>)</small>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="product-price">
+                        <t t-set="combination_info" t-value="product._get_combination_info_variant()"/>
+                        <span t-if="combination_info['has_discounted_price']" class="text-muted text-decoration-line-through me-2">
+                            <t t-esc="combination_info['list_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                        </span>
+                        <span class="fw-bold text-primary">
+                            <t t-esc="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                        </span>
+                    </div>
+
+                    <!-- Description -->
+                    <p t-if="product.description_sale" class="card-text text-muted small mt-2">
+                        <t t-esc="product.description_sale[:100]"/>
+                        <span t-if="len(product.description_sale) > 100">...</span>
+                    </p>
+                </div>
+
+                <div class="card-footer bg-transparent border-0 pt-0">
+                    <button class="btn btn-primary w-100 add-to-cart-btn"
+                            t-att-data-product-id="product.id"
+                            onclick="addToCart(this)">
+                        <i class="fa fa-shopping-cart me-1"></i> Add to Cart
+                    </button>
                 </div>
             </div>
-
-            <script>
-                function changeMainImage(thumbnail) {
-                    document.getElementById('mainImage').src = thumbnail.src;
-                    document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
-                    thumbnail.classList.add('active');
-                }
-
-                function showTab(tabName) {
-                    document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
-                    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-                    document.getElementById(tabName).style.display = 'block';
-                    event.target.classList.add('active');
-                }
-
-                function increaseQty() {
-                    const qtyInput = document.getElementById('quantity');
-                    qtyInput.value = parseInt(qtyInput.value) + 1;
-                }
-
-                function decreaseQty() {
-                    const qtyInput = document.getElementById('quantity');
-                    if (parseInt(qtyInput.value) > 1) {
-                        qtyInput.value = parseInt(qtyInput.value) - 1;
-                    }
-                }
-            </script>
-        </t>
+        </div>
     </template>
 
-    <!-- Product Quick View Modal -->
-    <template id="product_quick_view_modal" name="Product Quick View">
-        <div class="modal fade" id="quickViewModal" tabindex="-1">
+    <!-- Quick View Modal Template -->
+    <template id="quick_view_modal" name="Quick View Modal">
+        <div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Quick View</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <h5 class="modal-title" id="quickViewModalLabel">Product Quick View</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <img id="quickViewImage" src="" alt="" class="img-fluid"/>
+                    <div class="modal-body" id="quickViewContent">
+                        <!-- Content will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Product List View -->
+    <template id="product_list_item" name="Product List Item">
+        <div class="product-list-item">
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        <div class="position-relative" style="height: 200px;">
+                            <a t-attf-href="#{product.website_url}">
+                                <img t-if="product.image_1920"
+                                     t-att-src="'data:image/jpeg;base64,' + product.image_1920.decode('ascii')"
+                                     t-att-alt="product.name"
+                                     class="w-100 h-100 object-cover"/>
+                                <div t-if="not product.image_1920"
+                                     class="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
+                                    <i class="fa fa-image fa-2x text-light"></i>
+                                </div>
+                            </a>
+                            <div t-if="product.badge_text"
+                                 t-attf-class="position-absolute top-0 start-0 badge bg-#{product.badge_color or 'primary'} m-2">
+                                <t t-esc="product.badge_text"/>
                             </div>
-                            <div class="col-md-6">
-                                <h4 id="quickViewTitle"></h4>
-                                <div id="quickViewPrice" class="h5 text-primary"></div>
-                                <div id="quickViewDescription" class="mb-3"></div>
-                                <button id="quickViewAddToCart" class="btn btn-primary">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <div t-if="product.brand_id" class="product-brand mb-2">
+                                <small class="text-muted">
+                                    <a t-attf-href="/brand/#{product.brand_id.id}" class="text-decoration-none">
+                                        <t t-esc="product.brand_id.name"/>
+                                    </a>
+                                </small>
+                            </div>
+                            <h5 class="card-title mb-2">
+                                <a t-attf-href="#{product.website_url}" class="text-decoration-none text-dark">
+                                    <t t-esc="product.name"/>
+                                </a>
+                            </h5>
+                            <div t-if="hasattr(product, 'rating_avg') and product.rating_avg" class="product-rating mb-2">
+                                <t t-set="rating" t-value="int(product.rating_avg)"/>
+                                <t t-foreach="range(5)" t-as="star">
+                                    <i t-if="star &lt; rating" class="fa fa-star text-warning"></i>
+                                    <i t-else="" class="fa fa-star-o text-muted"></i>
+                                </t>
+                                <small class="text-muted ms-1">(<t t-esc="product.rating_count or 0"/>)</small>
+                            </div>
+                            <p t-if="product.description_sale" class="card-text text-muted">
+                                <t t-esc="product.description_sale[:200]"/>
+                                <span t-if="len(product.description_sale) > 200">...</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card-body d-flex flex-column justify-content-between h-100">
+                            <div class="product-price text-center">
+                                <t t-set="combination_info" t-value="product._get_combination_info_variant()"/>
+                                <div t-if="combination_info['has_discounted_price']" class="text-muted text-decoration-line-through">
+                                    <t t-esc="combination_info['list_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                </div>
+                                <div class="fw-bold text-primary h5">
+                                    <t t-esc="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                </div>
+                            </div>
+                            <div class="product-actions">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary"
+                                            t-att-data-product-id="product.id"
+                                            onclick="addToCart(this)">
+                                        <i class="fa fa-shopping-cart me-1"></i> Add to Cart
+                                    </button>
+                                    <div class="btn-group">
+                                        <button class="btn btn-outline-secondary btn-sm"
+                                                title="Add to Wishlist"
+                                                t-att-data-product-id="product.id"
+                                                onclick="toggleWishlist(this)">
+                                            <i class="fa fa-heart"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary btn-sm"
+                                                title="Add to Compare"
+                                                t-att-data-product-id="product.id"
+                                                onclick="addToCompare(this)">
+                                            <i class="fa fa-balance-scale"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -384,5 +220,4 @@
             </div>
         </div>
     </template>
-    </data>
 </odoo>

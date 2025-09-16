@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Homepage Template -->
+    <template id="homepage" name="Shasha Homepage">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <!-- Hero Slider Section -->
+                <section class="hero-slider bg-light py-5">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="hero-content">
+                                    <h1 class="display-4 fw-bold text-dark mb-3">Welcome to Shasha Store</h1>
+                                    <p class="lead text-muted mb-4">Discover amazing products with unbeatable prices and quality</p>
+                                    <a href="/shop" class="btn btn-primary btn-lg me-3">Shop Now</a>
+                                    <a href="/about" class="btn btn-outline-primary btn-lg">Learn More</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="hero-image">
+                                    <img src="/shasha/static/src/images/hero-banner.jpg" alt="Hero Banner" class="img-fluid rounded shadow"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Categories Section -->
+                <section class="categories-section py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 text-center mb-5">
+                                <h2 class="display-5 fw-bold">Shop by Category</h2>
+                                <p class="lead text-muted">Browse our wide range of product categories</p>
+                            </div>
+                        </div>
+                        <div class="row g-4">
+                            <t t-foreach="categories" t-as="category_info">
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="category-card h-100">
+                                        <a t-attf-href="/shop/category/#{category_info['category'].id}" class="text-decoration-none">
+                                            <div class="card border-0 shadow-sm h-100 category-hover">
+                                                <div class="card-img-top position-relative overflow-hidden" style="height: 200px;">
+                                                    <img t-if="category_info['category'].image_1920"
+                                                         t-att-src="'data:image/jpeg;base64,' + category_info['category'].image_1920.decode('ascii')"
+                                                         t-att-alt="category_info['category'].name"
+                                                         class="w-100 h-100 object-cover"/>
+                                                    <div t-if="not category_info['category'].image_1920"
+                                                         class="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center">
+                                                        <i class="fa fa-image fa-3x text-light"></i>
+                                                    </div>
+                                                    <div class="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 rounded-bottom">
+                                                        <small t-esc="category_info['product_count']"/> products
+                                                    </div>
+                                                </div>
+                                                <div class="card-body text-center">
+                                                    <h5 class="card-title mb-2" t-esc="category_info['category'].name"/>
+                                                    <p class="card-text text-muted">Explore our <t t-esc="category_info['category'].name"/> collection</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Featured Products Section -->
+                <section class="featured-products py-5 bg-light">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 text-center mb-5">
+                                <h2 class="display-5 fw-bold">Featured Products</h2>
+                                <p class="lead text-muted">Hand-picked products just for you</p>
+                            </div>
+                        </div>
+                        <div class="row g-4">
+                            <t t-foreach="featured_products" t-as="product">
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <t t-call="shasha.product_card"/>
+                                </div>
+                            </t>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center mt-4">
+                                <a href="/shop" class="btn btn-outline-primary btn-lg">View All Products</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Sellers Section -->
+                <section class="best-sellers py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 text-center mb-5">
+                                <h2 class="display-5 fw-bold">Best Sellers</h2>
+                                <p class="lead text-muted">Most popular products among our customers</p>
+                            </div>
+                        </div>
+                        <div class="row g-4">
+                            <t t-foreach="best_sellers" t-as="product">
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <t t-call="shasha.product_card"/>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Latest Products Section -->
+                <section class="latest-products py-5 bg-light">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 text-center mb-5">
+                                <h2 class="display-5 fw-bold">Latest Products</h2>
+                                <p class="lead text-muted">Check out our newest arrivals</p>
+                            </div>
+                        </div>
+                        <div class="row g-4">
+                            <t t-foreach="latest_products" t-as="product">
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <t t-call="shasha.product_card"/>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Brands Section -->
+                <section class="brands-section py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 text-center mb-5">
+                                <h2 class="display-5 fw-bold">Popular Brands</h2>
+                                <p class="lead text-muted">Shop from your favorite brands</p>
+                            </div>
+                        </div>
+                        <div class="row g-4">
+                            <t t-foreach="brands" t-as="brand_info">
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="brand-card">
+                                        <a t-attf-href="/brand/#{brand_info['brand'].id}" class="text-decoration-none">
+                                            <div class="card border-0 shadow-sm h-100 text-center brand-hover">
+                                                <div class="card-body py-4">
+                                                    <div class="brand-logo mb-3">
+                                                        <img t-if="brand_info['brand'].image"
+                                                             t-att-src="'data:image/jpeg;base64,' + brand_info['brand'].image.decode('ascii')"
+                                                             t-att-alt="brand_info['brand'].name"
+                                                             class="img-fluid"
+                                                             style="max-height: 60px;"/>
+                                                        <h5 t-if="not brand_info['brand'].image"
+                                                            class="mb-0 text-primary" t-esc="brand_info['brand'].name"/>
+                                                    </div>
+                                                    <h6 class="card-title mb-2" t-esc="brand_info['brand'].name"/>
+                                                    <p class="card-text text-muted small">
+                                                        <t t-esc="brand_info['product_count']"/> products
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center mt-4">
+                                <a href="/brands" class="btn btn-outline-primary btn-lg">View All Brands</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

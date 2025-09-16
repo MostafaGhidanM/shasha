@@ -1,66 +1,62 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'TechDream Mobile Theme',
+    'name': 'Shasha E-Commerce',
     'version': '17.0.1.0.0',
-    'category': 'Website/Theme',
-    'summary': 'Complete e-commerce theme for TechDream Mobile',
+    'category': 'Website/E-Commerce',
+    'summary': 'Complete E-Commerce Solution with Modern UI',
     'description': """
-        TechDream Mobile Theme
-        ======================
-        
-        A complete e-commerce theme inspired by modern mobile phone retailers.
-        
+        Shasha E-Commerce Module
+        ========================
+
+        A complete e-commerce solution that integrates with Odoo's built-in modules:
+
         Features:
-        - Professional homepage with hero slider
-        - Advanced product catalog with filters
-        - Detailed product pages
-        - Shopping cart and checkout process
-        - Responsive design for all devices
-        - Contact page with forms
-        - SEO optimized structure
+        - Modern homepage with product slider
+        - Complete shop with product cards and filters
+        - Product comparison functionality
+        - Advanced shopping cart
+        - Integration with Odoo inventory, stock, and sales
+        - Responsive design
+        - SEO optimized
     """,
-    'author': 'TechDream',
-    'website': 'https://www.techdream.ae',
+    'author': 'Your Company',
+    'website': 'https://www.yourcompany.com',
     'depends': [
         'base',
         'website',
         'website_sale',
-        'sale',
         'product',
+        'sale',
         'stock',
         'portal',
-        'mail',
+        'website_sale_comparison',
     ],
     'data': [
-        # Security
         'security/ir.model.access.csv',
-
-        # Template files (load first) - modern ecommerce design
-        'views/product_card.xml',
+        'views/website_templates.xml',
+        'views/homepage_templates.xml',
         'views/shop_templates.xml',
-        'views/shop_simple.xml',
-
-        # Data files that exist
-        'data/product_categories.xml',
-        'data/sample_products.xml',
-        'data/email_templates.xml',
-        'data/website_data.xml',
+        'views/product_templates.xml',
+        'views/cart_templates.xml',
+        'data/website_menu_data.xml',
+        'data/website_page_data.xml',
     ],
     'assets': {
         'web.assets_frontend': [
-            # CSS and JS files that exist
-            'shasha/static/src/css/techdream.css',
-            'shasha/static/src/js/techdream.js',
+            'shasha/static/src/css/main.css',
+            'shasha/static/src/css/homepage.css',
+            'shasha/static/src/css/shop.css',
+            'shasha/static/src/css/product.css',
+            'shasha/static/src/css/cart.css',
+            'shasha/static/src/js/main.js',
+            'shasha/static/src/js/homepage.js',
+            'shasha/static/src/js/shop.js',
+            'shasha/static/src/js/product_comparison.js',
             'shasha/static/src/js/cart.js',
-            'shasha/static/src/js/product.js',
         ],
     },
-    'images': [
-        # Only include images if they exist
-        # 'static/description/banner.png',
-        # 'static/description/theme_screenshot.png',
-    ],
     'installable': True,
-    'auto_install': False,
     'application': False,
+    'auto_install': False,
     'license': 'LGPL-3',
 }

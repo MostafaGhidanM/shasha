@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Enhanced Cart Widget -->
+    <template id="cart_widget" name="Enhanced Cart Widget">
+        <div class="cart-widget">
+            <div class="dropdown">
+                <button class="btn btn-outline-primary position-relative" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false" id="cartDropdown">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span class="cart-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          id="cartCountBadge" style="display: none;">
+                        0
+                    </span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end cart-dropdown" aria-labelledby="cartDropdown" style="width: 350px;">
+                    <div class="dropdown-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">Shopping Cart</h6>
+                        <span class="badge bg-primary" id="cartItemCount">0 items</span>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div id="cartItems" class="cart-items-list" style="max-height: 300px; overflow-y: auto;">
+                        <div class="empty-cart-message text-center py-4" id="emptyCartMessage">
+                            <i class="fa fa-shopping-cart fa-2x text-muted mb-2"></i>
+                            <p class="text-muted mb-0">Your cart is empty</p>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider" id="cartDivider" style="display: none;"></div>
+                    <div class="dropdown-footer p-3" id="cartFooter" style="display: none;">
+                        <div class="d-flex justify-content-between mb-2">
+                            <strong>Total: <span id="cartTotal">$0.00</span></strong>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <a href="/shop/cart" class="btn btn-outline-primary btn-sm">View Cart</a>
+                            <a href="/shop/checkout" class="btn btn-primary btn-sm">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Cart Item Template -->
+    <template id="cart_item_template" name="Cart Item Template">
+        <div class="cart-item p-2 border-bottom" data-line-id="">
+            <div class="row g-2">
+                <div class="col-3">
+                    <img class="img-fluid rounded cart-item-image" alt="" style="height: 50px; object-fit: cover;"/>
+                </div>
+                <div class="col-6">
+                    <h6 class="mb-1 cart-item-name text-truncate" style="font-size: 0.85rem;"></h6>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-sm btn-outline-secondary me-1 qty-btn" onclick="updateCartQuantity(this, -1)">-</button>
+                        <span class="cart-item-qty mx-1">1</span>
+                        <button class="btn btn-sm btn-outline-secondary ms-1 qty-btn" onclick="updateCartQuantity(this, 1)">+</button>
+                    </div>
+                </div>
+                <div class="col-3 text-end">
+                    <div class="cart-item-price fw-bold text-primary" style="font-size: 0.85rem;"></div>
+                    <button class="btn btn-sm btn-outline-danger mt-1" onclick="removeFromCart(this)" title="Remove">
+                        <i class="fa fa-trash fa-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Add to Cart Success Modal -->
+    <template id="add_to_cart_modal" name="Add to Cart Success Modal">
+        <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="addToCartModalLabel">
+                            <i class="fa fa-check-circle me-2"></i>Added to Cart
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <img id="modalProductImage" src="" alt="" class="img-fluid rounded"/>
+                            </div>
+                            <div class="col-8">
+                                <h6 id="modalProductName"></h6>
+                                <p class="text-muted mb-1">Quantity: <span id="modalProductQty"></span></p>
+                                <p class="text-primary fw-bold mb-0">Price: <span id="modalProductPrice"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Continue Shopping</button>
+                        <a href="/shop/cart" class="btn btn-primary">View Cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Mini Cart Notification -->
+    <template id="mini_cart_notification" name="Mini Cart Notification">
+        <div id="miniCartNotification" class="mini-cart-notification position-fixed"
+             style="top: 20px; right: 20px; z-index: 9999; display: none;">
+            <div class="alert alert-success alert-dismissible fade show shadow" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fa fa-shopping-cart fa-lg me-2"></i>
+                    <div>
+                        <strong>Product added to cart!</strong>
+                        <div class="small text-muted" id="notificationDetails"></div>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Floating Cart Button -->
+    <template id="floating_cart_button" name="Floating Cart Button">
+        <div id="floatingCart" class="floating-cart-button position-fixed"
+             style="bottom: 20px; right: 20px; z-index: 1000; display: none;">
+            <button class="btn btn-primary rounded-circle shadow-lg position-relative"
+                    onclick="toggleFloatingCart()" style="width: 60px; height: 60px;">
+                <i class="fa fa-shopping-cart fa-lg"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                      id="floatingCartCount" style="display: none;">
+                    0
+                </span>
+            </button>
+        </div>
+    </template>
+
+    <!-- Cart Summary Widget -->
+    <template id="cart_summary_widget" name="Cart Summary Widget">
+        <div class="cart-summary-widget bg-light p-3 rounded">
+            <h6 class="mb-3">Order Summary</h6>
+            <div class="d-flex justify-content-between mb-2">
+                <span>Subtotal:</span>
+                <span id="cartSubtotal">$0.00</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span>Shipping:</span>
+                <span id="cartShipping">Free</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span>Tax:</span>
+                <span id="cartTax">$0.00</span>
+            </div>
+            <hr/>
+            <div class="d-flex justify-content-between mb-3">
+                <strong>Total:</strong>
+                <strong id="cartGrandTotal" class="text-primary">$0.00</strong>
+            </div>
+            <div class="d-grid">
+                <button class="btn btn-primary" onclick="proceedToCheckout()">
+                    <i class="fa fa-credit-card me-1"></i> Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Recently Viewed Products Widget -->
+    <template id="recently_viewed_widget" name="Recently Viewed Products">
+        <div class="recently-viewed-widget">
+            <h6 class="mb-3">Recently Viewed</h6>
+            <div id="recentlyViewedProducts" class="row g-2">
+                <!-- Products will be loaded dynamically -->
+            </div>
+        </div>
+    </template>
+
+    <!-- Product Recommendation Widget -->
+    <template id="product_recommendations_widget" name="Product Recommendations">
+        <div class="product-recommendations-widget">
+            <h6 class="mb-3">You May Also Like</h6>
+            <div id="recommendedProducts" class="row g-3">
+                <!-- Products will be loaded dynamically -->
+            </div>
+        </div>
+    </template>
+
+    <!-- Quick Add to Cart Form -->
+    <template id="quick_add_to_cart_form" name="Quick Add to Cart Form">
+        <div class="quick-add-form">
+            <form class="d-flex align-items-center gap-2" onsubmit="quickAddToCart(event)">
+                <input type="hidden" name="product_id" class="product-id-input"/>
+                <div class="quantity-selector">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="adjustQuantity(this, -1)">-</button>
+                    <input type="number" name="add_qty" class="form-control form-control-sm text-center"
+                           value="1" min="1" max="999" style="width: 60px;"/>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="adjustQuantity(this, 1)">+</button>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-plus me-1"></i> Add
+                </button>
+            </form>
+        </div>
+    </template>
+
+    <!-- Loading Spinner -->
+    <template id="cart_loading_spinner" name="Cart Loading Spinner">
+        <div class="cart-loading-spinner text-center py-3" id="cartLoadingSpinner" style="display: none;">
+            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="small text-muted mt-1">Updating cart...</div>
+        </div>
+    </template>
+</odoo>

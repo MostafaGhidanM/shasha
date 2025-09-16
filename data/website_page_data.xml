@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Homepage -->
+        <record id="homepage_page" model="website.page">
+            <field name="name">Shasha Store Homepage</field>
+            <field name="url">/</field>
+            <field name="website_published">True</field>
+            <field name="is_homepage">True</field>
+            <field name="website_id" ref="website.default_website"/>
+            <field name="key">shasha.homepage</field>
+        </record>
+
+        <!-- About Page -->
+        <record id="about_page" model="website.page">
+            <field name="name">About Us</field>
+            <field name="url">/about</field>
+            <field name="website_published">True</field>
+            <field name="website_id" ref="website.default_website"/>
+            <field name="key">shasha.about_page</field>
+        </record>
+
+        <!-- Contact Page -->
+        <record id="contact_page" model="website.page">
+            <field name="name">Contact Us</field>
+            <field name="url">/contact</field>
+            <field name="website_published">True</field>
+            <field name="website_id" ref="website.default_website"/>
+            <field name="key">shasha.contact_page</field>
+        </record>
+
+        <!-- Brands Page -->
+        <record id="brands_page" model="website.page">
+            <field name="name">Our Brands</field>
+            <field name="url">/brands</field>
+            <field name="website_published">True</field>
+            <field name="website_id" ref="website.default_website"/>
+            <field name="key">shasha.brands_page</field>
+        </record>
+
+        <!-- Wishlist Page -->
+        <record id="wishlist_page" model="website.page">
+            <field name="My Wishlist</field>
+            <field name="url">/shop/wishlist</field>
+            <field name="website_published">True</field>
+            <field name="website_id" ref="website.default_website"/>
+            <field name="key">shasha.wishlist_page</field>
+        </record>
+
+        <!-- Comparison Page -->
+        <record id="compare_page" model="website.page">
+            <field name="name">Product Comparison</field>
+            <field name="url">/shop/compare</field>
+            <field name="website_published">True</field>
+            <field name="website_id" ref="website.default_website"/>
+            <field name="key">shasha.compare_page</field>
+        </record>
+
+        <!-- Privacy Policy Page -->
+        <record id="privacy_page" model="website.page">
+            <field name="name">Privacy Policy</field>
+            <field name="url">/privacy</field>
+            <field name="website_published">True</field>
+            <field name="website_id" ref="website.default_website"/>
+            <field name="key">shasha.privacy_page</field>
+            <field name="arch" type="xml">
+                <t t-name="shasha.privacy_page">
+                    <t t-call="website.layout">
+                        <div id="wrap" class="oe_structure">
+                            <div class="container py-5">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h1 class="mb-4">Privacy Policy</h1>
+                                        <div class="privacy-content">
+                                            <p class="lead">At Shasha Store, we are committed to protecting your privacy and ensuring the security of your personal information.</p>
+
+                                            <h3>Information We Collect</h3>
+                                            <p>We collect information you provide directly to us, such as when you create an account, make a purchase, or contact us.</p>
+
+                                            <h3>How We Use Your Information</h3>
+                                            <p>We use the information we collect to provide, maintain, and improve our services, process transactions, and communicate with you.</p>
+
+                                            <h3>Information Sharing</h3>
+                                            <p>We do not sell, trade, or rent your personal information to third parties without your consent, except as described in this policy.</p>
+
+                                            <h3>Data Security</h3>
+                                            <p>We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+
+                                            <h3>Contact Us</h3>
+                                            <p>If you have any questions about this Privacy Policy, please contact us at privacy@shashastore.com.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- Terms of Service Page -->
+        <record id="terms_page" model="website.page">
+            <field name="name">Terms of Service</field>
+            <field name="url">/terms</field>
+            <field name="website_published">True</field>
+            <field name="website_id" ref="website.default_website"/>
+            <field name="key">shasha.terms_page</field>
+            <field name="arch" type="xml">
+                <t t-name="shasha.terms_page">
+                    <t t-call="website.layout">
+                        <div id="wrap" class="oe_structure">
+                            <div class="container py-5">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h1 class="mb-4">Terms of Service</h1>
+                                        <div class="terms-content">
+                                            <p class="lead">Welcome to Shasha Store. These terms and conditions outline the rules and regulations for the use of our website and services.</p>
+
+                                            <h3>Acceptance of Terms</h3>
+                                            <p>By accessing and using our website, you accept and agree to be bound by the terms and provision of this agreement.</p>
+
+                                            <h3>Products and Services</h3>
+                                            <p>We strive to provide accurate product descriptions and pricing. However, we do not warrant that product descriptions or other content is accurate, complete, reliable, current, or error-free.</p>
+
+                                            <h3>User Accounts</h3>
+                                            <p>When you create an account with us, you must provide information that is accurate, complete, and current at all times.</p>
+
+                                            <h3>Prohibited Uses</h3>
+                                            <p>You may not use our service for any illegal or unauthorized purpose nor may you, in the use of the service, violate any laws in your jurisdiction.</p>
+
+                                            <h3>Contact Information</h3>
+                                            <p>Questions about the Terms of Service should be sent to us at legal@shashastore.com.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- FAQ Page -->
+        <record id="faq_page" model="website.page">
+            <field name="name">Frequently Asked Questions</field>
+            <field name="url">/faq</field>
+            <field name="website_published">True</field>
+            <field name="website_id" ref="website.default_website"/>
+            <field name="key">shasha.faq_page</field>
+            <field name="arch" type="xml">
+                <t t-name="shasha.faq_page">
+                    <t t-call="website.layout">
+                        <div id="wrap" class="oe_structure">
+                            <div class="container py-5">
+                                <div class="row">
+                                    <div class="col-12 text-center mb-5">
+                                        <h1 class="display-4 fw-bold">Frequently Asked Questions</h1>
+                                        <p class="lead text-muted">Find answers to common questions about our products and services</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-8 mx-auto">
+                                        <div class="accordion" id="faqAccordion">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="faq1">
+                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                                        How do I place an order?
+                                                    </button>
+                                                </h2>
+                                                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                                    <div class="accordion-body">
+                                                        Simply browse our products, add items to your cart, and proceed to checkout. You'll need to create an account or sign in to complete your purchase.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="faq2">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                                        What payment methods do you accept?
+                                                    </button>
+                                                </h2>
+                                                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                                    <div class="accordion-body">
+                                                        We accept major credit cards, PayPal, and bank transfers. All payments are processed securely through our encrypted payment gateway.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="faq3">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                                        How long does shipping take?
+                                                    </button>
+                                                </h2>
+                                                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                                    <div class="accordion-body">
+                                                        Standard shipping takes 3-7 business days. Express shipping options are available for faster delivery.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="faq4">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                                                        Can I return or exchange items?
+                                                    </button>
+                                                </h2>
+                                                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                                    <div class="accordion-body">
+                                                        Yes, we offer a 30-day return policy for most items. Items must be in original condition with tags attached.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+    </data>
+</odoo>
