@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import http
+from odoo import http, fields
 from odoo.http import request
 from odoo.addons.website_sale.controllers.main import WebsiteSale
 
@@ -91,13 +91,30 @@ class ShashaWebsiteSale(WebsiteSale):
         attrib_values = [[int(x) for x in v.split('-')] for v in attrib_list if v]
         attrib_set = {v[1] for v in attrib_values}
 
-        keep = QueryURL('/shop',
-                       category=category_id,
-                       search=search,
-                       attrib=attrib_list,
-                       min_price=min_price,
-                       max_price=max_price,
-                       order=post.get('order'))
+        # Simple URL building without QueryURL dependency
+        def build_url(path, **params):
+            """Simple URL builder"""
+            query_params = []
+            for key, value in params.items():
+                if value not in (None, '', []):
+                    if isinstance(value, list):
+                        for item in value:
+                            query_params.append(f"{key}={item}")
+                    else:
+                        query_params.append(f"{key}={value}")
+
+            if query_params:
+                return f"{path}?{'&'.join(query_params)}"
+            return path
+
+        keep = lambda **kwargs: build_url('/shop',
+                                 category=category_id,
+                                 search=search,
+                                 attrib=attrib_list,
+                                 min_price=min_price,
+                                 max_price=max_price,
+                                 order=post.get('order'),
+                                 **kwargs)
 
         now = fields.Datetime.now()
         pricelist = request.env['website'].get_current_website().pricelist_id
@@ -109,7 +126,12 @@ class ShashaWebsiteSale(WebsiteSale):
         )
 
         if min_price or max_price:
-            price_domain = self._get_search_price_domain(min_price, max_price)
+            # Simple price filtering
+            price_domain = []
+            if min_price:
+                price_domain.append(('list_price', '>=', min_price))
+            if max_price:
+                price_domain.append(('list_price', '<=', max_price))
             domain += price_domain
 
         website = request.env['website'].get_current_website()
@@ -160,7 +182,7 @@ class ShashaWebsiteSale(WebsiteSale):
             'add_qty': add_qty,
             'products': products,
             'search_count': search_count,
-            'bins': TableCompute().process(products, ppg),
+            'bins': self._get_bins(products, ppg, website.shop_ppr or 4),
             'ppg': ppg,
             'ppr': website.shop_ppr or 4,
             'categories': request.env['product.public.category'].search([('parent_id', '=', False)]),
@@ -168,13 +190,19 @@ class ShashaWebsiteSale(WebsiteSale):
             'selected_brand': int(post.get('brand', 0)),
             'attributes': attributes,
             'keep': keep,
-            'search_categories_ids': category.search([]).ids,
+            'search_categories_ids': request.env['product.public.category'].search([]).ids,
             'layout_mode': request.session.get('website_sale_shop_layout_mode', 'grid'),
         }
 
         return request.render('shasha.shop_page', values)
 
-
-from odoo.addons.website.models.website import QueryURL
-from odoo.addons.website_sale.controllers.main import TableCompute
-from odoo import fields
+    def _get_bins(self, products, ppg, ppr):
+        """Simple binning for products display"""
+        bins = []
+        current_bin = []
+        for i, product in enumerate(products):
+            current_bin.append(product)
+            if len(current_bin) == ppr or i == len(products) - 1:
+                bins.append(current_bin)
+                current_bin = []
+        return bins
