@@ -38,7 +38,6 @@
         'views/shop_templates.xml',
         'views/product_templates.xml',
         'views/cart_templates.xml',
-        'data/website_menu_data.xml',
         'data/website_page_data.xml',
     ],
     'assets': {
