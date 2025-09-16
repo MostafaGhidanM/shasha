@@ -10,7 +10,6 @@ class Website(models.Model):
     def get_featured_products(self, limit=8):
         return self.env['product.template'].search([
             ('website_published', '=', True),
-            ('is_featured', '=', True),
             ('sale_ok', '=', True),
         ], limit=limit, order='create_date desc')
 
@@ -46,7 +45,6 @@ class Website(models.Model):
     @api.model
     def get_categories_with_products(self):
         categories = self.env['product.public.category'].search([
-            ('website_published', '=', True),
             ('parent_id', '=', False),
         ])
         result = []
@@ -65,7 +63,6 @@ class Website(models.Model):
     @api.model
     def get_brands_with_products(self):
         brands = self.env['product.brand'].search([
-            ('website_published', '=', True),
             ('active', '=', True),
         ])
         result = []
