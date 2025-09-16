@@ -1,7 +1,243 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Shop templates temporarily disabled to prevent errors -->
-        <!-- All shop functionality uses Odoo's default templates -->
+        <!-- Modern Shop Layout Enhancement -->
+        <template id="shop_layout_enhanced" inherit_id="website_sale.products">
+            <xpath expr="." position="inside">
+                <style>
+                    /* Modern Shop Page Styling */
+                    .oe_website_sale {
+                        background: #f8fafc !important;
+                        min-height: 100vh !important;
+                        padding: 20px 0 !important;
+                    }
+
+                    /* Clean Page Title */
+                    .oe_website_sale h1,
+                    .oe_website_sale .page-header h1 {
+                        color: #111827 !important;
+                        font-size: 2.5rem !important;
+                        font-weight: 700 !important;
+                        text-align: left !important;
+                        margin-bottom: 30px !important;
+                        padding: 0 !important;
+                        background: none !important;
+                        border: none !important;
+                        box-shadow: none !important;
+                    }
+
+                    /* Search Bar Styling */
+                    .oe_website_sale .o_wsale_search_form {
+                        background: white !important;
+                        padding: 20px !important;
+                        border-radius: 8px !important;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+                        margin-bottom: 30px !important;
+                        border: 1px solid #e5e7eb !important;
+                    }
+
+                    .oe_website_sale .o_wsale_search_form input {
+                        border: 1px solid #d1d5db !important;
+                        border-radius: 6px !important;
+                        padding: 12px 16px !important;
+                        font-size: 16px !important;
+                        transition: border-color 0.2s ease !important;
+                    }
+
+                    .oe_website_sale .o_wsale_search_form input:focus {
+                        border-color: #2563eb !important;
+                        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+                        outline: none !important;
+                    }
+
+                    .oe_website_sale .o_wsale_search_form button {
+                        background: #2563eb !important;
+                        border: none !important;
+                        color: white !important;
+                        padding: 12px 24px !important;
+                        border-radius: 6px !important;
+                        font-weight: 600 !important;
+                        transition: background-color 0.2s ease !important;
+                    }
+
+                    .oe_website_sale .o_wsale_search_form button:hover {
+                        background: #1d4ed8 !important;
+                        transform: translateY(-1px) !important;
+                    }
+
+                    /* Sidebar Styling */
+                    .oe_website_sale .o_wsale_products_main_row .col-lg-3 h4 {
+                        color: #111827 !important;
+                        font-weight: 700 !important;
+                        font-size: 1.1rem !important;
+                        margin-bottom: 15px !important;
+                        padding-bottom: 8px !important;
+                        border-bottom: 2px solid #e5e7eb !important;
+                    }
+
+                    /* Category Links */
+                    .oe_website_sale .list-unstyled a {
+                        color: #4b5563 !important;
+                        text-decoration: none !important;
+                        font-weight: 500 !important;
+                        padding: 8px 0 !important;
+                        display: block !important;
+                        transition: color 0.2s ease !important;
+                        border-bottom: 1px solid #f3f4f6 !important;
+                    }
+
+                    .oe_website_sale .list-unstyled a:hover {
+                        color: #2563eb !important;
+                        padding-left: 8px !important;
+                    }
+
+                    .oe_website_sale .list-unstyled a:last-child {
+                        border-bottom: none !important;
+                    }
+
+                    /* Products Header */
+                    .oe_website_sale .o_wsale_products_searchbar_form {
+                        background: #f9fafb !important;
+                        padding: 15px !important;
+                        border-radius: 6px !important;
+                        margin-bottom: 20px !important;
+                        border: 1px solid #e5e7eb !important;
+                    }
+
+                    /* Pagination */
+                    .oe_website_sale .pagination {
+                        justify-content: center !important;
+                        margin-top: 40px !important;
+                        gap: 5px !important;
+                    }
+
+                    .oe_website_sale .pagination .page-link {
+                        color: #4b5563 !important;
+                        border: 1px solid #d1d5db !important;
+                        padding: 10px 15px !important;
+                        margin: 0 !important;
+                        border-radius: 6px !important;
+                        transition: all 0.2s ease !important;
+                        font-weight: 500 !important;
+                    }
+
+                    .oe_website_sale .pagination .page-link:hover {
+                        background: #2563eb !important;
+                        color: white !important;
+                        border-color: #2563eb !important;
+                        transform: translateY(-1px) !important;
+                    }
+
+                    .oe_website_sale .pagination .page-item.active .page-link {
+                        background: #2563eb !important;
+                        border-color: #2563eb !important;
+                        color: white !important;
+                    }
+
+                    /* Breadcrumb */
+                    .oe_website_sale .breadcrumb {
+                        background: white !important;
+                        padding: 10px 0 !important;
+                        border: none !important;
+                        border-radius: 0 !important;
+                        box-shadow: none !important;
+                        margin-bottom: 20px !important;
+                        border-bottom: 1px solid #e5e7eb !important;
+                    }
+
+                    .oe_website_sale .breadcrumb-item a {
+                        color: #2563eb !important;
+                        text-decoration: none !important;
+                        font-weight: 500 !important;
+                    }
+
+                    .oe_website_sale .breadcrumb-item a:hover {
+                        text-decoration: underline !important;
+                    }
+
+                    .oe_website_sale .breadcrumb-item.active {
+                        color: #4b5563 !important;
+                        font-weight: 600 !important;
+                    }
+
+                    /* Form Controls */
+                    .oe_website_sale .form-control {
+                        border: 1px solid #d1d5db !important;
+                        border-radius: 6px !important;
+                        padding: 8px 12px !important;
+                        background: white !important;
+                        transition: border-color 0.2s ease !important;
+                        font-size: 14px !important;
+                    }
+
+                    .oe_website_sale .form-control:focus {
+                        border-color: #2563eb !important;
+                        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+                        outline: none !important;
+                    }
+
+                    /* Buttons */
+                    .oe_website_sale .btn {
+                        border-radius: 6px !important;
+                        font-weight: 600 !important;
+                        padding: 8px 16px !important;
+                        transition: all 0.2s ease !important;
+                        border: 1px solid transparent !important;
+                        font-size: 14px !important;
+                    }
+
+                    .oe_website_sale .btn-primary {
+                        background: #2563eb !important;
+                        color: white !important;
+                        border-color: #2563eb !important;
+                    }
+
+                    .oe_website_sale .btn-primary:hover {
+                        background: #1d4ed8 !important;
+                        border-color: #1d4ed8 !important;
+                        transform: translateY(-1px) !important;
+                    }
+
+                    .oe_website_sale .btn-secondary {
+                        background: #6b7280 !important;
+                        border-color: #6b7280 !important;
+                        color: white !important;
+                    }
+
+                    .oe_website_sale .btn-secondary:hover {
+                        background: #4b5563 !important;
+                        border-color: #4b5563 !important;
+                        transform: translateY(-1px) !important;
+                    }
+
+                    .oe_website_sale .btn-outline-primary {
+                        background: transparent !important;
+                        color: #2563eb !important;
+                        border-color: #2563eb !important;
+                    }
+
+                    .oe_website_sale .btn-outline-primary:hover {
+                        background: #2563eb !important;
+                        color: white !important;
+                    }
+
+                    /* Mobile Responsiveness */
+                    @media (max-width: 991px) {
+                        .oe_website_sale h1,
+                        .oe_website_sale .page-header h1 {
+                            font-size: 2rem !important;
+                            margin-bottom: 20px !important;
+                        }
+                    }
+
+                    @media (max-width: 576px) {
+                        .oe_website_sale h1,
+                        .oe_website_sale .page-header h1 {
+                            font-size: 1.8rem !important;
+                        }
+                    }
+                </style>
+            </xpath>
+        </template>
     </data>
 </odoo>

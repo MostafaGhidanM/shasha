@@ -1,85 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Professional Bootstrap Card Enhancement -->
+        <!-- Modern E-commerce Product Grid -->
         <template id="products_item_enhanced" inherit_id="website_sale.products_item">
-            <!-- Add professional card styling -->
             <xpath expr="." position="inside">
                 <style>
-                    /* Force full width container */
+                    /* Modern E-commerce Shop Layout */
+                    body {
+                        background-color: #f8fafc !important;
+                    }
+
+                    /* Container Optimization */
                     .container, .container-fluid {
-                        max-width: 100% !important;
-                        width: 100% !important;
-                        padding-left: 15px !important;
-                        padding-right: 15px !important;
-                    }
-
-                    /* Fix shop container width */
-                    #wrap .container {
-                        max-width: 1200px !important;
+                        max-width: 1400px !important;
                         margin: 0 auto !important;
+                        padding-left: 20px !important;
+                        padding-right: 20px !important;
                     }
 
-                    /* Professional 4-Column Grid System */
-                    #products_grid,
+                    /* Modern Grid System - Force proper display */
+                    .oe_website_sale .o_wsale_products_grid_table_wrapper,
                     .oe_website_sale #products_grid {
+                        display: grid !important;
+                        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+                        gap: 25px !important;
                         width: 100% !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
                     }
 
-                    #products_grid .row,
-                    .oe_website_sale .row {
-                        display: flex !important;
-                        flex-wrap: wrap !important;
-                        margin: 0 -15px !important;
+                    /* Override all Bootstrap column classes for products */
+                    .oe_website_sale .col-lg-12,
+                    .oe_website_sale .col-lg-6,
+                    .oe_website_sale .col-lg-4,
+                    .oe_website_sale .col-lg-3,
+                    .oe_website_sale .col-md-12,
+                    .oe_website_sale .col-md-6,
+                    .oe_website_sale .col-md-4,
+                    .oe_website_sale .col-sm-6,
+                    .oe_website_sale .col-12 {
+                        flex: none !important;
+                        max-width: none !important;
                         width: 100% !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
                     }
 
-                    /* Force 4-column layout */
-                    .oe_website_sale .col-lg-3 {
-                        flex: 0 0 25% !important;
-                        max-width: 25% !important;
-                        padding: 0 15px !important;
-                        margin-bottom: 30px !important;
+                    /* Responsive breakpoints */
+                    @media (min-width: 1400px) {
+                        .oe_website_sale .o_wsale_products_grid_table_wrapper,
+                        .oe_website_sale #products_grid {
+                            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+                            gap: 30px !important;
+                        }
                     }
 
                     @media (max-width: 1199px) {
-                        .oe_website_sale .col-lg-3 {
-                            flex: 0 0 33.333333% !important;
-                            max-width: 33.333333% !important;
+                        .oe_website_sale .o_wsale_products_grid_table_wrapper,
+                        .oe_website_sale #products_grid {
+                            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+                            gap: 20px !important;
                         }
                     }
 
                     @media (max-width: 991px) {
-                        .oe_website_sale .col-lg-3 {
-                            flex: 0 0 50% !important;
-                            max-width: 50% !important;
+                        .oe_website_sale .o_wsale_products_grid_table_wrapper,
+                        .oe_website_sale #products_grid {
+                            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+                            gap: 20px !important;
                         }
                     }
 
                     @media (max-width: 767px) {
-                        .oe_website_sale .col-lg-3 {
-                            flex: 0 0 100% !important;
-                            max-width: 100% !important;
+                        .oe_website_sale .o_wsale_products_grid_table_wrapper,
+                        .oe_website_sale #products_grid {
+                            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+                            gap: 15px !important;
                         }
                     }
 
-                    /* Reset any conflicting styles */
-                    .oe_website_sale .col-lg-3.col-md-4.col-sm-6 {
-                        flex: 0 0 25% !important;
-                        max-width: 25% !important;
+                    @media (max-width: 576px) {
+                        .oe_website_sale .o_wsale_products_grid_table_wrapper,
+                        .oe_website_sale #products_grid {
+                            grid-template-columns: repeat(2, 1fr) !important;
+                            gap: 12px !important;
+                        }
                     }
 
-                    /* Professional Product Card Design */
+                    /* Clean Modern Product Cards */
                     .oe_product {
                         background: #ffffff !important;
                         border: 1px solid #e5e7eb !important;
-                        border-radius: 16px !important;
-                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-                        transition: all 0.3s ease !important;
+                        border-radius: 12px !important;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+                        transition: all 0.2s ease !important;
                         margin-bottom: 0 !important;
                         padding: 0 !important;
                         overflow: hidden !important;
-                        height: 420px !important;
+                        height: 400px !important;
                         display: flex !important;
                         flex-direction: column !important;
                         position: relative !important;
@@ -87,38 +105,38 @@
                     }
 
                     .oe_product:hover {
-                        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-                        transform: translateY(-8px) !important;
-                        border-color: #3b82f6 !important;
+                        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+                        transform: translateY(-4px) !important;
+                        border-color: #2563eb !important;
                     }
 
-                    /* Product Image Container */
+                    /* Clean Product Image Container */
                     .oe_product_image {
                         position: relative !important;
                         overflow: hidden !important;
-                        border-radius: 16px 16px 0 0 !important;
-                        height: 220px !important;
-                        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%) !important;
+                        border-radius: 12px 12px 0 0 !important;
+                        height: 200px !important;
+                        background: #f9fafb !important;
                         display: flex !important;
                         align-items: center !important;
                         justify-content: center !important;
                     }
 
                     .oe_product_image img {
-                        width: 100% !important;
-                        height: 100% !important;
+                        max-width: 90% !important;
+                        max-height: 90% !important;
                         object-fit: contain !important;
-                        transition: transform 0.3s ease !important;
-                        padding: 15px !important;
+                        transition: transform 0.2s ease !important;
                     }
 
                     .oe_product:hover .oe_product_image img {
                         transform: scale(1.05) !important;
                     }
 
-                    /* Card Body */
+                    /* Clean Card Body */
+                    .oe_product .oe_product_cart,
                     .product-card-body {
-                        padding: 20px !important;
+                        padding: 16px !important;
                         flex-grow: 1 !important;
                         display: flex !important;
                         flex-direction: column !important;
@@ -126,41 +144,46 @@
                         height: 200px !important;
                     }
 
-                    /* Product Title */
+                    /* Clean Product Title */
+                    .oe_product h6 a,
                     .product-title {
-                        font-size: 16px !important;
+                        font-size: 14px !important;
                         font-weight: 600 !important;
                         color: #111827 !important;
-                        margin-bottom: 10px !important;
+                        margin-bottom: 8px !important;
                         line-height: 1.4 !important;
                         text-decoration: none !important;
                         display: -webkit-box !important;
                         -webkit-line-clamp: 2 !important;
                         -webkit-box-orient: vertical !important;
                         overflow: hidden !important;
-                        min-height: 44px !important;
+                        min-height: 40px !important;
+                        transition: color 0.2s ease !important;
                     }
 
+                    .oe_product h6 a:hover,
                     .product-title:hover {
-                        color: #3b82f6 !important;
+                        color: #2563eb !important;
                         text-decoration: none !important;
                     }
 
-                    /* Price Styling */
+                    /* Clean Price Styling */
+                    .oe_product .oe_currency_value,
                     .product-price {
-                        font-size: 20px !important;
+                        font-size: 16px !important;
                         font-weight: 700 !important;
                         color: #059669 !important;
-                        margin-bottom: 15px !important;
+                        margin-bottom: 12px !important;
                         display: flex !important;
                         align-items: center !important;
                         gap: 8px !important;
                     }
 
                     .product-price .text-muted {
-                        font-size: 16px !important;
+                        font-size: 14px !important;
                         font-weight: 500 !important;
                         color: #9ca3af !important;
+                        text-decoration: line-through !important;
                     }
 
                     /* Badge Styling */
@@ -205,52 +228,55 @@
                         backdrop-filter: blur(10px) !important;
                     }
 
-                    /* Action Buttons */
-                    .product-actions {
-                        margin-top: auto !important;
-                        padding: 0 !important;
-                    }
-
+                    /* Clean Action Buttons */
+                    .oe_product .btn,
+                    .product-actions .btn,
                     .btn-add-to-cart {
-                        width: 100% !important;
-                        border-radius: 8px !important;
+                        border-radius: 6px !important;
                         font-weight: 600 !important;
-                        padding: 12px 16px !important;
-                        margin-bottom: 10px !important;
-                        font-size: 14px !important;
-                        background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
-                        border: none !important;
-                        color: white !important;
-                        transition: all 0.3s ease !important;
-                        text-transform: uppercase !important;
-                        letter-spacing: 0.5px !important;
+                        padding: 8px 16px !important;
+                        font-size: 13px !important;
+                        transition: all 0.2s ease !important;
+                        margin-top: auto !important;
                     }
 
+                    .oe_product .btn-primary,
+                    .btn-add-to-cart {
+                        background: #2563eb !important;
+                        border: 1px solid #2563eb !important;
+                        color: white !important;
+                        width: 100% !important;
+                        margin-bottom: 8px !important;
+                    }
+
+                    .oe_product .btn-primary:hover,
                     .btn-add-to-cart:hover {
-                        background: linear-gradient(135deg, #1d4ed8, #1e40af) !important;
-                        transform: translateY(-2px) !important;
-                        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
+                        background: #1d4ed8 !important;
+                        border-color: #1d4ed8 !important;
+                        transform: translateY(-1px) !important;
                     }
 
                     .btn-add-to-cart:disabled {
                         background: #9ca3af !important;
+                        border-color: #9ca3af !important;
                         cursor: not-allowed !important;
                         transform: none !important;
-                        box-shadow: none !important;
                     }
 
+                    /* Clean Quick Actions */
                     .btn-product-actions {
                         display: flex !important;
-                        gap: 0.5rem !important;
+                        gap: 8px !important;
+                        margin-top: 8px !important;
                     }
 
                     .btn-product-actions .btn {
                         flex: 1 !important;
-                        font-size: 0.8rem !important;
-                        padding: 0.5rem 0.75rem !important;
-                        border-radius: 6px !important;
+                        font-size: 11px !important;
+                        padding: 6px 8px !important;
+                        border-radius: 4px !important;
                         font-weight: 500 !important;
-                        transition: all 0.3s ease !important;
+                        transition: all 0.2s ease !important;
                     }
 
                     .btn-outline-primary {
@@ -305,20 +331,50 @@
                         }
                     }
 
-                    /* Loading Animation */
-                    .oe_product_image::before {
-                        content: '' !important;
-                        position: absolute !important;
-                        top: 0 !important;
-                        left: -100% !important;
-                        width: 100% !important;
-                        height: 100% !important;
-                        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
-                        transition: left 0.5s !important;
+                    /* Shop Layout Improvements */
+                    .oe_website_sale {
+                        background: #f8fafc !important;
+                        min-height: 100vh !important;
+                        padding: 20px 0 !important;
                     }
 
-                    .oe_product:hover .oe_product_image::before {
-                        left: 100% !important;
+                    .oe_website_sale .o_wsale_products_main_row {
+                        display: flex !important;
+                        gap: 20px !important;
+                        align-items: flex-start !important;
+                    }
+
+                    .oe_website_sale .o_wsale_products_main_row .col-lg-3 {
+                        flex: 0 0 22% !important;
+                        max-width: 22% !important;
+                        background: white !important;
+                        border-radius: 8px !important;
+                        padding: 20px !important;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+                        height: fit-content !important;
+                        position: sticky !important;
+                        top: 20px !important;
+                    }
+
+                    .oe_website_sale .o_wsale_products_main_row .col-lg-9 {
+                        flex: 1 !important;
+                        max-width: none !important;
+                        background: white !important;
+                        border-radius: 8px !important;
+                        padding: 25px !important;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+                    }
+
+                    @media (max-width: 991px) {
+                        .oe_website_sale .o_wsale_products_main_row {
+                            flex-direction: column !important;
+                        }
+
+                        .oe_website_sale .o_wsale_products_main_row .col-lg-3,
+                        .oe_website_sale .o_wsale_products_main_row .col-lg-9 {
+                            flex: 1 !important;
+                            max-width: 100% !important;
+                        }
                     }
                 </style>
 

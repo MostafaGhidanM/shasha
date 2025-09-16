@@ -34,8 +34,9 @@
         # Security
         'security/ir.model.access.csv',
 
-        # Template files (load first) - minimal set to avoid conflicts
+        # Template files (load first) - modern ecommerce design
         'views/product_card.xml',
+        'views/shop_templates.xml',
         'views/shop_simple.xml',
 
         # Data files that exist
