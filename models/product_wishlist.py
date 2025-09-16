@@ -12,6 +12,7 @@ class ProductWishlist(models.Model):
                                 default=lambda self: self.env.user.partner_id)
     product_id = fields.Many2one('product.template', string='Product', required=True)
     date_added = fields.Datetime('Date Added', default=fields.Datetime.now)
+    active = fields.Boolean('Active', default=True)
 
     _sql_constraints = [
         ('unique_partner_product', 'unique(partner_id, product_id)', 'Product already in wishlist!')
@@ -41,6 +42,19 @@ class ProductTemplate(models.Model):
     def get_wishlist_products(self, limit=20):
         partner_id = self.env.user.partner_id.id
         wishlist_items = self.env['product.wishlist'].search([
-            ('partner_id', '=', partner_id)
+            ('partner_id', '=', partner_id),
+            ('active', '=', True)
         ], limit=limit, order='date_added desc')
         return wishlist_items.product_id
+
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    wishlist_ids = fields.One2many('product.wishlist', 'partner_id', string='Wishlist Items')
+    wishlist_count = fields.Integer('Wishlist Count', compute='_compute_wishlist_count')
+
+    @api.depends('wishlist_ids.active')
+    def _compute_wishlist_count(self):
+        for partner in self:
+            partner.wishlist_count = len(partner.wishlist_ids.filtered('active'))
