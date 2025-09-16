@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Add Cart Widget to Header -->
+    <template id="header_cart_widget" name="Header Cart Widget" inherit_id="website.layout">
+        <xpath expr="//nav[hasclass('navbar')]//div[hasclass('navbar-nav')]" position="after">
+            <div class="d-flex align-items-center ms-auto">
+                <t t-call="shasha.cart_widget"/>
+            </div>
+        </xpath>
+    </template>
     <!-- Enhanced Cart Widget -->
     <template id="cart_widget" name="Enhanced Cart Widget">
         <div class="cart-widget">

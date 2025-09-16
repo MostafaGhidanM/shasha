@@ -91,29 +91,54 @@
             postData.csrf_token = csrfToken;
         }
 
-        // Use AJAX with proper CSRF handling
+        // Use AJAX with JSON response for seamless cart updates
         $.ajax({
-            url: '/shop/cart/update',
+            url: '/shop/cart/update_json',
             type: 'POST',
+            dataType: 'json',
             data: postData,
-            success: function(response) {
-                // Reload page to show updated cart
-                window.location.reload();
+            success: function(data) {
+                if (data.cart_quantity !== undefined) {
+                    // Update cart data in memory
+                    updateCartData(data);
+
+                    // Show success notification with product details
+                    showNotification(`Product added to cart successfully!`, 'success');
+
+                    // Update button state briefly to show success
+                    $btn.removeClass('btn-primary').addClass('btn-success')
+                        .html('<i class="fa fa-check me-1"></i> Added!');
+
+                    // Animate cart icon if present
+                    animateCartIcon();
+
+                    // Show mini cart preview
+                    showMiniCartPreview(data);
+
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        $btn.removeClass('btn-success').addClass('btn-primary')
+                            .html('<i class="fa fa-shopping-cart me-1"></i> Add to Cart');
+                    }, 2000);
+                } else {
+                    showNotification('Failed to add product to cart', 'error');
+                }
             },
             error: function(xhr, status, error) {
                 console.error('Cart update failed:', error);
                 if (xhr.status === 400 && xhr.responseText.includes('CSRF')) {
-                    // CSRF token issue - reload page and try again
                     showNotification('Session expired. Please try again.', 'warning');
                     setTimeout(() => {
                         window.location.reload();
                     }, 2000);
+                } else if (xhr.status === 403) {
+                    showNotification('Please log in to add items to cart.', 'info');
                 } else {
                     showNotification('Failed to add product to cart. Please try again.', 'error');
                 }
             },
             complete: function() {
-                $btn.prop('disabled', false).html('<i class="fa fa-shopping-cart me-1"></i> Add to Cart');
+                $btn.prop('disabled', false);
             }
         });
     }
@@ -371,12 +396,58 @@
         }
     }
 
-    // Modal functions
-    function showAddToCartModal(productId, quantity) {
-        // Implementation would populate and show the add to cart success modal
-        if (ShashaStore.settings.showNotifications) {
-            $('#addToCartModal').modal('show');
+    // Cart animation and feedback functions
+    function animateCartIcon() {
+        const $cartIcon = $('.cart-icon, #cartIcon, .fa-shopping-cart').first();
+        if ($cartIcon.length > 0) {
+            $cartIcon.addClass('cart-bounce');
+            setTimeout(() => {
+                $cartIcon.removeClass('cart-bounce');
+            }, 600);
         }
+    }
+
+    function showMiniCartPreview(data) {
+        // Create mini cart preview notification
+        const cartPreview = $(`
+            <div id="miniCartPreview" class="mini-cart-preview position-fixed" style="top: 80px; right: 20px; z-index: 9999; max-width: 350px;">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0"><i class="fa fa-check-circle me-2"></i>Added to Cart</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Cart Total:</strong> ${ShashaStore.cart.currency}${data.amount_total || 0}
+                            </div>
+                            <div>
+                                <span class="badge bg-primary">${data.cart_quantity || 0} items</span>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button class="btn btn-outline-primary btn-sm" onclick="continueShopping()">Continue Shopping</button>
+                                <a href="/shop/cart" class="btn btn-primary btn-sm">View Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+
+        $('body').append(cartPreview);
+
+        // Auto-hide after 4 seconds
+        setTimeout(() => {
+            cartPreview.fadeOut(300, function() {
+                $(this).remove();
+            });
+        }, 4000);
+    }
+
+    function showAddToCartModal(productId, quantity) {
+        // Legacy modal function - now uses mini cart preview instead
+        console.log('Add to cart modal - using mini cart preview instead');
     }
 
     function showQuickViewModal(product) {
@@ -484,9 +555,25 @@
 
     // Load data functions
     function loadCartData() {
-        // Use standard Odoo cart data from page context
-        // The cart data will be available in the page template
-        console.log('Cart data will be loaded from page context');
+        // Load cart data from the server to get current cart state
+        $.ajax({
+            url: '/shop/cart/count',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if (data && data.cart_quantity !== undefined) {
+                    updateCartData(data);
+                }
+            },
+            error: function() {
+                // If cart count endpoint doesn't exist, try to get from page context
+                const cartCount = $('.cart-count-badge').first().text() || '0';
+                if (cartCount && cartCount !== '0') {
+                    ShashaStore.cart.count = parseInt(cartCount);
+                    updateCartUI();
+                }
+            }
+        });
     }
 
     function loadWishlistData() {
@@ -551,6 +638,12 @@
 
     window.removeFromCart = function(element) {
         $(element).addClass('remove-from-cart-btn').trigger('click');
+    };
+
+    window.continueShopping = function() {
+        $('#miniCartPreview').fadeOut(300, function() {
+            $(this).remove();
+        });
     };
 
 })(jQuery);
