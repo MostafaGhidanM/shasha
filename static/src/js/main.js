@@ -62,7 +62,7 @@
         $(document).on('submit', '.filter-form', handleFilterSubmit);
     }
 
-    // Cart functionality
+    // Cart functionality - Use AJAX with proper session handling
     function handleAddToCart(e) {
         e.preventDefault();
         const $btn = $(this);
@@ -77,39 +77,41 @@
         // Show loading state
         $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Adding...');
 
-        // Create a form and submit it (standard Odoo way)
-        const form = $('<form>', {
-            'method': 'POST',
-            'action': '/shop/cart/update'
+        // Use AJAX with proper session handling
+        $.ajax({
+            url: '/shop/cart/update',
+            type: 'POST',
+            data: {
+                product_id: productId,
+                add_qty: quantity
+            },
+            beforeSend: function(xhr) {
+                // Set CSRF token in header if available
+                const token = $('meta[name="csrf-token"]').attr('content');
+                if (token) {
+                    xhr.setRequestHeader('X-CSRFToken', token);
+                }
+            },
+            success: function(response) {
+                // Reload page to show updated cart
+                window.location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error('Cart update failed:', error);
+                if (xhr.status === 400 && xhr.responseText.includes('CSRF')) {
+                    // CSRF token issue - reload page and try again
+                    showNotification('Session expired. Please try again.', 'warning');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    showNotification('Failed to add product to cart. Please try again.', 'error');
+                }
+            },
+            complete: function() {
+                $btn.prop('disabled', false).html('<i class="fa fa-shopping-cart me-1"></i> Add to Cart');
+            }
         });
-
-        form.append($('<input>', {
-            'type': 'hidden',
-            'name': 'product_id',
-            'value': productId
-        }));
-
-        form.append($('<input>', {
-            'type': 'hidden',
-            'name': 'add_qty',
-            'value': quantity
-        }));
-
-        // Add CSRF token if available
-        const csrfToken = $('meta[name="csrf-token"]').attr('content') ||
-                         $('input[name="csrf_token"]').val();
-        if (csrfToken) {
-            form.append($('<input>', {
-                'type': 'hidden',
-                'name': 'csrf_token',
-                'value': csrfToken
-            }));
-        }
-
-        $('body').append(form);
-        form.submit();
-
-        // Note: Page will redirect/reload with the updated cart
     }
 
     function handleRemoveFromCart(e) {

@@ -4,6 +4,9 @@
     <template id="homepage" name="Shasha Homepage">
         <t t-call="website.layout">
             <div id="wrap" class="oe_structure">
+                <!-- CSRF token for AJAX requests -->
+                <meta name="csrf-token" t-att-content="request.csrf_token()"/>
+
                 <!-- Hero Slider Section -->
                 <section class="hero-slider bg-light py-5">
                     <div class="container">
