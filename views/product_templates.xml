@@ -74,8 +74,8 @@
                     </h6>
 
                     <!-- Rating -->
-                    <div t-if="hasattr(product, 'rating_avg') and product.rating_avg" class="product-rating mb-2">
-                        <t t-set="rating" t-value="int(product.rating_avg)"/>
+                    <div t-if="product.rating_avg" class="product-rating mb-2">
+                        <t t-set="rating" t-value="int(product.rating_avg or 0)"/>
                         <t t-foreach="range(5)" t-as="star">
                             <i t-if="star &lt; rating" class="fa fa-star text-warning"></i>
                             <i t-else="" class="fa fa-star-o text-muted"></i>
@@ -166,8 +166,8 @@
                                     <t t-esc="product.name"/>
                                 </a>
                             </h5>
-                            <div t-if="hasattr(product, 'rating_avg') and product.rating_avg" class="product-rating mb-2">
-                                <t t-set="rating" t-value="int(product.rating_avg)"/>
+                            <div t-if="product.rating_avg" class="product-rating mb-2">
+                                <t t-set="rating" t-value="int(product.rating_avg or 0)"/>
                                 <t t-foreach="range(5)" t-as="star">
                                     <i t-if="star &lt; rating" class="fa fa-star text-warning"></i>
                                     <i t-else="" class="fa fa-star-o text-muted"></i>
