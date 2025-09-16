@@ -1,7 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_product_brand_public,product.brand public,model_product_brand,base.group_public,1,0,0,0
-access_product_brand_user,product.brand user,model_product_brand,base.group_user,1,1,1,1
+access_product_brand_user,product.brand user,model_product_brand,base.group_user,1,1,1,0
 access_product_brand_manager,product.brand manager,model_product_brand,sales_team.group_sale_manager,1,1,1,1
 access_product_slider_image_public,product.slider.image public,model_product_slider_image,base.group_public,1,0,0,0
-access_product_slider_image_user,product.slider.image user,model_product_slider_image,base.group_user,1,1,1,1
+access_product_slider_image_user,product.slider.image user,model_product_slider_image,base.group_user,1,1,1,0
+access_product_slider_image_manager,product.slider.image manager,model_product_slider_image,sales_team.group_sale_manager,1,1,1,1
 access_product_wishlist_user,product.wishlist user,model_product_wishlist,base.group_user,1,1,1,1
+access_product_wishlist_portal,product.wishlist portal,model_product_wishlist,base.group_portal,1,1,1,1
