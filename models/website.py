@@ -23,23 +23,25 @@ class Website(models.Model):
 
     @api.model
     def get_best_sellers(self, limit=8):
-        # Get products with highest sales
-        query = """
-            SELECT pt.id, SUM(sol.product_uom_qty) as total_sold
-            FROM product_template pt
-            JOIN product_product pp ON pp.product_tmpl_id = pt.id
-            JOIN sale_order_line sol ON sol.product_id = pp.id
-            JOIN sale_order so ON so.id = sol.order_id
-            WHERE pt.website_published = true
-            AND pt.sale_ok = true
-            AND so.state IN ('sale', 'done')
-            GROUP BY pt.id
-            ORDER BY total_sold DESC
-            LIMIT %s
-        """
-        self.env.cr.execute(query, (limit,))
-        product_ids = [row[0] for row in self.env.cr.fetchall()]
-        return self.env['product.template'].browse(product_ids)
+        # Get products with highest sales - use ORM instead of raw SQL
+        products = self.env['product.template'].search([
+            ('website_published', '=', True),
+            ('sale_ok', '=', True),
+        ])
+
+        # Calculate sales for each product
+        product_sales = []
+        for product in products:
+            sales_count = self.env['sale.order.line'].search_count([
+                ('product_template_id', '=', product.id),
+                ('order_id.state', 'in', ['sale', 'done'])
+            ])
+            if sales_count > 0:
+                product_sales.append((product, sales_count))
+
+        # Sort by sales count and return top products
+        product_sales.sort(key=lambda x: x[1], reverse=True)
+        return self.env['product.template'].browse([p[0].id for p in product_sales[:limit]])
 
     @api.model
     def get_categories_with_products(self):
