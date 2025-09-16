@@ -18,7 +18,12 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="hero-image">
-                                    <img src="/shasha/static/src/images/hero-banner.jpg" alt="Hero Banner" class="img-fluid rounded shadow"/>
+                                    <div class="bg-light rounded shadow d-flex align-items-center justify-content-center" style="height: 400px;">
+                                        <div class="text-center text-muted">
+                                            <i class="fa fa-image fa-4x mb-3"></i>
+                                            <p>Hero Banner Placeholder</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
