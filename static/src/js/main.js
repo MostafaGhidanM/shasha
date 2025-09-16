@@ -77,31 +77,39 @@
         // Show loading state
         $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Adding...');
 
-        // Make AJAX request to add to cart
-        $.ajax({
-            url: '/shop/cart/update_json',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                product_id: productId,
-                add_qty: quantity
-            },
-            success: function(data) {
-                if (data.cart_quantity !== undefined) {
-                    updateCartData(data);
-                    showNotification('Product added to cart!', 'success');
-                    showAddToCartModal(productId, quantity);
-                } else {
-                    showNotification('Failed to add product to cart', 'error');
-                }
-            },
-            error: function() {
-                showNotification('Error adding product to cart', 'error');
-            },
-            complete: function() {
-                $btn.prop('disabled', false).html('<i class="fa fa-shopping-cart me-1"></i> Add to Cart');
-            }
+        // Create a form and submit it (standard Odoo way)
+        const form = $('<form>', {
+            'method': 'POST',
+            'action': '/shop/cart/update'
         });
+
+        form.append($('<input>', {
+            'type': 'hidden',
+            'name': 'product_id',
+            'value': productId
+        }));
+
+        form.append($('<input>', {
+            'type': 'hidden',
+            'name': 'add_qty',
+            'value': quantity
+        }));
+
+        // Add CSRF token if available
+        const csrfToken = $('meta[name="csrf-token"]').attr('content') ||
+                         $('input[name="csrf_token"]').val();
+        if (csrfToken) {
+            form.append($('<input>', {
+                'type': 'hidden',
+                'name': 'csrf_token',
+                'value': csrfToken
+            }));
+        }
+
+        $('body').append(form);
+        form.submit();
+
+        // Note: Page will redirect/reload with the updated cart
     }
 
     function handleRemoveFromCart(e) {
@@ -470,17 +478,9 @@
 
     // Load data functions
     function loadCartData() {
-        $.ajax({
-            url: '/api/cart/summary',
-            type: 'POST',
-            dataType: 'json',
-            success: function(data) {
-                updateCartData(data);
-            },
-            error: function() {
-                console.error('Failed to load cart data');
-            }
-        });
+        // Use standard Odoo cart data from page context
+        // The cart data will be available in the page template
+        console.log('Cart data will be loaded from page context');
     }
 
     function loadWishlistData() {
